@@ -8,7 +8,8 @@ public class Vendedor extends Usuario {
 
 	public void Menu(SystemYENNY SystemYENNY) {
 		boolean continuar = false;
-		String[] opciones = {"Ejemplares", "Clientes", "Metodos de Pago"};
+		String[] opciones = {"Ejemplares", "Clientes", "Metodos de Pago", "Registrar al Club del Libro", "Registrar Cliente", 
+				"Realizar Venta", "Pedir Libro Faltante"};
 		String[] opciones1 = {"Si", "No"};
 		do {
 			int eleccion = JOptionPane.showOptionDialog(null, 
@@ -51,6 +52,20 @@ public class Vendedor extends Usuario {
 					}
 					
 					JOptionPane.showMessageDialog(null, metodosPagoAux);
+					break;
+				case 3:
+					JOptionPane.showMessageDialog(null, "Aqui el vendedor puede registrar a un cliente al club del libro."
+							+ "\nPidiendo codigo de cliente y cargando o seleccionando un metodo de pago.");
+					break;
+				case 4:
+					JOptionPane.showMessageDialog(null, "Aqui el vendedor puede registrar a un cliente pidiendo la informacion necesaria.");
+					break;
+				case 5:
+					JOptionPane.showMessageDialog(null, "Aqui el vendedor puede cargar una venta, pidiendo un metodo de pago "
+							+ "\no cargando codigo cliente y seleccionando un metodo de pago.");
+					break;
+				case 6:
+					JOptionPane.showMessageDialog(null, "Aqui el vendedor puede buscar libros faltantes en sucursales cercanas y pedir los mismos.\nDebe tener la informacion de contacto del cliente.");
 					break;
 			}
 			

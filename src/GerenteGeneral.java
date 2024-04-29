@@ -8,7 +8,8 @@ public class GerenteGeneral extends Usuario{
 
 	public void Menu(SystemYENNY SystemYENNY) {
 		boolean continuar = false;
-		String[] opciones = {"Ventas", "Usuarios", "Sucursales"};
+		String[] opciones = {"Ver Ventas", "Usuarios", "Sucursales", "Establecer Beneficios Globales",
+				"Pedir Exportacion de Libros"};
 		String[] opciones1 = {"Si", "No"};
 		do {
 			int eleccion = JOptionPane.showOptionDialog(null, 
@@ -51,6 +52,15 @@ public class GerenteGeneral extends Usuario{
 					}
 					
 					JOptionPane.showMessageDialog(null, sucursalesAux);
+					break;
+				case 3:
+					JOptionPane.showMessageDialog(null, "Aqui el gerente general puede cargar y quitar"
+							+ "\nbeneficios de todas las sucursales.");
+					break;
+				case 4:
+
+					JOptionPane.showMessageDialog(null, "Aqui el gerente general puede seleccionar el libro"
+							+ "\nque se va a exportar, la cantidad y el destino.");
 					break;
 			}
 			

@@ -8,7 +8,8 @@ public class GerenteSucursal extends Usuario{
 
 	public void Menu(SystemYENNY SystemYENNY) {
 		boolean continuar = false;
-		String[] opciones = {"Libros", "Editoriales", "Promociones", "Sagas", "Autores"};
+		String[] opciones = {"Libros", "Editoriales", "Promociones", "Sagas", "Autores",
+				"Encargar Libros", "Ver Informe de Venta", "Establecer Beneficios", "Administrar Vendedores"};
 		String[] opciones1 = {"Si", "No"};
 		do {
 			int eleccion = JOptionPane.showOptionDialog(null, 
@@ -73,6 +74,19 @@ public class GerenteSucursal extends Usuario{
 					}
 					
 					JOptionPane.showMessageDialog(null, autoresAux);
+					break;
+				case 5:
+					JOptionPane.showMessageDialog(null, "Aqui el gerente de sucursal selecciona la editorial, el libro"
+							+ "\ny cantidad de estos a recibir.");
+					break;
+				case 6:
+					JOptionPane.showMessageDialog(null, "Aqui se le muestran las ventas de libros de la sucursal al gerente de sucursal.");
+					break;
+				case 7:
+					JOptionPane.showMessageDialog(null, "Aqui el gerente de sucursal puede cargar y quitar beneficios de la sucursal.");
+					break;
+				case 8:
+					JOptionPane.showMessageDialog(null, "Aqui el gerente de sucursal puede cargar y quitar vendedores de la sucursal.");
 					break;
 			}
 			
