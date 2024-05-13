@@ -1,4 +1,7 @@
+package modelos;
 import javax.swing.JOptionPane;
+
+import interfaces.Auxiliaries;
 
 public class Usuario implements Auxiliaries{
 	private int usuarioId;

@@ -1,7 +1,10 @@
+package modelos;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
+
+import interfaces.Auxiliaries;
 
 public class SystemYENNY implements Auxiliaries{
 	private LinkedList<Autor> autores= new LinkedList<>();

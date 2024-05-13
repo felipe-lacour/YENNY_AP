@@ -1,3 +1,4 @@
+package modelos;
 
 public class Promocion {
 	private int promocionId;

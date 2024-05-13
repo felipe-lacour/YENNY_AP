@@ -1,3 +1,4 @@
+package modelos;
 import javax.swing.JOptionPane;
 
 public class Vendedor extends Usuario {

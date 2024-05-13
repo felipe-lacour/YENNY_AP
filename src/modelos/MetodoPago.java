@@ -1,3 +1,4 @@
+package modelos;
 
 public class MetodoPago {
 	private int metodoPagoId;
