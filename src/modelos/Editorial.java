@@ -1,3 +1,4 @@
+package modelos;
 
 public class Editorial {
 	private int editorialId;

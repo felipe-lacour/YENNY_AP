@@ -1,3 +1,4 @@
+package modelos;
 
 public class Saga {
 	private int sagaId;
