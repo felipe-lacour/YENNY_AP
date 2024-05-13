@@ -68,6 +68,4 @@ public class Usuario implements Auxiliaries{
 	public void Menu(SystemYENNY SystemYENNY) {
 		JOptionPane.showMessageDialog(null, "Hola que tal");
 	}
-	
-	
 }
