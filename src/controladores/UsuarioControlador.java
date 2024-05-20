@@ -20,11 +20,11 @@ public class UsuarioControlador implements UsuarioRepositorio {
     public List<Usuario> getAllUsers() {
         List<Usuario> users = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users ");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM usuarios");
             ResultSet resultSet = statement.executeQuery();
        
             while (resultSet.next()) {
-            	Usuario user = new Usuario(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("email"));
+            	Usuario user = new Usuario(resultSet.getInt("usuario_id"), resultSet.getString("nombre"), resultSet.getInt("rol"), resultSet.getInt("sucursal_id"), resultSet.getString("pass"), resultSet.getString("userName"));
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -37,13 +37,13 @@ public class UsuarioControlador implements UsuarioRepositorio {
     public Usuario getUserById(int id) {
         Usuario user = null;
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM usuarios WHERE id = ?");
             statement.setInt(1, id);
             
             ResultSet resultSet = statement.executeQuery();
             
             if (resultSet.next()) {
-                user = new Usuario(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("email"));
+                user = new Usuario(resultSet.getInt("usuario_id"), resultSet.getString("nombre"), resultSet.getInt("rol"), resultSet.getInt("sucursal_id"), resultSet.getString("pass"), resultSet.getString("userName"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,9 +54,14 @@ public class UsuarioControlador implements UsuarioRepositorio {
 	@Override
     public void addUser(Usuario usuario) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO users (name, email) VALUES (?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO usuarios (nombre, rol, sucursal_id, pass, userName) VALUES (?, ?, ?, ?, ?)");
             statement.setString(1, usuario.getNombre());
-            statement.setString(2, usuario.getEmail());
+            statement.setInt(2, usuario.getRol());
+            statement.setInt(3, usuario.getSucursalId());
+            statement.setString(4, usuario.getPass());
+            statement.setString(5, usuario.getUserName());
+            statement.setInt(6, usuario.getUsuarioId());
+            
             
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
@@ -70,10 +75,13 @@ public class UsuarioControlador implements UsuarioRepositorio {
 	@Override
     public void updateUser(Usuario usuario) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE users SET name = ?, email = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE users SET nombre = ?, rol = ?, sucursal_id = ?, pass = ?, userName = ? WHERE id = ?");
             statement.setString(1, usuario.getNombre());
-            statement.setString(2, usuario.getEmail());
-            statement.setInt(3, usuario.getId());
+            statement.setInt(2, usuario.getRol());
+            statement.setInt(3, usuario.getSucursalId());
+            statement.setString(4, usuario.getPass());
+            statement.setString(5, usuario.getUserName());
+            statement.setInt(6, usuario.getUsuarioId());
             
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
@@ -98,7 +106,4 @@ public class UsuarioControlador implements UsuarioRepositorio {
             e.printStackTrace();
         }
     }
-
-
-  
 }
