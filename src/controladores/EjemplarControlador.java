@@ -27,11 +27,11 @@ public class EjemplarControlador implements EjemplarRepository {
 	       
 	            while (resultSet.next()) {
 				
-	            	Ejemplar user = new Ejemplar(resultSet.getInt("ejemplarId"),resultSet.getInt("libroId"), resultSet.getInt("sucursalId"),
+	            	Ejemplar user = new Ejemplar(resultSet.getInt("ejemplar_id"),resultSet.getInt("libro_id"), resultSet.getInt("sucursalId"),
 	            			resultSet.getString("isbn"),resultSet.getDouble("precio"),resultSet.getString("condicion")
-	            			,resultSet.getBoolean("tapaDura"),resultSet.getBoolean("edicionEsecial"),resultSet.getDate("fechaEdicion").toLocalDate(),
-	            			resultSet.getInt("numeroEdicion"),resultSet.getBoolean("firmado"),resultSet.getString("idioma"),
-	            			resultSet.getString("caracteristicasEspeciales"),resultSet.getDate("fechaAdquisicion").toLocalDate(),resultSet.getInt("ventaID"));
+	            			,resultSet.getBoolean("tapa_dura"),resultSet.getBoolean("edicion_esecial"),resultSet.getDate("fecha_edicion").toLocalDate(),
+	            			resultSet.getInt("numero_edicion"),resultSet.getBoolean("firmado"),resultSet.getString("idioma"),
+	            			resultSet.getString("caracteristicas_especiales"),resultSet.getDate("fecha_adquisicion").toLocalDate(),resultSet.getInt("venta_iD"));
 	                users.add(user);
 	            }
 	        } catch (SQLException e) {
@@ -50,7 +50,7 @@ public class EjemplarControlador implements EjemplarRepository {
 	            ResultSet resultSet = statement.executeQuery();
 	            
 	            if (resultSet.next()) {
-	                user = new Ejemplar(resultSet.getInt("ejemplarId"),resultSet.getInt("libroId"));
+	                user = new Ejemplar(resultSet.getInt("ejemplar_id"),resultSet.getInt("libro_id"));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -62,7 +62,7 @@ public class EjemplarControlador implements EjemplarRepository {
 	    public void addUser(Ejemplar Ejemplar) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("INSERT INTO editorial (name) VALUES (?, ?)");
-	            statement.setString(1, Ejemplar.geteh());
+	            statement.setInt(1, Ejemplar.getEjemplarId());
 	            
 	            int rowsInserted = statement.executeUpdate();
 	            if (rowsInserted > 0) {
@@ -74,11 +74,11 @@ public class EjemplarControlador implements EjemplarRepository {
 	    }
 
 		@Override
-	    public void updateUser(Ejemplar Editorial) {
+	    public void updateUser(Ejemplar Ejemplar) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("UPDATE autor SET name = ?, email = ? WHERE id = ?");
-	            statement.setString(1, Ejemplar.getNombre());
-	            statement.setInt(2, Ejemplar.getEditorialId());
+	            statement.setInt(1, Ejemplar.getEjemplarId());
+	            statement.setInt(2, Ejemplar.getLibroId());
 	            
 	            int rowsUpdated = statement.executeUpdate();
 	            if (rowsUpdated > 0) {
