@@ -38,7 +38,10 @@ public class Ejemplar {
 		this.fechaAdquisicion = fechaAdquisicion;
 		this.ventaId = ventaId;
 	}
-
+	public Ejemplar(int ejemplarId,int libroId) {
+		this.ejemplarId = ejemplarId;
+		this.libroId = libroId;
+	}
 	public int getEjemplarId() {
 		return ejemplarId;
 	}

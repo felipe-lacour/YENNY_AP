@@ -26,15 +26,12 @@ public class EjemplarControlador implements EjemplarRepository {
 	            ResultSet resultSet = statement.executeQuery();
 	       
 	            while (resultSet.next()) {
-				/*
-				private boolean firmado;
-				private String idioma;
-				private String caracteristicasEspeciales;
-				private LocalDate fechaAdquisicion;
-				private Integer ventaId;*/
-	            	Ejemplar user = new Ejemplar(resultSet.getInt("ejemplarId"),resultSet.getInt("libroId"), resultSet.getInt("sucursalId"),resultSet.getString("isbn"),resultSet.getDouble("precio"),
-	            			resultSet.getString("condicion"),resultSet.getBoolean("tapaDura"),resultSet.getBoolean("edicionEsecial"),resultSet.getDate("fechaEdicion"),
-	            			resultSet.getInt("numeroEdicion"));
+				
+	            	Ejemplar user = new Ejemplar(resultSet.getInt("ejemplarId"),resultSet.getInt("libroId"), resultSet.getInt("sucursalId"),
+	            			resultSet.getString("isbn"),resultSet.getDouble("precio"),resultSet.getString("condicion")
+	            			,resultSet.getBoolean("tapaDura"),resultSet.getBoolean("edicionEsecial"),resultSet.getDate("fechaEdicion").toLocalDate(),
+	            			resultSet.getInt("numeroEdicion"),resultSet.getBoolean("firmado"),resultSet.getString("idioma"),
+	            			resultSet.getString("caracteristicasEspeciales"),resultSet.getDate("fechaAdquisicion").toLocalDate(),resultSet.getInt("ventaID"));
 	                users.add(user);
 	            }
 	        } catch (SQLException e) {
@@ -53,7 +50,7 @@ public class EjemplarControlador implements EjemplarRepository {
 	            ResultSet resultSet = statement.executeQuery();
 	            
 	            if (resultSet.next()) {
-	                user = new Ejemplar(resultSet.getInt("id"), resultSet.getString("name"));
+	                user = new Ejemplar(resultSet.getInt("ejemplarId"),resultSet.getInt("libroId"));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -65,7 +62,7 @@ public class EjemplarControlador implements EjemplarRepository {
 	    public void addUser(Ejemplar Ejemplar) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("INSERT INTO editorial (name) VALUES (?, ?)");
-	            statement.setString(1, Ejemplar.getNombre());
+	            statement.setString(1, Ejemplar.geteh());
 	            
 	            int rowsInserted = statement.executeUpdate();
 	            if (rowsInserted > 0) {
