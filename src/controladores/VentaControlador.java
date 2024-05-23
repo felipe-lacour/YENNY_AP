@@ -24,7 +24,7 @@ public class VentaControlador implements VentaRepositorio {
             ResultSet resultSet = statement.executeQuery();
        
             while (resultSet.next()) {
-            	Venta venta = new Venta(resultSet.getInt("usuario_id"), resultSet.getString("nombre"), resultSet.getInt("rol"), resultSet.getInt("sucursal_id"), resultSet.getString("pass"), resultSet.getString("userName"));
+            	Venta venta = new Venta(resultSet.getInt("venta_id"), resultSet.getInt("metodo_pago_id"), resultSet.getDate("fecha").toLocalDate());
             	ventas.add(venta);
             }
         } catch (SQLException e) {
@@ -43,7 +43,7 @@ public class VentaControlador implements VentaRepositorio {
             ResultSet resultSet = statement.executeQuery();
             
             if (resultSet.next()) {
-                Venta venta = new Venta(resultSet.getInt("usuario_id"), resultSet.getString("nombre"), resultSet.getInt("rol"), resultSet.getInt("sucursal_id"), resultSet.getString("pass"), resultSet.getString("userName"));
+                Venta venta = new Venta(resultSet.getInt("venta_id"), resultSet.getInt("metodo_pago_id"), resultSet.getDate("fecha").toLocalDate());
             }
         } catch (SQLException e) {
             e.printStackTrace();
