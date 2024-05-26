@@ -27,11 +27,11 @@ public class EjemplarControlador implements EjemplarRepository {
 	       
 	            while (resultSet.next()) {
 				
-	            	Ejemplar user = new Ejemplar(resultSet.getInt("ejemplar_id"),resultSet.getInt("libro_id"), resultSet.getInt("sucursalId"),
-	            			resultSet.getString("isbn"),resultSet.getDouble("precio"),resultSet.getString("condicion")
-	            			,resultSet.getBoolean("tapa_dura"),resultSet.getBoolean("edicion_esecial"),resultSet.getDate("fecha_edicion").toLocalDate(),
-	            			resultSet.getInt("numero_edicion"),resultSet.getBoolean("firmado"),resultSet.getString("idioma"),
-	            			resultSet.getString("caracteristicas_especiales"),resultSet.getDate("fecha_adquisicion").toLocalDate(),resultSet.getInt("venta_iD"));
+	            	Ejemplar user = new Ejemplar(resultSet.getInt("ejemplar_id"),resultSet.getInt("libro_id"), resultSet.getInt("sucursal_id"),
+	            			resultSet.getString("isbn"),resultSet.getDouble("precio"),resultSet.getString("condicion"),resultSet.getBoolean("tapa_dura"),
+	            			resultSet.getBoolean("edicion_esecial"),resultSet.getDate("fecha_edicion").toLocalDate(),resultSet.getInt("numero_edicion"),
+	            			resultSet.getBoolean("firmado"),resultSet.getString("idioma"),resultSet.getString("caracteristicas_especiales"),
+	            			resultSet.getDate("fecha_adquisicion").toLocalDate(),resultSet.getInt("venta_iD"));
 	                users.add(user);
 	            }
 	        } catch (SQLException e) {

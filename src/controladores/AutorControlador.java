@@ -24,7 +24,7 @@ public class AutorControlador implements AutorRepository {
 	            ResultSet resultSet = statement.executeQuery();
 	       
 	            while (resultSet.next()) {
-	            	Autor user = new Autor(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("nacionalidad"));
+	            	Autor user = new Autor(resultSet.getInt("autor_id"), resultSet.getString("nombre"), resultSet.getString("nacionalidad"));
 	                users.add(user);
 	            }
 	        } catch (SQLException e) {
@@ -70,7 +70,7 @@ public class AutorControlador implements AutorRepository {
 		@Override
 	    public void updateUser(Autor Autor) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("UPDATE autor SET name = ?, email = ? WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("UPDATE autor SET name = ?, email = ? WHERE autor_id = ?");
 	            statement.setString(1, Autor.getNombre());
 	            statement.setString(2, Autor.getNacionalidad());
 	            statement.setInt(3, Autor.getAutorId());
@@ -87,7 +87,7 @@ public class AutorControlador implements AutorRepository {
 	    @Override
 	    public void deleteUser(int id) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("DELETE FROM autor WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("DELETE FROM autor WHERE autor_id = ?");
 	            statement.setInt(1, id);
 	            
 	            int rowsDeleted = statement.executeUpdate();

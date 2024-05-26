@@ -25,7 +25,7 @@ public class EditorialControlador implements EditorialRepository {
 	            ResultSet resultSet = statement.executeQuery();
 	       
 	            while (resultSet.next()) {
-	            	Editorial user = new Editorial(resultSet.getInt("id"), resultSet.getString("name"));
+	            	Editorial user = new Editorial(resultSet.getInt("editorial_id"), resultSet.getString("name"));
 	                users.add(user);
 	            }
 	        } catch (SQLException e) {
@@ -38,7 +38,7 @@ public class EditorialControlador implements EditorialRepository {
 	    public Editorial getUserById(int id) {
 	    	Editorial user = null;
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM autor WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM editoriales WHERE id = ?");
 	            statement.setInt(1, id);
 	            
 	            ResultSet resultSet = statement.executeQuery();
@@ -55,12 +55,12 @@ public class EditorialControlador implements EditorialRepository {
 		@Override
 	    public void addUser(Editorial Editorial) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("INSERT INTO editorial (name) VALUES (?, ?)");
+	            PreparedStatement statement = connection.prepareStatement("INSERT INTO editoriales (name) VALUES (?, ?)");
 	            statement.setString(1, Editorial.getNombre());
 	            
 	            int rowsInserted = statement.executeUpdate();
 	            if (rowsInserted > 0) {
-	                System.out.println("Autor insertado exitosamente");
+	                System.out.println("Editorial insertado exitosamente");
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -70,7 +70,7 @@ public class EditorialControlador implements EditorialRepository {
 		@Override
 	    public void updateUser(Editorial Editorial) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("UPDATE autor SET name = ?, email = ? WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("UPDATE editoriales SET name = ?, email = ? WHERE id = ?");
 	            statement.setString(1, Editorial.getNombre());
 	            statement.setInt(2, Editorial.getEditorialId());
 	            
@@ -86,7 +86,7 @@ public class EditorialControlador implements EditorialRepository {
 	    @Override
 	    public void deleteUser(int id) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("DELETE FROM editorial WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("DELETE FROM editoriales WHERE id = ?");
 	            statement.setInt(1, id);
 	            
 	            int rowsDeleted = statement.executeUpdate();
