@@ -1,13 +1,14 @@
 package modelos;
 import javax.swing.JOptionPane;
 
-public class GerenteSucursal extends Usuario{
+public class GerenteSucursal extends Usuario implements interfaces.Menu{
 
 	public GerenteSucursal(int usuarioId, String nombre, int rol, int sucursalId, String pass, String userName) {
 		super(usuarioId, nombre, rol, sucursalId, pass, userName);
 	}
 
-	public void Menu(SystemYENNY SystemYENNY) {
+	@Override
+	public void Menu() {
 		boolean continuar = false;
 		String[] opciones = {"Libros", "Editoriales", "Promociones", "Sagas", "Autores",
 				"Encargar Libros", "Ver Informe de Venta", "Establecer Beneficios", "Administrar Vendedores"};

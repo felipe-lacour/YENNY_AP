@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class VentaControlador implements VentaRepositorio {
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO ventas (metodo_pago_id, fecha) VALUES (?, ?)");
             statement.setInt(1, venta.getMetodoPagoId());
-            statement.setDate(2, venta.getFecha());
+            statement.setDate(2, java.sql.Date.valueOf(venta.getFecha()));
             
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
@@ -72,7 +73,7 @@ public class VentaControlador implements VentaRepositorio {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE ventas SET metodo_pago_id = ?, fecha = ? WHERE id = ?");
             statement.setInt(1, venta.getMetodoPagoId());
-            statement.setDate(2, venta.getFecha());
+            statement.setDate(2, java.sql.Date.valueOf(venta.getFecha()));
             statement.setInt(3, venta.getVentaId());
             
             int rowsUpdated = statement.executeUpdate();

@@ -1,9 +1,6 @@
 package modelos;
-import javax.swing.JOptionPane;
 
-import interfaces.Auxiliaries;
-
-public class Usuario implements Auxiliaries{
+public class Usuario{
 	private int usuarioId;
 	private String nombre;
 	private int rol;
@@ -63,9 +60,5 @@ public class Usuario implements Auxiliaries{
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-	
-	public void Menu(SystemYENNY SystemYENNY) {
-		JOptionPane.showMessageDialog(null, "Hola que tal");
 	}
 }
