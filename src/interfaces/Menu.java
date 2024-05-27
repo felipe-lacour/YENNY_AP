@@ -1,6 +1,6 @@
 package interfaces;
-
 import javax.swing.JOptionPane;
+import controladores.UsuarioControlador;
 import modelos.Usuario;
 
 public interface Menu extends Auxiliaries{
@@ -11,12 +11,12 @@ public interface Menu extends Auxiliaries{
 		Usuario userNAux = null, userPAux = null, userAux = null;
 		boolean userN = true;
 		boolean userP = true;
-		
+		UsuarioControlador controlador = new UsuarioControlador();
 		do {
 			
 			String userName = JOptionPane.showInputDialog("Ingrese su nombre de usuario.");
 			
-			for (Usuario user : usuarios) {
+			for (Usuario user : controlador.getAllUsers()) {
 				if(user.getUserName().equals(userName)) {
 					userN = true;
 					userNAux = user;
@@ -32,7 +32,7 @@ public interface Menu extends Auxiliaries{
 			
 			String userPass = JOptionPane.showInputDialog("Ingrese su contraseña.");
 			
-			for (Usuario user : usuarios) {
+			for (Usuario user : controlador.getAllUsers()) {
 				if(user.getPass().equals(userPass)) {
 					userP = true;
 					userPAux = user;
@@ -53,6 +53,4 @@ public interface Menu extends Auxiliaries{
 		
 		return userAux;
 	}
-	
-	
 }

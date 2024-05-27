@@ -1,6 +1,7 @@
 package modelos;
+import interfaces.Menu;
 
-public class Usuario{
+public class Usuario implements Menu{
 	private int usuarioId;
 	private String nombre;
 	private int rol;
@@ -60,5 +61,11 @@ public class Usuario{
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	@Override
+	public void Menu() {
+		// TODO Auto-generated method stub
+		
 	}
 }
