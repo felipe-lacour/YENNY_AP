@@ -43,7 +43,7 @@ public class VentaControlador implements VentaRepositorio {
             ResultSet resultSet = statement.executeQuery();
             
             if (resultSet.next()) {
-                Venta venta = new Venta(resultSet.getInt("venta_id"), resultSet.getInt("metodo_pago_id"), resultSet.getDate("fecha").toLocalDate());
+                venta = new Venta(resultSet.getInt("venta_id"), resultSet.getInt("metodo_pago_id"), resultSet.getDate("fecha").toLocalDate());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,14 +54,9 @@ public class VentaControlador implements VentaRepositorio {
 	@Override
     public void addSale(Venta venta) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO ventas (nombre, rol, sucursal_id, pass, userName) VALUES (?, ?, ?, ?, ?)");
-            statement.setString(1, usuario.getNombre());
-            statement.setInt(2, usuario.getRol());
-            statement.setInt(3, usuario.getSucursalId());
-            statement.setString(4, usuario.getPass());
-            statement.setString(5, usuario.getUserName());
-            statement.setInt(6, usuario.getUsuarioId());
-            
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO ventas (metodo_pago_id, fecha) VALUES (?, ?)");
+            statement.setInt(1, venta.getMetodoPagoId());
+            statement.setDate(2, venta.getFecha());
             
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
@@ -75,13 +70,10 @@ public class VentaControlador implements VentaRepositorio {
 	@Override
     public void updateSale(Venta venta) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE ventas SET nombre = ?, rol = ?, sucursal_id = ?, pass = ?, userName = ? WHERE id = ?");
-            statement.setString(1, usuario.getNombre());
-            statement.setInt(2, usuario.getRol());
-            statement.setInt(3, usuario.getSucursalId());
-            statement.setString(4, usuario.getPass());
-            statement.setString(5, usuario.getUserName());
-            statement.setInt(6, usuario.getUsuarioId());
+            PreparedStatement statement = connection.prepareStatement("UPDATE ventas SET metodo_pago_id = ?, fecha = ? WHERE id = ?");
+            statement.setInt(1, venta.getMetodoPagoId());
+            statement.setDate(2, venta.getFecha());
+            statement.setInt(3, venta.getVentaId());
             
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
