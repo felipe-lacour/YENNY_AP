@@ -9,9 +9,9 @@ public interface EjemplarRepository {
     
 	Ejemplar getUserById(int id); //llama solo a uno, por su id
     
-    void addUser(Ejemplar user); //añade usuarios a la bdd
+    void addUser(Ejemplar Ejemplar); //añade usuarios a la bdd
     
-    void updateUser(Ejemplar user); //actualiza los usuarios de la bdd
+    void updateUser(Ejemplar Ejemplar); //actualiza los usuarios de la bdd
     
     void deleteUser(int id); //eliminar usuarios de la bdd
 }

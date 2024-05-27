@@ -7,9 +7,9 @@ public interface AutorRepository {
     
 	Autor getUserById(int id); //llama solo a uno, por su id
     
-    void addUser(Autor user); //añade usuarios a la bdd
+    void addUser(Autor Autor); //añade usuarios a la bdd
     
-    void updateUser(Autor user); //actualiza los usuarios de la bdd
+    void updateUser(Autor Autor); //actualiza los usuarios de la bdd
     
     void deleteUser(int id); //eliminar usuarios de la bdd
 }

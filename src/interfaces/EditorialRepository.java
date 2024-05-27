@@ -9,9 +9,9 @@ public interface EditorialRepository {
     
 	Editorial getUserById(int id); //llama solo a uno, por su id
     
-    void addUser(Editorial user); //añade usuarios a la bdd
+    void addUser(Editorial Editorial); //añade usuarios a la bdd
     
-    void updateUser(Editorial user); //actualiza los usuarios de la bdd
+    void updateUser(Editorial Editorial); //actualiza los usuarios de la bdd
     
     void deleteUser(int id); //eliminar usuarios de la bdd
 }
