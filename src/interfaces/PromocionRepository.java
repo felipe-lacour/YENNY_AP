@@ -11,5 +11,7 @@ public interface PromocionRepository {
 		
 		void updateUser(Promocion user);
 		
-		void deteleUser(int id);
+		void deleteUser(int id);
+
+
 }
