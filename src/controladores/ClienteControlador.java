@@ -18,25 +18,26 @@ public class ClienteControlador implements ClienteRepository {
 	    }
 
 	    @Override
-	    public List<Cliente> getAllUsers() {
-	        List<Cliente> users = new ArrayList<>();
+	    public List<Cliente> getAllClientes() {
+	        List<Cliente> Clientes = new ArrayList<>();
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM autor ");
+	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM clientes ");
 	            ResultSet resultSet = statement.executeQuery();
 	       
 	            while (resultSet.next()) {
-	            	Cliente user = new Cliente(resultSet.getInt("cliente_id"), resultSet.getString("genero"), resultSet.getInt("genero"),resultSet.getInt("lugar_compra"),resultSet.getBoolean("club_libros"));
-	                users.add(user);
+	            	Cliente Cliente = new Cliente(resultSet.getInt("cliente_id"), resultSet.getString("genero"), 
+	            			resultSet.getInt("edad"),resultSet.getInt("lugar_compra"),resultSet.getBoolean("club_libros"));
+	                Clientes.add(Cliente);
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	        return users;
+	        return Clientes;
 	    }
 
 	    @Override
-	    public Cliente getUserById(int id) {
-	    	Cliente user = null;
+	    public Cliente getClienteById(int id) {
+	    	Cliente Cliente = null;
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM clientes WHERE id = ?");
 	            statement.setInt(1, id);
@@ -44,16 +45,16 @@ public class ClienteControlador implements ClienteRepository {
 	            ResultSet resultSet = statement.executeQuery();
 	            
 	            if (resultSet.next()) {
-	                user = new Cliente(resultSet.getInt("cliente_id"), resultSet.getString("genero"), resultSet.getInt("genero"),resultSet.getInt("lugar_compra"),resultSet.getBoolean("club_libros"));
+	                Cliente = new Cliente(resultSet.getInt("cliente_id"), resultSet.getString("genero"), resultSet.getInt("genero"),resultSet.getInt("lugar_compra"),resultSet.getBoolean("club_libros"));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	        return user;
+	        return Cliente;
 	    }
 	    
 		@Override
-	    public void addUser(Cliente Cliente) {
+	    public void addCliente(Cliente Cliente) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("INSERT INTO clientes (genero, edad, lugar_compra, club_libros) VALUES (?, ?, ?, ?)");
 	            statement.setString(1, Cliente.getGenero());
@@ -71,7 +72,7 @@ public class ClienteControlador implements ClienteRepository {
 	    }
 
 		@Override
-	    public void updateUser(Cliente Cliente) {
+	    public void updateCliente(Cliente Cliente) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("UPDATE clientes SET cliente_id = ?, genero = ?, edad = ?, lugar_compra = ?, club_libros = ? WHERE cliente_id = ?");
 	            statement.setString(1, Cliente.getGenero());
@@ -89,7 +90,7 @@ public class ClienteControlador implements ClienteRepository {
 	    }
 
 	    @Override
-	    public void deleteUser(int id) {
+	    public void deleteCliente(int id) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("DELETE FROM clientes WHERE cliente_id = ?");
 	            statement.setInt(1, id);

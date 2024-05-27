@@ -18,25 +18,25 @@ public class EditorialControlador implements EditorialRepository {
 	    }
 
 	    @Override
-	    public List<Editorial> getAllUsers() {
-	        List<Editorial> users = new ArrayList<>();
+	    public List<Editorial> getAllEditorials() {
+	        List<Editorial> Editorials = new ArrayList<>();
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM editorial ");
+	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM editoriales ");
 	            ResultSet resultSet = statement.executeQuery();
 	       
 	            while (resultSet.next()) {
-	            	Editorial user = new Editorial(resultSet.getInt("editorial_id"), resultSet.getString("name"));
-	                users.add(user);
+	            	Editorial Editorial = new Editorial(resultSet.getInt("editorial_id"), resultSet.getString("name"));
+	                Editorials.add(Editorial);
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	        return users;
+	        return Editorials;
 	    }
 
 	    @Override
-	    public Editorial getUserById(int id) {
-	    	Editorial user = null;
+	    public Editorial getEditorialById(int id) {
+	    	Editorial Editorial = null;
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM editoriales WHERE id = ?");
 	            statement.setInt(1, id);
@@ -44,16 +44,16 @@ public class EditorialControlador implements EditorialRepository {
 	            ResultSet resultSet = statement.executeQuery();
 	            
 	            if (resultSet.next()) {
-	                user = new Editorial(resultSet.getInt("id"), resultSet.getString("name"));
+	                Editorial = new Editorial(resultSet.getInt("id"), resultSet.getString("name"));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	        return user;
+	        return Editorial;
 	    }
 	    
 		@Override
-	    public void addUser(Editorial Editorial) {
+	    public void addEditorial(Editorial Editorial) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("INSERT INTO editoriales (name) VALUES (?, ?)");
 	            statement.setString(1, Editorial.getNombre());
@@ -68,7 +68,7 @@ public class EditorialControlador implements EditorialRepository {
 	    }
 
 		@Override
-	    public void updateUser(Editorial Editorial) {
+	    public void updateEditorial(Editorial Editorial) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("UPDATE editoriales SET name = ?, email = ? WHERE id = ?");
 	            statement.setString(1, Editorial.getNombre());
@@ -84,7 +84,7 @@ public class EditorialControlador implements EditorialRepository {
 	    }
 
 	    @Override
-	    public void deleteUser(int id) {
+	    public void deleteEditorial(int id) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("DELETE FROM editoriales WHERE id = ?");
 	            statement.setInt(1, id);

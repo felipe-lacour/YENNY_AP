@@ -3,13 +3,13 @@ import modelos.Autor;
 import java.util.List;
 
 public interface AutorRepository {
-	List<Autor> getAllUsers(); // llama a todos los usuarios de la bdd
+	List<Autor> getAllAutors(); // llama a todos los usuarios de la bdd
     
-	Autor getUserById(int id); //llama solo a uno, por su id
+	Autor getAutorById(int id); //llama solo a uno, por su id
     
-    void addUser(Autor Autor); //añade usuarios a la bdd
+    void addAutor(Autor Autor); //añade usuarios a la bdd
     
-    void updateUser(Autor Autor); //actualiza los usuarios de la bdd
+    void updateAutor(Autor Autor); //actualiza los usuarios de la bdd
     
-    void deleteUser(int id); //eliminar usuarios de la bdd
+    void deleteAutor(int id); //eliminar usuarios de la bdd
 }

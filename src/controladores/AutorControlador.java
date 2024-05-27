@@ -17,25 +17,25 @@ public class AutorControlador implements AutorRepository {
 	    }
 
 	    @Override
-	    public List<Autor> getAllUsers() {
-	        List<Autor> users = new ArrayList<>();
+	    public List<Autor> getAllAutors() {
+	        List<Autor> Autors = new ArrayList<>();
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM autor ");
 	            ResultSet resultSet = statement.executeQuery();
 	       
 	            while (resultSet.next()) {
-	            	Autor user = new Autor(resultSet.getInt("autor_id"), resultSet.getString("nombre"), resultSet.getString("nacionalidad"));
-	                users.add(user);
+	            	Autor Autor = new Autor(resultSet.getInt("autor_id"), resultSet.getString("nombre"), resultSet.getString("nacionalidad"));
+	                Autors.add(Autor);
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	        return users;
+	        return Autors;
 	    }
 
 	    @Override
-	    public Autor getUserById(int id) {
-	    	Autor user = null;
+	    public Autor getAutorById(int id) {
+	    	Autor Autor = null;
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM autor WHERE id = ?");
 	            statement.setInt(1, id);
@@ -43,16 +43,16 @@ public class AutorControlador implements AutorRepository {
 	            ResultSet resultSet = statement.executeQuery();
 	            
 	            if (resultSet.next()) {
-	                user = new Autor(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("nacionalidad"));
+	                Autor = new Autor(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("nacionalidad"));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	        return user;
+	        return Autor;
 	    }
 	    
 		@Override
-	    public void addUser(Autor Autor) {
+	    public void addAutor(Autor Autor) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("INSERT INTO autor (name, nacionalidad) VALUES (?, ?)");
 	            statement.setString(1, Autor.getNombre());
@@ -68,7 +68,7 @@ public class AutorControlador implements AutorRepository {
 	    }
 
 		@Override
-	    public void updateUser(Autor Autor) {
+	    public void updateAutor(Autor Autor) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("UPDATE autor SET name = ?, email = ? WHERE autor_id = ?");
 	            statement.setString(1, Autor.getNombre());
@@ -85,7 +85,7 @@ public class AutorControlador implements AutorRepository {
 	    }
 
 	    @Override
-	    public void deleteUser(int id) {
+	    public void deleteAutor(int id) {
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("DELETE FROM autor WHERE autor_id = ?");
 	            statement.setInt(1, id);

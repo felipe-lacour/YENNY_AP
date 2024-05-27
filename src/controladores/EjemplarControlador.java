@@ -1,6 +1,7 @@
 package controladores;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,50 +20,64 @@ public class EjemplarControlador implements EjemplarRepository {
 	    }
 
 	    @Override
-	    public List<Ejemplar> getAllUsers() {
-	        List<Ejemplar> users = new ArrayList<>();
+	    public List<Ejemplar> getAllEjemplar() {
+	        List<Ejemplar> Ejemplars = new ArrayList<>();
 	        try {
 	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM ejemplar ");
 	            ResultSet resultSet = statement.executeQuery();
 	       
 	            while (resultSet.next()) {
 				
-	            	Ejemplar user = new Ejemplar(resultSet.getInt("ejemplar_id"),resultSet.getInt("libro_id"), resultSet.getInt("sucursal_id"),
+	            	Ejemplar Ejemplar = new Ejemplar(resultSet.getInt("ejemplar_id"),resultSet.getInt("libro_id"), resultSet.getInt("sucursal_id"),
 	            			resultSet.getString("isbn"),resultSet.getDouble("precio"),resultSet.getString("condicion"),resultSet.getBoolean("tapa_dura"),
 	            			resultSet.getBoolean("edicion_esecial"),resultSet.getDate("fecha_edicion").toLocalDate(),resultSet.getInt("numero_edicion"),
 	            			resultSet.getBoolean("firmado"),resultSet.getString("idioma"),resultSet.getString("caracteristicas_especiales"),
 	            			resultSet.getDate("fecha_adquisicion").toLocalDate(),resultSet.getInt("venta_iD"));
-	                users.add(user);
+	                Ejemplars.add(Ejemplar);
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	        return users;
+	        return Ejemplars;
 	    }
 
 	    @Override
-	    public Ejemplar getUserById(int id) {
-	    	Ejemplar user = null;
+	    public Ejemplar getEjemplarById(int id) {
+	    	Ejemplar Ejemplar = null;
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM autor WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM ejemplares WHERE id = ?");
 	            statement.setInt(1, id);
 	            
 	            ResultSet resultSet = statement.executeQuery();
 	            
 	            if (resultSet.next()) {
-	                user = new Ejemplar(resultSet.getInt("ejemplar_id"),resultSet.getInt("libro_id"));
+	                Ejemplar = new Ejemplar(resultSet.getInt("ejemplar_id"),resultSet.getInt("libro_id"));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	        return user;
+	        return Ejemplar;
 	    }
 	    
 		@Override
-	    public void addUser(Ejemplar Ejemplar) {
+	    public void addEjemplar(Ejemplar Ejemplar) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("INSERT INTO editorial (name) VALUES (?, ?)");
+	            PreparedStatement statement = connection.prepareStatement("INSERT INTO ejemplares(ejemplar_id, libro_id, sucursal_id, isbn, precio, condicion, tapa_dura, edicion_especial, fecha_edicion, numero_edicion, firmado, idioma, caracteristicas_especiales, fecha_adquisicion, cantidad, venta_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 	            statement.setInt(1, Ejemplar.getEjemplarId());
+	            statement.setInt(2, Ejemplar.getLibroId());
+	            statement.setInt(3, Ejemplar.getSucursalId());
+	            statement.setString(4, Ejemplar.getIsbn());
+	            statement.setDouble(5, Ejemplar.getPrecio());
+	            statement.setString(6, Ejemplar.getCondicion());
+	            statement.setBoolean(7, Ejemplar.isTapaDura());
+	            statement.setBoolean(8, Ejemplar.isEdicionEspecial());
+	            statement.setDate(9, Date.valueOf(Ejemplar.getFechaEdicion()));
+	            statement.setBoolean(10, Ejemplar.isFirmado());
+	            statement.setString(11, Ejemplar.getIdioma());
+	            statement.setString(12, Ejemplar.getCaracteristicasEspeciales());
+	            statement.setDate(13, Date.valueOf(Ejemplar.getFechaAdquisicion()));
+	           // statement.setInt(14, Ejemplar.());
+	            statement.setInt(15, Ejemplar.getVentaId());
 	            
 	            int rowsInserted = statement.executeUpdate();
 	            if (rowsInserted > 0) {
@@ -74,11 +89,23 @@ public class EjemplarControlador implements EjemplarRepository {
 	    }
 
 		@Override
-	    public void updateUser(Ejemplar Ejemplar) {
+	    public void updateEjemplar(Ejemplar Ejemplar) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("UPDATE autor SET name = ?, email = ? WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("UPDATE ejemplares SET ejemplar_id=?,libro_id=?,sucursal_id=?,isbn=?,precio=?,condicion=?,tapa_dura=?,edicion_especial=?,fecha_edicion=?,numero_edicion=?,firmado=?,idioma=?,caracteristicas_especiales=?,fecha_adquisicion=?,cantidad=?,venta_id=? WHERE id=?");
 	            statement.setInt(1, Ejemplar.getEjemplarId());
 	            statement.setInt(2, Ejemplar.getLibroId());
+	            statement.setInt(3, Ejemplar.getSucursalId());
+	            statement.setString(4, Ejemplar.getIsbn());
+	            statement.setDouble(5, Ejemplar.getPrecio());
+	            statement.setString(6, Ejemplar.getCondicion());
+	            statement.setBoolean(7, Ejemplar.isTapaDura());
+	            statement.setBoolean(8, Ejemplar.isEdicionEspecial());
+	            statement.setDate(9, Date.valueOf(Ejemplar.getFechaEdicion()));
+	            statement.setBoolean(10, Ejemplar.isFirmado());
+	            statement.setString(11, Ejemplar.getIdioma());
+	            statement.setString(12, Ejemplar.getCaracteristicasEspeciales());
+	            statement.setDate(13, Date.valueOf(Ejemplar.getFechaAdquisicion()));
+	            statement.setInt(15, Ejemplar.getVentaId());
 	            
 	            int rowsUpdated = statement.executeUpdate();
 	            if (rowsUpdated > 0) {
@@ -90,9 +117,9 @@ public class EjemplarControlador implements EjemplarRepository {
 	    }
 
 	    @Override
-	    public void deleteUser(int id) {
+	    public void deleteEjemplar(int id) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("DELETE FROM editorial WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("DELETE FROM ejemplares WHERE id = ?");
 	            statement.setInt(1, id);
 	            
 	            int rowsDeleted = statement.executeUpdate();
