@@ -12,7 +12,7 @@ public class Vendedor extends Usuario implements Menu{
 	public void Menu() {
 		int eleccion = 0;
 		String[] opciones = {"Ver ejemplares", "Registrar Cliente", "Registrar al Club del Libro", 
-							 "Realizar Venta", "Pedir Libro Faltante, Salir"};
+							 "Realizar Venta", "Pedir Libro Faltante", "Salir"};
 		do {
 			eleccion = JOptionPane.showOptionDialog(null, "¿Que operacion desea realizar?", "Elija por favor", 0, 0, null, opciones, opciones);
 			

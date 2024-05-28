@@ -1,4 +1,6 @@
 package modelos;
+import javax.swing.JOptionPane;
+
 import interfaces.Menu;
 
 public class Usuario implements Menu{
@@ -65,7 +67,7 @@ public class Usuario implements Menu{
 
 	@Override
 	public void Menu() {
-		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(null, "Si estas viendo esto algo salio muy mal...");
 		
 	}
 }

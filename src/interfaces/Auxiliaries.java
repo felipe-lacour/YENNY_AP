@@ -17,27 +17,17 @@ public interface Auxiliaries {
 		}
 		return true;
 	}
-
-	default Boolean verifyMailInput(String aux) {
-		if ((aux.equals("")) || (aux.charAt(0) == '@') || (aux.charAt(aux.length() - 1) == '@')  || (aux.contains(" "))) {
+	
+	default Boolean verifyIntInput(String aux) {
+		if (aux.equals("")) {
 			JOptionPane.showMessageDialog(null, "El formato ingresado es invalido, por favor vuelva a intentarlo");
 			return false;
 		} else {
-			int cant = 0;
-			
 			for (int i = 0; i < aux.length(); i++) {
-				if (aux.charAt(i) == '@') {
-					cant++;
-					
-					if (cant > 1) {
-						JOptionPane.showMessageDialog(null, "El formato ingresado es invalido, por favor vuelva a intentarlo");
-						return false;
-					}
+				if (!Character.isDigit(aux.charAt(i))) {
+					JOptionPane.showMessageDialog(null, "El formato ingresado es invalido, por favor vuelva a intentarlo");
+					return false;
 				}
-			}
-			if (cant < 1) {
-				JOptionPane.showMessageDialog(null, "El formato ingresado es invalido, por favor vuelva a intentarlo");
-				return false;
 			}
 		}
 		return true;
