@@ -2,34 +2,60 @@ package interfaces;
 import javax.swing.JOptionPane;
 
 public interface Auxiliaries {
-	
-	default String checker(boolean isNumber, String message, String title, String secondMessage) {
-		boolean checked = true;
-		String string = (String) JOptionPane.showInputDialog(null, message, title, JOptionPane.DEFAULT_OPTION, null, null, "");
-		
-		do {
-			checked = true;
-			if(!isNumber) {
-				for (int i = 0; i < string.length(); i++) {
-					if(!Character.isAlphabetic(string.charAt(i)) && string.charAt(i) != ' ') {
-						checked = false;
-					}
+
+	default Boolean verifyStrInput(String aux) {
+		if (aux.equals("")) {
+			JOptionPane.showMessageDialog(null, "El formato ingresado es invalido, por favor vuelva a intentarlo");
+			return false;
+		} else {
+			for (int i = 0; i < aux.length(); i++) {
+				if ((!Character.isAlphabetic(aux.charAt(i))) && (aux.charAt(i) != ' ')) {
+					JOptionPane.showMessageDialog(null, "El formato ingresado es invalido, por favor vuelva a intentarlo");
+					return false;
 				}
-			} else {
-				for (int i = 0; i < string.length(); i++) {
-					if(!Character.isDigit(string.charAt(i)) && string.charAt(i) != '.') {
-						checked = false;
+			}
+		}
+		return true;
+	}
+	
+	default Boolean verifyIntInput(String aux) {
+		if (aux.equals("")) {
+			JOptionPane.showMessageDialog(null, "El formato ingresado es invalido, por favor vuelva a intentarlo");
+			return false;
+		} else {
+			for (int i = 0; i < aux.length(); i++) {
+				if (!Character.isDigit(aux.charAt(i))) {
+					JOptionPane.showMessageDialog(null, "El formato ingresado es invalido, por favor vuelva a intentarlo");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	default Boolean verifyDouInput(String aux) {
+		int cantPuntos = 0;
+		
+		if (aux.equals("")) {
+			JOptionPane.showMessageDialog(null, "El formato ingresado es invalido, por favor vuelva a intentarlo");
+			return false;
+		} else {
+			for (int i = 0; i < aux.length(); i++) {
+				if (!Character.isDigit(aux.charAt(i))) {
+					if (aux.charAt(i) == '.') {
+						cantPuntos++;
+						
+						if (cantPuntos > 1) {
+							JOptionPane.showMessageDialog(null, "El formato ingresado es invalido, por favor vuelva a intentarlo");
+							return false;
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "El formato ingresado es invalido, por favor vuelva a intentarlo");
+						return false;
 					}
 				}
 			}
-			
-		    if (!checked || string.length() == 0 || string == null) {
-		        checked = false;
-		        string = (String) JOptionPane.showInputDialog(null, secondMessage, title, JOptionPane.DEFAULT_OPTION, null, null, "");
-		    }
-			
-		} while (!checked);
-		
-		return string;
+		}
+		return true;
 	}
 }
