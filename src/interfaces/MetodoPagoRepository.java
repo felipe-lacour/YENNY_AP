@@ -3,13 +3,13 @@ import java.util.List;
 
 import modelos.MetodoPago;
 public interface MetodoPagoRepository {
-List <MetodoPago> getAllUsers();
+	List <MetodoPago> getAllMethods();
 	
-MetodoPago getUserById(int id);
+	MetodoPago getMethodById(int id);
 		
-		void addUser(MetodoPago user);
+	void addMethod(MetodoPago user);
 		
-		void updateUser(MetodoPago user);
+	void updateMethod(MetodoPago user);
 		
-		void deteleUser(int id);
+	void deleteMethod(int id);
 }
