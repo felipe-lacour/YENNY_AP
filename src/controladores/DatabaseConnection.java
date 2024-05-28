@@ -13,8 +13,7 @@ public class DatabaseConnection {
     private static DatabaseConnection instance;
     
     private Connection connection;
-    
-    //genera la bdd cuanto usa el constructor
+
     private DatabaseConnection() {
         try {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
