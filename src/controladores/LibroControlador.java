@@ -22,7 +22,6 @@ public class LibroControlador implements LibroRepositorio {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM libros ");
             ResultSet resultSet = statement.executeQuery();
-            // int libroId, String titulo, Integer sagaId, int editorialId, int autorId
             while (resultSet.next()) {
             	Libro book = new Libro(resultSet.getInt("libro_id"), resultSet.getString("titulo"), resultSet.getInt("saga_id"), resultSet.getInt("editorial_id"), resultSet.getInt("autor_id"));
                 books.add(book);
@@ -102,7 +101,4 @@ public class LibroControlador implements LibroRepositorio {
             e.printStackTrace();
         }
     }
-
-
-  
 }
