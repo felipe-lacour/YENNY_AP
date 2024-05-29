@@ -18,7 +18,7 @@ public class PromocionControlador implements PromocionRepository {
     }
 
     @Override
-    public List<Promocion> getAllUsers() {
+    public List<Promocion> getAllPromos() {
         List<Promocion> promociones = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM Promociones");
@@ -41,7 +41,7 @@ public class PromocionControlador implements PromocionRepository {
     }
 
     @Override
-    public Promocion getUserById(int id) {
+    public Promocion getPromoById(int id) {
         Promocion promocion = null;
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM Promociones WHERE promocion_id = ?");
@@ -64,7 +64,7 @@ public class PromocionControlador implements PromocionRepository {
     }
 
     @Override
-    public void addUser(Promocion promocion) {
+    public void addPromo(Promocion promocion) {
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Promociones (nombre, es_del_club, sucursal_id, descuento) VALUES (?, ?, ?, ?)");
             statement.setString(1, promocion.getNombre());
@@ -82,7 +82,7 @@ public class PromocionControlador implements PromocionRepository {
     }
 
     @Override
-    public void updateUser(Promocion promocion) {
+    public void updatePromo(Promocion promocion) {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE Promociones SET nombre = ?, es_del_club = ?, sucursal_id = ?, descuento = ? WHERE promocion_id = ?");
             statement.setString(1, promocion.getNombre());
@@ -101,7 +101,7 @@ public class PromocionControlador implements PromocionRepository {
     }
 
 	@Override
-	public void deleteUser(int id) {
+	public void deletePromo(int id) {
 		try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM Promociones WHERE promocion_id = ?");
             statement.setInt(1, id);

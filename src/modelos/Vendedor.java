@@ -25,7 +25,7 @@ public class Vendedor extends Usuario implements Menu{
 					verEjemplares();
 					break;
 				case 1:
-
+					
 					break;
 				case 2:
 
@@ -68,4 +68,6 @@ public class Vendedor extends Usuario implements Menu{
 	    
 	    JOptionPane.showMessageDialog(null, mensaje.toString());
 	}
+	
+	
 }
