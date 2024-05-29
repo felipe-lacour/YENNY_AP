@@ -19,29 +19,32 @@ public interface Menu extends Auxiliaries{
 			String userName = JOptionPane.showInputDialog("Ingrese su nombre de usuario:");
 			
 			for (Usuario user : controlador.getAllUsers()) {
-				if(user.getUserName().equals(userName)) {
-					String userPass = JOptionPane.showInputDialog("Ingrese su contraseña:");
+				if(user.getUserName().equalsIgnoreCase(userName)) {
+					int contador = 0;
 					
-					if(user.getPass().equals(userPass)) {
-						switch (user.getRol()) {
-                        case 1:
-                            return new Vendedor(user.getUsuarioId(), user.getNombre(), user.getRol(), user.getSucursalId(), user.getPass(), user.getUserName());
-                        case 2:
-                        	return new GerenteSucursal(user.getUsuarioId(), user.getNombre(), user.getRol(), user.getSucursalId(), user.getPass(), user.getUserName());
-                        case 3:
-                        	return new GerenteGeneral(user.getUsuarioId(), user.getNombre(), user.getRol(), user.getSucursalId(), user.getPass(), user.getUserName());
-                        default:
-                        	return user;
+					do{
+						String userPass = JOptionPane.showInputDialog("Ingrese su contraseña:");
+						
+						if(user.getPass().equals(userPass)) {
+							switch (user.getRol()) {
+	                        case 1:
+	                            return new Vendedor(user.getUsuarioId(), user.getNombre(), user.getRol(), user.getSucursalId(), user.getPass(), user.getUserName());
+	                        case 2:
+	                        	return new GerenteSucursal(user.getUsuarioId(), user.getNombre(), user.getRol(), user.getSucursalId(), user.getPass(), user.getUserName());
+	                        case 3:
+	                        	return new GerenteGeneral(user.getUsuarioId(), user.getNombre(), user.getRol(), user.getSucursalId(), user.getPass(), user.getUserName());
+	                        default:
+	                        	return user;
+							}
+						} else {
+							JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta, por favor vuelva a intentarlo");
+							contador++;
 						}
-					} else {
-						JOptionPane.showMessageDialog(null, "La contraseña ingresada es incorrecta, por favor vuelva a intentarlo");
-					}
+					} while(contador != 5);
 					break;
-				} else {
-					JOptionPane.showMessageDialog(null, "El usuario ingresado no existe, por favor vuelva a intentarlo");
 				}
 			}
-			
+			JOptionPane.showMessageDialog(null, "El usuario ingresado no existe, por favor vuelva a intentarlo");
 		} while(!found);
 		
 		return null;

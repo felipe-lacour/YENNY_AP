@@ -1,5 +1,9 @@
 package modelos;
 import javax.swing.JOptionPane;
+
+import controladores.VentaControlador;
+import controladores.EjemplarControlador;
+import controladores.LibroControlador;
 import interfaces.Menu;
 
 public class Vendedor extends Usuario implements Menu{
@@ -18,7 +22,7 @@ public class Vendedor extends Usuario implements Menu{
 			
 			switch(eleccion) {
 				case 0:
-
+					verEjemplares();
 					break;
 				case 1:
 
@@ -40,5 +44,28 @@ public class Vendedor extends Usuario implements Menu{
 					break;
 			}
 		} while(eleccion != 5);
+	}
+	
+	private void verEjemplares() {
+	    EjemplarControlador ejemplarControlador = new EjemplarControlador();
+	    LibroControlador libroControlador = new LibroControlador();
+	    
+	    StringBuilder mensaje = new StringBuilder("Ejemplares Disponibles:\n");
+	    for (Ejemplar ejemplar : ejemplarControlador.getAllEjemplar()) {
+	    	Libro libro = libroControlador.getBookById(ejemplar.getLibroId());
+	    	
+	        if (ejemplar.getSucursalId() == this.getSucursalId()) {
+	            mensaje.append("ID: ").append(ejemplar.getEjemplarId())
+	                .append(", Libro: ").append(libro.getTitulo())
+	                .append(", Precio: ").append(ejemplar.getPrecio())
+	                .append(", Edición Especial: ").append(ejemplar.isEdicionEspecial())
+	                .append(", Fecha Edición: ").append(ejemplar.getFechaEdicion())
+	                .append(", Número Edición: ").append(ejemplar.getNumeroEdicion())
+	                .append(", Idioma: ").append(ejemplar.getIdioma())
+	                .append("\n");
+	        }
+	    }
+	    
+	    JOptionPane.showMessageDialog(null, mensaje.toString());
 	}
 }
