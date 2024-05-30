@@ -129,7 +129,6 @@ public class Vendedor extends Usuario implements Menu{
     	client.setClubLibros(true);
     	clienteControlador.updateCliente(client);
     }
-    }
     	
     public void realizarVenta() {
         String[] opcionesAux = {"Si", "No"};
@@ -373,3 +372,4 @@ public class Vendedor extends Usuario implements Menu{
 
         JOptionPane.showMessageDialog(null, "Método de pago agregado exitosamente!");
     }
+}
