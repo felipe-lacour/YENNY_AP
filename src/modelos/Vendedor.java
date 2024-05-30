@@ -113,11 +113,15 @@ public class Vendedor extends Usuario implements Menu{
     	
     		if (eleccion.equalsIgnoreCase("Agregar metodo de pago")) {
     			agregarMetodoPago();
-    		} else {
-    			
     		}
+    	} else {
+    		JOptionPane.showMessageDialog(null, "Para registrarse al club del libro \ndebe tener un metodo de pago asociado a su cuenta \nPor favor ingrese uno");
+    		agregarMetodoPago();
     	}
     	
+    	JOptionPane.showMessageDialog(null, "Se ha registrado el usuario al club del libro!");
+    	client.setClubLibros(true);
+    	clienteControlador.updateCliente(client);
     }
     
     private void agregarMetodoPago() {
