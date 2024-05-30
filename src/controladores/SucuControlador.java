@@ -18,10 +18,10 @@ public class SucuControlador implements SucuRepository {
     }
 
     @Override
-    public List<Sucursal> getAllUsers() {
+    public List<Sucursal> getAllBranches() {
         List<Sucursal> sucursales = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Sucursales");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM sucursales");
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -39,10 +39,10 @@ public class SucuControlador implements SucuRepository {
     }
 
     @Override
-    public Sucursal getUserById(int id) {
+    public Sucursal getBranchById(int id) {
         Sucursal sucursal = null;
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Sucursales WHERE sucursal_id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM sucursales WHERE sucursal_id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
@@ -60,9 +60,9 @@ public class SucuControlador implements SucuRepository {
     }
 
     @Override
-    public void addUser(Sucursal sucursal) {
+    public void addBranch(Sucursal sucursal) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Sucursales (ubicacion, nombre) VALUES (?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO sucursales (ubicacion, nombre) VALUES (?, ?)");
             statement.setString(1, sucursal.getUbicacion());
             statement.setString(2, sucursal.getNombre());
 
@@ -76,9 +76,9 @@ public class SucuControlador implements SucuRepository {
     }
 
     @Override
-    public void updateUser(Sucursal sucursal) {
+    public void updateBranch(Sucursal sucursal) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE Sucursales SET ubicacion = ?, nombre = ? WHERE sucursal_id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE sucursales SET ubicacion = ?, nombre = ? WHERE sucursal_id = ?");
             statement.setString(1, sucursal.getUbicacion());
             statement.setString(2, sucursal.getNombre());
             statement.setInt(3, sucursal.getSucursalId());
@@ -93,9 +93,9 @@ public class SucuControlador implements SucuRepository {
     }
 
     @Override
-    public void deteleUser(int id) {
+    public void deteleBranch(int id) {
         try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM Sucursales WHERE sucursal_id = ?");
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM sucursales WHERE sucursal_id = ?");
             statement.setInt(1, id);
 
             int rowsDeleted = statement.executeUpdate();
