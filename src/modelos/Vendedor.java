@@ -129,7 +129,7 @@ public class Vendedor extends Usuario implements Menu{
     	client.setClubLibros(true);
     	clienteControlador.updateCliente(client);
     }
-    
+    	
     public void realizarVenta() {
         String[] opcionesAux = {"Si", "No"};
         
