@@ -4,13 +4,13 @@ import java.util.List;
 import modelos.Sucursal;
 
 public interface SucuRepository {
-	List <Sucursal> getAllUsers();
+	List <Sucursal> getAllBranches();
 	
-	Sucursal getUserById(int id);
+	Sucursal getBranchById(int id);
 	
-	void addUser(Sucursal user);
+	void addBranch(Sucursal user);
 	
-	void updateUser(Sucursal user);
+	void updateBranch(Sucursal user);
 	
-	void deteleUser(int id);
+	void deteleBranch(int id);
 }

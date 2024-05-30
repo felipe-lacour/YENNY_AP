@@ -20,10 +20,11 @@ public class LibroControlador implements LibroRepositorio {
     public List<Libro> getAllBooks() {
         List<Libro> books = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM libros ");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM libros");
             ResultSet resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
-            	Libro book = new Libro(resultSet.getInt("libro_id"), resultSet.getString("titulo"), resultSet.getInt("saga_id"), resultSet.getInt("editorial_id"), resultSet.getInt("autor_id"));
+                Libro book = new Libro(resultSet.getInt("libro_id"), resultSet.getString("titulo"), resultSet.getInt("saga_id"), resultSet.getInt("editorial_id"), resultSet.getInt("autor_id"));
                 books.add(book);
             }
         } catch (SQLException e) {
@@ -38,9 +39,9 @@ public class LibroControlador implements LibroRepositorio {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM libros WHERE libro_id = ?");
             statement.setInt(1, id);
-            
+
             ResultSet resultSet = statement.executeQuery();
-            
+
             if (resultSet.next()) {
                 book = new Libro(resultSet.getInt("libro_id"), resultSet.getString("titulo"), resultSet.getInt("saga_id"), resultSet.getInt("editorial_id"), resultSet.getInt("autor_id"));
             }
@@ -58,7 +59,7 @@ public class LibroControlador implements LibroRepositorio {
             statement.setInt(2, libro.getSagaId());
             statement.setInt(3, libro.getEditorialId());
             statement.setInt(4, libro.getAutorId());
-            
+
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Libro insertado exitosamente");
@@ -77,7 +78,7 @@ public class LibroControlador implements LibroRepositorio {
             statement.setInt(3, libro.getEditorialId());
             statement.setInt(4, libro.getAutorId());
             statement.setInt(5, libro.getLibroId());
-            
+
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
                 System.out.println("Libro actualizado exitosamente");
@@ -92,7 +93,7 @@ public class LibroControlador implements LibroRepositorio {
         try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM libros WHERE libro_id = ?");
             statement.setInt(1, id);
-            
+
             int rowsDeleted = statement.executeUpdate();
             if (rowsDeleted > 0) {
                 System.out.println("Libro eliminado exitosamente");

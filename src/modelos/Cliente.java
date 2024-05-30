@@ -2,14 +2,18 @@ package modelos;
 
 public class Cliente {
 	private int clienteId;
+	private String nombre;
+	private String apellido;
 	private String genero;
 	private int edad;
 	private int lugar_de_compra;
 	private boolean clubLibros;
 	
-	public Cliente(int clienteId, String genero, int edad, int lugar_de_compra, boolean clubLibros) {
+	public Cliente(int clienteId, String nombre, String apellido, String genero, int edad, int lugar_de_compra, boolean clubLibros) {
 		super();
 		this.clienteId = clienteId;
+		this.nombre = nombre;
+		this.apellido = apellido;
 		this.genero = genero;
 		this.edad = edad;
 		this.lugar_de_compra = lugar_de_compra;
@@ -18,6 +22,22 @@ public class Cliente {
 
 	public int getClienteId() {
 		return clienteId;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
 	}
 
 	public String getGenero() {
@@ -55,6 +75,4 @@ public class Cliente {
 	public void setClubLibros(boolean clubLibros) {
 		this.clubLibros = clubLibros;
 	}
-	
-	
 }

@@ -3,13 +3,15 @@ import java.util.List;
 
 import modelos.Promocion;
 public interface PromocionRepository {
-	List <Promocion> getAllUsers();
+	List <Promocion> getAllPromos();
 	
-	Promocion getUserById(int id);
+	Promocion getPromoById(int id);
 		
-		void addUser(Promocion user);
+		void addPromo(Promocion promo);
 		
-		void updateUser(Promocion user);
+		void updatePromo(Promocion promo);
 		
-		void deteleUser(int id);
+		void deletePromo(int id);
+
+
 }

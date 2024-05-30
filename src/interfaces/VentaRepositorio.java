@@ -9,7 +9,7 @@ public interface VentaRepositorio {
     
     Venta getSaleById(int id); //llama solo a una, por su id
     
-    void addSale(Venta venta); //añade Ventas a la bdd
+    int addSale(Venta venta); //añade Ventas a la bdd
     
     void updateSale(Venta venta); //actualiza las Ventas de la bdd
     
