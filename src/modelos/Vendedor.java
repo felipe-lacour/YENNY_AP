@@ -169,7 +169,10 @@ public class Vendedor extends Usuario implements Menu{
         
         while(!seleccion.equalsIgnoreCase("esc") && !seleccion.equalsIgnoreCase("finalizar")) {
             seleccion = "Seleccione el libro que desea seleccionar.\n\nFinalizar (esc)\n\n";
-            seleccion = JOptionPane.showInputDialog(seleccion + opcionesLibros);
+            
+            do {
+            	seleccion = JOptionPane.showInputDialog(seleccion + opcionesLibros);
+            } while ((!seleccion.equalsIgnoreCase("esc") && !seleccion.equalsIgnoreCase("finalizar")) && !verifyIntInput(seleccion) );
             
             if(seleccion != null && !seleccion.equalsIgnoreCase("esc") && !seleccion.equalsIgnoreCase("finalizar")) {
                 try {
@@ -201,7 +204,10 @@ public class Vendedor extends Usuario implements Menu{
         while(!seleccion.equalsIgnoreCase("esc") && !seleccion.equalsIgnoreCase("finalizar") && ejemplaresAux.size() > 0) {
             seleccion = "Seleccione los ejemplares que desea seleccionar.\n\nFinalizar (esc)\n\n";
             String opcionesEjemplares = this.stringEjemplarBuilder(ejemplaresAux, libroControlador);
-            seleccion = JOptionPane.showInputDialog(seleccion + opcionesEjemplares);
+            
+            do {
+            	seleccion = JOptionPane.showInputDialog(seleccion + opcionesEjemplares);
+            } while ((!seleccion.equalsIgnoreCase("esc") && !seleccion.equalsIgnoreCase("finalizar")) && !verifyIntInput(seleccion) );
             
             if(seleccion != null && !seleccion.equalsIgnoreCase("esc") && !seleccion.equalsIgnoreCase("finalizar")) {
                 try {
@@ -238,7 +244,11 @@ public class Vendedor extends Usuario implements Menu{
                 switch(eleccion) {
                     case 0:
                         int idClienteNuevo = registrarCliente();
-                        String tipo = JOptionPane.showInputDialog("Ingrese el tipo de metodo de pago.");
+                        String tipo = "";
+                        
+                        do {
+                        	tipo = JOptionPane.showInputDialog("Ingrese el tipo de metodo de pago.");
+                        } while(!verifyStrInput(tipo));
                         String detalles = JOptionPane.showInputDialog("Ingrese los detalles del metodo de pago.");
                         
                         metodoControlador.addMethod(new MetodoPago(0, idClienteNuevo, tipo, detalles));
@@ -289,19 +299,44 @@ public class Vendedor extends Usuario implements Menu{
                         if (metodosCliente.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "El cliente no tiene métodos de pago registrados.");
                         } else {
-                            String seleccionMetodo = "Elija el metodo de pago asociado a su cuenta.\n\n";
-                            seleccionMetodo += stringMethodBuilder(metodosCliente);
+                            String[] opcionesMetodos = new String[metodosCliente.size()];
+                            for (int i = 0; i < metodosCliente.size(); i++) {
+                                MetodoPago metodo = metodosCliente.get(i);
+                                opcionesMetodos[i] = "ID: " + metodo.getMetodoPagoId() + ", Tipo: " + metodo.getTipo() + ", Detalles: " + metodo.getDetalles();
+                            }
+
+                            String seleccionMetodo = (String) JOptionPane.showInputDialog(null, "Elija el metodo de pago asociado a su cuenta:", 
+                                                                                          "Seleccionar Metodo de Pago", JOptionPane.QUESTION_MESSAGE, 
+                                                                                          null, opcionesMetodos, opcionesMetodos[0]);
                             
-                            int metodoSeleccionado = Integer.parseInt(JOptionPane.showInputDialog(seleccionMetodo));
-                            
-                            if (metodoSeleccionado >= 0 && metodoControlador.getMethodById(metodoSeleccionado) != null) {
-                                MetodoPago metodoAux = metodoControlador.getMethodById(metodoSeleccionado);
-                                
-                                Venta currentSale = new Venta(0, metodoAux.getMetodoPagoId(), ahora, this.getSucursalId());
-                                ventaId = ventaControlador.addSale(currentSale);
-                                JOptionPane.showMessageDialog(null, "Venta realizada con exito!");
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Selección de método de pago inválida.");
+                            if (seleccionMetodo != null) {
+                                try {
+                                    int metodoSeleccionado = Integer.parseInt(seleccionMetodo.split(",")[0].split(":")[1].trim());
+                                    
+                                    MetodoPago metodoAux = metodosCliente.stream()
+                                                                         .filter(m -> m.getMetodoPagoId() == metodoSeleccionado)
+                                                                         .findFirst()
+                                                                         .orElse(null);
+                                    
+                                    if (metodoAux != null) {
+                                        Venta currentSale = new Venta(0, metodoAux.getMetodoPagoId(), LocalDate.now(), this.getSucursalId());
+                                        int ventaId1 = ventaControlador.addSale(currentSale);
+                                        JOptionPane.showMessageDialog(null, "Venta realizada con exito!");
+                                        
+                                        for (Ejemplar ejemplar : seleccionEjemplar) {
+                                            try {
+                                                ejemplar.setVentaId(ventaId1);
+                                                ejemplarControlador.updateEjemplar(ejemplar);
+                                            } catch (Exception e) {
+                                                JOptionPane.showMessageDialog(null, "Error al actualizar los ejemplares: " + e.getMessage());
+                                            }
+                                        }
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Selección de método de pago inválida.");
+                                    }
+                                } catch (NumberFormatException e) {
+                                    JOptionPane.showMessageDialog(null, "ID de método de pago inválido.");
+                                }
                             }
                         }
                     } else {
@@ -384,7 +419,10 @@ public class Vendedor extends Usuario implements Menu{
     private void agregarMetodoPago(int id) {
         MetodoPagoControlador metodoPagoControlador = new MetodoPagoControlador();
         
-        String tipo = JOptionPane.showInputDialog("Ingrese el tipo de método de pago: \nPor ejemplo: Tarjeta de Crédito, Débito, PayPal");
+        String tipo = "";
+        do {
+        	tipo = JOptionPane.showInputDialog("Ingrese el tipo de método de pago: \nPor ejemplo: Tarjeta de Crédito, Débito, PayPal");
+        }while(!verifyStrInput(tipo));
         String detalles = JOptionPane.showInputDialog("Ingrese los detalles del método de pago:");
 
         MetodoPago nuevoMetodo = new MetodoPago(0, id, tipo, detalles);
