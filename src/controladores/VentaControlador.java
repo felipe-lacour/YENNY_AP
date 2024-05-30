@@ -27,7 +27,7 @@ public class VentaControlador implements VentaRepositorio {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                Venta venta = new Venta(resultSet.getInt("venta_id"), resultSet.getInt("metodo_pago_id"), resultSet.getDate("fecha").toLocalDate());
+                Venta venta = new Venta(resultSet.getInt("venta_id"), resultSet.getInt("metodo_pago_id"), resultSet.getDate("fecha").toLocalDate(), resultSet.getInt("sucursal_id"));
                 ventas.add(venta);
             }
         } catch (SQLException e) {
@@ -46,7 +46,7 @@ public class VentaControlador implements VentaRepositorio {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                venta = new Venta(resultSet.getInt("venta_id"), resultSet.getInt("metodo_pago_id"), resultSet.getDate("fecha").toLocalDate());
+                venta = new Venta(resultSet.getInt("venta_id"), resultSet.getInt("metodo_pago_id"), resultSet.getDate("fecha").toLocalDate(), resultSet.getInt("sucursal_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,7 +60,7 @@ public class VentaControlador implements VentaRepositorio {
 	    try {
 	        // Prepare the statement with RETURN_GENERATED_KEYS option
 	        PreparedStatement statement = connection.prepareStatement(
-	            "INSERT INTO ventas (metodo_pago_id, fecha) VALUES (?, ?)",
+	            "INSERT INTO ventas (metodo_pago_id, fecha, sucursal_id) VALUES (?, ?, ?)",
 	            Statement.RETURN_GENERATED_KEYS
 	        );
 	        
@@ -71,6 +71,7 @@ public class VentaControlador implements VentaRepositorio {
 	        }
 	        
 	        statement.setDate(2, java.sql.Date.valueOf(venta.getFecha()));
+	        statement.setInt(3, venta.getSucursalId());
 
 	        int rowsInserted = statement.executeUpdate();
 	        if (rowsInserted > 0) {
@@ -119,5 +120,23 @@ public class VentaControlador implements VentaRepositorio {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<Venta> getSomeSales(String campo, int id){
+    	List<Venta> ventas = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM ventas WHERE "+ campo +" = ?");
+            statement.setInt(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Venta venta = new Venta(resultSet.getInt("venta_id"), resultSet.getInt("metodo_pago_id"), resultSet.getDate("fecha").toLocalDate(), resultSet.getInt("sucursal_id"));
+                ventas.add(venta);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ventas;
     }
 }
