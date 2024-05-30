@@ -6,8 +6,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mysql.jdbc.Statement;
 
 public class VentaControlador implements VentaRepositorio {
     private final Connection connection;
@@ -52,20 +55,39 @@ public class VentaControlador implements VentaRepositorio {
     }
     
 	@Override
-    public void addSale(Venta venta) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO ventas (metodo_pago_id, fecha) VALUES (?, ?)");
-            statement.setInt(1, venta.getMetodoPagoId());
-            statement.setDate(2, java.sql.Date.valueOf(venta.getFecha()));
+	public int addSale(Venta venta) {
+	    int generatedKey = -1;
+	    try {
+	        // Prepare the statement with RETURN_GENERATED_KEYS option
+	        PreparedStatement statement = connection.prepareStatement(
+	            "INSERT INTO ventas (metodo_pago_id, fecha) VALUES (?, ?)",
+	            Statement.RETURN_GENERATED_KEYS
+	        );
+	        
+	        if (venta.getMetodoPagoId() == -1) {
+	            statement.setNull(1, Types.INTEGER); // Use setNull to insert null
+	        } else {
+	            statement.setInt(1, venta.getMetodoPagoId());
+	        }
+	        
+	        statement.setDate(2, java.sql.Date.valueOf(venta.getFecha()));
 
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Venta insertada exitosamente");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	        int rowsInserted = statement.executeUpdate();
+	        if (rowsInserted > 0) {
+	            System.out.println("Venta insertada exitosamente");
+
+	            // Retrieve the generated key
+	            ResultSet generatedKeys = statement.getGeneratedKeys();
+	            if (generatedKeys.next()) {
+	                generatedKey = generatedKeys.getInt(1);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return generatedKey;
+	}
+
 
 	@Override
     public void updateSale(Venta venta) {

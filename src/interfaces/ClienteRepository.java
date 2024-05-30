@@ -8,7 +8,7 @@ public interface ClienteRepository {
     
 	Cliente getClienteById(int id); //llama solo a uno, por su id
     
-    void addCliente(Cliente Cliente); //añade clientes a la bdd
+    int addCliente(Cliente Cliente); //añade clientes a la bdd
     
     void updateCliente(Cliente Cliente); //actualiza los clientes de la bdd
     
