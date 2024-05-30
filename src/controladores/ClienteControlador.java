@@ -25,8 +25,8 @@ public class ClienteControlador implements ClienteRepository {
 	            ResultSet resultSet = statement.executeQuery();
 	       
 	            while (resultSet.next()) {
-	            	Cliente Cliente = new Cliente(resultSet.getInt("cliente_id"), resultSet.getString("genero"), resultSet.getInt("edad"),resultSet.getInt("lugar_compra"),resultSet.getBoolean("club_libros"));
-	                Clientes.add(Cliente);
+	            	Cliente cliente = new Cliente(resultSet.getInt("cliente_id"), resultSet.getString("nombre"), resultSet.getString("apellido"), resultSet.getString("genero"), resultSet.getInt("edad"), resultSet.getInt("lugar_de_compra"), resultSet.getBoolean("club_libros"));
+	                Clientes.add(cliente);
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -44,8 +44,7 @@ public class ClienteControlador implements ClienteRepository {
 	            ResultSet resultSet = statement.executeQuery();
 
 	            if (resultSet.next()) {
-	                cliente = new Cliente(resultSet.getInt("cliente_id"), resultSet.getString("genero"), resultSet.getInt("edad"), resultSet.getInt("lugar_de_compra"), resultSet.getBoolean("club_libros")
-	                );
+	                cliente = new Cliente(resultSet.getInt("cliente_id"), resultSet.getString("nombre"), resultSet.getString("apellido"), resultSet.getString("genero"), resultSet.getInt("edad"), resultSet.getInt("lugar_de_compra"), resultSet.getBoolean("club_libros"));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -56,11 +55,13 @@ public class ClienteControlador implements ClienteRepository {
 		@Override
 	    public void addCliente(Cliente cliente) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("INSERT INTO clientes (genero, edad, lugar_de_compra, club_libros) VALUES (?, ?, ?, ?)");
-	            statement.setString(1, cliente.getGenero());
-	            statement.setInt(2, cliente.getEdad());
-	            statement.setInt(3, cliente.getLugar_de_compra());
-	            statement.setBoolean(4, cliente.isClubLibros());
+	            PreparedStatement statement = connection.prepareStatement("INSERT INTO clientes (nombre, apellido, genero, edad, lugar_de_compra, club_libros) VALUES (?, ?, ?, ?, ?, ?)");
+	            statement.setString(1, cliente.getNombre());
+	            statement.setString(2, cliente.getApellido());
+	            statement.setString(3, cliente.getGenero());
+	            statement.setInt(4, cliente.getEdad());
+	            statement.setInt(5, cliente.getLugar_de_compra());
+	            statement.setBoolean(6, cliente.isClubLibros());
 
 	            int rowsInserted = statement.executeUpdate();
 	            if (rowsInserted > 0) {
@@ -74,12 +75,14 @@ public class ClienteControlador implements ClienteRepository {
 		@Override
 	    public void updateCliente(Cliente cliente) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("UPDATE clientes SET genero = ?, edad = ?, lugar_de_compra = ?, club_libros = ? WHERE cliente_id = ?");
-	            statement.setString(1, cliente.getGenero());
-	            statement.setInt(2, cliente.getEdad());
-	            statement.setInt(3, cliente.getLugar_de_compra());
-	            statement.setBoolean(4, cliente.isClubLibros());
-	            statement.setInt(5, cliente.getClienteId());
+	            PreparedStatement statement = connection.prepareStatement("UPDATE clientes SET nombre = ?, apellido = ?, genero = ?, edad = ?, lugar_de_compra = ?, club_libros = ? WHERE cliente_id = ?");
+	            statement.setString(1, cliente.getNombre());
+	            statement.setString(2, cliente.getApellido());
+	            statement.setString(3, cliente.getGenero());
+	            statement.setInt(4, cliente.getEdad());
+	            statement.setInt(5, cliente.getLugar_de_compra());
+	            statement.setBoolean(6, cliente.isClubLibros());
+	            statement.setInt(7, cliente.getClienteId());
 
 	            int rowsUpdated = statement.executeUpdate();
 	            if (rowsUpdated > 0) {
