@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +70,11 @@ public class PromocionControlador implements PromocionRepository {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Promociones (nombre, es_del_club, sucursal_id, descuento) VALUES (?, ?, ?, ?)");
             statement.setString(1, promocion.getNombre());
             statement.setBoolean(2, promocion.isEsDelClub());
-            statement.setInt(3, promocion.getSucursalId());
+            if (promocion.getSucursalId() != null) {
+                statement.setInt(3, promocion.getSucursalId());
+            } else {
+                statement.setNull(3, Types.INTEGER);
+            }
             statement.setDouble(4, promocion.getDescuento());
 
             int rowsInserted = statement.executeUpdate();
@@ -84,10 +89,18 @@ public class PromocionControlador implements PromocionRepository {
     @Override
     public void updatePromo(Promocion promocion) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE Promociones SET nombre = ?, es_del_club = ?, sucursal_id = ?, descuento = ? WHERE promocion_id = ?");
+            PreparedStatement statement = connection.prepareStatement(
+                "UPDATE Promociones SET nombre = ?, es_del_club = ?, sucursal_id = ?, descuento = ? WHERE promocion_id = ?"
+            );
             statement.setString(1, promocion.getNombre());
             statement.setBoolean(2, promocion.isEsDelClub());
-            statement.setInt(3, promocion.getSucursalId());
+            
+            if (promocion.getSucursalId() != null) {
+                statement.setInt(3, promocion.getSucursalId());
+            } else {
+                statement.setNull(3, Types.INTEGER);
+            }
+            
             statement.setDouble(4, promocion.getDescuento());
             statement.setInt(5, promocion.getPromocionId());
 
