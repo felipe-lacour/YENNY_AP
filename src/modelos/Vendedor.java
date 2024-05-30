@@ -1,4 +1,9 @@
 package modelos;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.swing.JOptionPane;
 
 import controladores.EjemplarControlador;
@@ -88,14 +93,34 @@ public class Vendedor extends Usuario implements Menu{
     private void registrarClubLibro() {
     	ClienteControlador clienteControlador = new ClienteControlador();
     	MetodoPagoControlador metodoPagoControlador = new MetodoPagoControlador();
+    	List<MetodoPago> metodos = new LinkedList<MetodoPago>();;
     	
     	int id = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del cliente:"));
     	Cliente client = clienteControlador.getClienteById(id);
     	
-    	for (Cliente cliente : clienteControlador.getAllClientes()) {
-
+    	for (MetodoPago metodo : metodoPagoControlador.getAllMethods()) {
+    		if (metodo.getClienteId() == client.getClienteId()) {
+    			metodos.add(metodo);
+    		}
 	    }
     	
+    	if (!metodos.isEmpty()) {
+    		List<String> listaMetodosRegistrados = metodos.stream().map(MetodoPago::getTipo).collect(Collectors.toList());
+    		listaMetodosRegistrados.add("Agregar metodo de pago");
+    		String[] metodosRegistrados = listaMetodosRegistrados.toArray(new String[0]);
+
+    		String eleccion = (String) JOptionPane.showInputDialog(null, "Seleccione el metodo de pago:", "Seleccion de pago", JOptionPane.QUESTION_MESSAGE, null, metodosRegistrados, metodosRegistrados[0]);
+    	
+    		if (eleccion.equalsIgnoreCase("Agregar metodo de pago")) {
+    			agregarMetodoPago();
+    		} else {
+    			
+    		}
+    	}
+    	
+    }
+    
+    private void agregarMetodoPago() {
     	
     }
 }
