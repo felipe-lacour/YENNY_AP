@@ -8,9 +8,10 @@ import controladores.EjemplarControlador;
 import controladores.LibroControlador;
 import controladores.PromocionControlador;
 import controladores.VentaControlador;
+import interfaces.Auxiliaries;
 import interfaces.Menu;
 
-public class GerenteSucursal extends Usuario implements Menu{
+public class GerenteSucursal extends Usuario implements Menu, Auxiliaries{
 
 	public GerenteSucursal(int usuarioId, String nombre, int rol, int sucursalId, String pass, String userName) {
 		super(usuarioId, nombre, rol, sucursalId, pass, userName);
@@ -97,11 +98,22 @@ public class GerenteSucursal extends Usuario implements Menu{
     }
     
     private void agregarPromocion(PromocionControlador promocionControlador) {
-        String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la promoción:");
+    	String nombre = "";
+    	
+    	do {
+    		nombre = JOptionPane.showInputDialog("Ingrese el nombre de la promoción: (Recuerde solo utilizar letras");
+    	} while (!verifyStrInput(nombre));
+    	
         boolean esDelClub = false;
         int sucursalId = this.getSucursalId();
-        double descuento = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el porcentaje de descuento:"));
-
+        String descuentoStr = "";
+        
+        do {
+        	descuentoStr = JOptionPane.showInputDialog("Ingrese el porcentaje de descuento: (Recuerde solo utilizar numeros)");
+        } while (!verifyDouInput(descuentoStr));
+        
+        double descuento = Double.parseDouble(descuentoStr);
+        
         Promocion nuevaPromocion = new Promocion(0, nombre, esDelClub, sucursalId, descuento);
         promocionControlador.addPromo(nuevaPromocion);
 
@@ -136,6 +148,7 @@ public class GerenteSucursal extends Usuario implements Menu{
     }
 
     private void modificarPromocion(PromocionControlador promocionControlador) {
+    	boolean stringVerified = false;
     	List<Promocion> promociones = new LinkedList<Promocion>();
     	for (Promocion promo : promocionControlador.getAllPromos()) {
     		if (!promo.isEsDelClub() && promo.getSucursalId() == this.getSucursalId()) {
@@ -158,9 +171,19 @@ public class GerenteSucursal extends Usuario implements Menu{
         if (seleccion != null) {
             int promocionId = Integer.parseInt(seleccion.split(",")[0].split(":")[1].trim());
             Promocion promocion = promocionControlador.getPromoById(promocionId);
+            String nombre = ""; String descuentoAux = "";
             
-	        String nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre de la promoción:", promocion.getNombre());
-	        double descuento = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo porcentaje de descuento:", promocion.getDescuento()));
+            
+            do {
+            	nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre de la promoción: (Recuerde solo utilizar letras)", promocion.getNombre());
+            } while (!verifyStrInput(nombre));
+            
+            do {
+            	descuentoAux = JOptionPane.showInputDialog("Ingrese el nuevo porcentaje de descuento: (Recuerde solo utilizar numeros)", promocion.getDescuento());
+            } while (!verifyDouInput(descuentoAux));
+            
+            double descuento = Double.parseDouble(descuentoAux);
+	        
 
 	        promocion.setNombre(nombre);
 	        promocion.setDescuento(descuento);
