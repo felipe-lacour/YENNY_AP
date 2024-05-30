@@ -1,5 +1,11 @@
 package modelos;
 
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import controladores.LibroControlador;
+
 public class Libro {
 	private int libroId;
 	private String titulo;
@@ -54,6 +60,41 @@ public class Libro {
 	public void setAutorId(int autorId) {
 		this.autorId = autorId;
 	}
+	
+	 public void menuSolicitarLibro(LibroControlador libroControlador) {
+	        List<Libro> libros = libroControlador.getAllBooks();
+	        if (libros.isEmpty()) {
+	            JOptionPane.showMessageDialog(null, "No hay libros disponibles.");
+	            return;
+	        }
+
+	        String[] titulosLibros = libros.stream().map(Libro::getTitulo).toArray(String[]::new);
+	        String libroSeleccionado = (String) JOptionPane.showInputDialog(null, "Seleccione un libro:", "Libros disponibles", JOptionPane.QUESTION_MESSAGE, null, titulosLibros, titulosLibros[0]);
+
+	        if (libroSeleccionado != null) {
+	            String cantidadStr = JOptionPane.showInputDialog("Ingrese la cantidad que desea solicitar:");
+	            if (cantidadStr != null) {
+	                int cantidad = Integer.parseInt(cantidadStr);
+	                solicitarLibroPorNombre(libroControlador, libroSeleccionado, cantidad);
+	            }
+	        }
+	    }
+	 public void solicitarLibroPorNombre(LibroControlador libroControlador, String nombre, int cantidad) {
+	        List<Libro> libros = libroControlador.getAllBooks();
+	        boolean libroEncontrado = false;
+	        for (Libro libro : libros) {
+	            if (libro.getTitulo().equalsIgnoreCase(nombre)) {
+	                JOptionPane.showMessageDialog(null, "Libro solicitado exitosamente.");
+	                libroEncontrado = true;
+	                break;
+	            }
+	        }
+	        if (!libroEncontrado) {
+	            JOptionPane.showMessageDialog(null, "El libro no está disponible.");
+	        }
+	    }
+	 
+	 
 	
 	
 }

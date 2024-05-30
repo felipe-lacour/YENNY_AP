@@ -1,5 +1,6 @@
 package modelos;
 import javax.swing.JOptionPane;
+import controladores.LibroControlador;
 import interfaces.Menu;
 
 public class GerenteSucursal extends Usuario implements Menu{
@@ -10,6 +11,7 @@ public class GerenteSucursal extends Usuario implements Menu{
 
 	@Override
 	public void Menu() {
+		LibroControlador libroControlador = new LibroControlador();
 		int eleccion = 0;
 		String[] opciones = {"Ver libros", "Administrar promociones", "Encargar Libros", 
 							 "Ver Informe de Venta", "Administrar Vendedores", "Salir"};
@@ -24,7 +26,8 @@ public class GerenteSucursal extends Usuario implements Menu{
 
 					break;
 				case 2:
-
+					Libro libro = new Libro(0, "", null, 0, 0);
+                    libro.menuSolicitarLibro(libroControlador);
 					break;
 				case 3:
 
