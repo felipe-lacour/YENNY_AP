@@ -81,7 +81,7 @@ public class GerenteGeneral extends Usuario implements Menu{
                 JOptionPane.showMessageDialog(null, "Operación inválida!");
                 break;
         }
-    }
+    } // hello
     
     private void agregarUsuario(UsuarioControlador usuarioControlador) {
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre del usuario:");
