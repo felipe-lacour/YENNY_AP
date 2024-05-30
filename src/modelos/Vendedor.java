@@ -81,12 +81,19 @@ public class Vendedor extends Usuario implements Menu{
 	
     private int registrarCliente() {
     	ClienteControlador clienteControlador = new ClienteControlador();
-    	
-    	String nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente:");
-        String apellido = JOptionPane.showInputDialog("Ingrese el apellido del cliente:");
+    	String nombre, apellido, eda;
+    	do {
+    		nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente:");
+    	} while (!verifyStrInput(nombre));
+    	do {
+    		apellido = JOptionPane.showInputDialog("Ingrese el apellido del cliente:");
+        } while (!verifyStrInput(nombre));
         String[] generos = {"Masculino", "Femenino", "No Binario"};
         String genero = (String) JOptionPane.showInputDialog(null, "Seleccione el género del cliente:", "Indentifique cliente", JOptionPane.QUESTION_MESSAGE, null, generos, generos[0]);
-        int edad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la edad del cliente:"));
+        do {
+        	eda = JOptionPane.showInputDialog("Ingrese la edad del cliente:");
+        } while (!verifyIntInput(eda) || ((Integer.parseInt(eda)) > 100)  || ((Integer.parseInt(eda)) < 10));
+        int edad = Integer.parseInt(eda);
 
         Cliente nuevoCliente = new Cliente(0, nombre, apellido, genero, edad, this.getSucursalId(), false);
         int aux = clienteControlador.addCliente(nuevoCliente);
@@ -101,8 +108,16 @@ public class Vendedor extends Usuario implements Menu{
     	MetodoPagoControlador metodoPagoControlador = new MetodoPagoControlador();
     	List<MetodoPago> metodos = new LinkedList<MetodoPago>();;
     	
-    	int id = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del cliente:"));
+    	String usuarioId;
+    	do {
+    		usuarioId = JOptionPane.showInputDialog("Ingrese el ID del cliente:");
+        } while (!verifyIntInput(usuarioId));
+        int id = Integer.parseInt(usuarioId);
     	Cliente client = clienteControlador.getClienteById(id);
+    	if (client == null) {
+    		JOptionPane.showMessageDialog(null, "No hay clientes registrados con ese ID");
+    		return;
+    	}
     	
     	for (MetodoPago metodo : metodoPagoControlador.getAllMethods()) {
     		if (metodo.getClienteId() == client.getClienteId()) {
