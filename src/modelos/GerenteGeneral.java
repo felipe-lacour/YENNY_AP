@@ -5,9 +5,7 @@ import controladores.UsuarioControlador;
 import controladores.SucuControlador;
 import controladores.VentaControlador;
 import controladores.LibroControlador;
-import controladores.PromocionControlador;
 
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -36,7 +34,7 @@ public class GerenteGeneral extends Usuario implements Menu{
 				administrarSucursales();
 				break;
 			case 3:
-				administrarPromociones();
+
 				break;
 			case 4:
 				exportarLibros();
@@ -63,19 +61,18 @@ public class GerenteGeneral extends Usuario implements Menu{
     }
     
     private void administrarUsuarios() {
-    	UsuarioControlador usuarioControlador = new UsuarioControlador();
         String[] opciones = {"Agregar Usuario", "Modificar Usuario", "Eliminar Usuario"};
         int eleccion = JOptionPane.showOptionDialog(null, "¿Qué operación desea realizar?", "Administrar Usuarios", 0, 0, null, opciones, opciones[0]);
 
         switch (eleccion) {
             case 0:
-                agregarUsuario(usuarioControlador);
+                agregarUsuario();
                 break;
             case 1:
-                modificarUsuario(usuarioControlador);
+                modificarUsuario();
                 break;
             case 2:
-                eliminarUsuario(usuarioControlador);
+                eliminarUsuario();
                 break;
             default:
                 JOptionPane.showMessageDialog(null, "Operación inválida!");
@@ -83,7 +80,9 @@ public class GerenteGeneral extends Usuario implements Menu{
         }
     }
     
-    private void agregarUsuario(UsuarioControlador usuarioControlador) {
+    private void agregarUsuario() {
+    	UsuarioControlador usuarioControlador = new UsuarioControlador();
+    	
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre del usuario:");
         String userName = JOptionPane.showInputDialog("Ingrese el nombre de usuario:");
         String pass = JOptionPane.showInputDialog("Ingrese la contraseña:");
@@ -95,7 +94,9 @@ public class GerenteGeneral extends Usuario implements Menu{
         JOptionPane.showMessageDialog(null, "Usuario agregado exitosamente!");
     }
     
-    private void modificarUsuario(UsuarioControlador usuarioControlador) {
+    private void modificarUsuario() {
+    	UsuarioControlador usuarioControlador = new UsuarioControlador();
+    	
         int usuarioId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del usuario a modificar:"));
         Usuario usuario = usuarioControlador.getUserById(usuarioId);
         
@@ -119,7 +120,9 @@ public class GerenteGeneral extends Usuario implements Menu{
         }
     }
     
-    private void eliminarUsuario(UsuarioControlador usuarioControlador) {
+    private void eliminarUsuario() {
+    	UsuarioControlador usuarioControlador = new UsuarioControlador();
+    	
         int usuarioId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del usuario a eliminar:"));
         
         usuarioControlador.deleteUser(usuarioId);
@@ -127,19 +130,18 @@ public class GerenteGeneral extends Usuario implements Menu{
     }
     
     private void administrarSucursales() {
-    	SucuControlador sucuControlador = new SucuControlador();
         String[] opciones = {"Ver Sucursales", "Agregar Sucursal", "Eliminar Sucursal"};
         int eleccion = JOptionPane.showOptionDialog(null, "¿Qué operación desea realizar?", "Administrar Sucursales", 0, 0, null, opciones, opciones[0]);
 
         switch (eleccion) {
             case 0:
-                verSucursales(sucuControlador);
+                verSucursales();
                 break;
             case 1:
-                agregarSucursal(sucuControlador);
+                agregarSucursal();
                 break;
             case 2:
-                eliminarSucursal(sucuControlador);
+                eliminarSucursal();
                 break;
             default:
                 JOptionPane.showMessageDialog(null, "Operación inválida!");
@@ -147,7 +149,9 @@ public class GerenteGeneral extends Usuario implements Menu{
         }
     }
     
-    private void verSucursales(SucuControlador sucuControlador) {
+    private void verSucursales() {
+    	SucuControlador sucuControlador = new SucuControlador();
+        
         StringBuilder mensaje = new StringBuilder("Sucursales Registradas:\n");
         for (Sucursal sucursal : sucuControlador.getAllBranches()) {
             mensaje.append("ID: ").append(sucursal.getSucursalId()).append(", Ubicación: ").append(sucursal.getUbicacion()).append(", Nombre: ").append(sucursal.getNombre()).append("\n");
@@ -156,7 +160,9 @@ public class GerenteGeneral extends Usuario implements Menu{
         JOptionPane.showMessageDialog(null, mensaje.toString());
     }
     
-    private void agregarSucursal(SucuControlador sucuControlador) {
+    private void agregarSucursal() {
+    	SucuControlador sucuControlador = new SucuControlador();
+    	
         String ubicacion = JOptionPane.showInputDialog("Ingrese la ubicación de la sucursal:");
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la sucursal:");
 
@@ -165,23 +171,13 @@ public class GerenteGeneral extends Usuario implements Menu{
         JOptionPane.showMessageDialog(null, "Sucursal agregada exitosamente!");
     }
     
-    private void eliminarSucursal(SucuControlador sucuControlador) {
-    	List<Sucursal> sucus = sucuControlador.getAllBranches();
-    	String[] sucursales = new String[sucus.size()];
-    	int i = 0;
-    	for (Sucursal sucu : sucus) {
-    		sucursales[i] = sucu.getNombre() + ", en " + sucu.getUbicacion();
-    		i++;
-        }
+    private void eliminarSucursal() {
+    	SucuControlador sucuControlador = new SucuControlador();
     	
-    	String sucursal = (String) JOptionPane.showInputDialog(null, "Seleccione la sucursal a eliminar:", "Quitar sucursal", JOptionPane.QUESTION_MESSAGE, null, sucursales, sucursales[0]);
-    	for (Sucursal sucu : sucus) {
-    		if (sucursal.contains(sucu.getNombre()) && sucursal.contains(sucu.getUbicacion())) {
-    			sucuControlador.deteleBranch(sucu.getSucursalId());
-    	        JOptionPane.showMessageDialog(null, "Sucursal eliminada exitosamente!");
-    	        return;
-    		}
-        }
+        int sucursalId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID de la sucursal a eliminar:"));
+        
+        sucuControlador.deteleBranch(sucursalId);
+        JOptionPane.showMessageDialog(null, "Sucursal eliminada exitosamente!");
     }
     
     private void exportarLibros() {
@@ -199,101 +195,6 @@ public class GerenteGeneral extends Usuario implements Menu{
             JOptionPane.showMessageDialog(null, "Se ha solicitado la exportación de " + cantidad + " ejemplares del libro \"" + libroSeleccionado.getTitulo() + "\" a " + pais);
         } else {
             JOptionPane.showMessageDialog(null, "Libro no encontrado!");
-        }
-    }
-    
-    private void administrarPromociones() {
-        PromocionControlador promocionControlador = new PromocionControlador();
-
-        String[] opciones = {"Agregar Promoción", "Quitar Promoción", "Modificar Promoción"};
-        int eleccion = JOptionPane.showOptionDialog(null, "¿Qué operación desea realizar?", "Administrar Promociones", 0, 0, null, opciones, opciones[0]);
-
-        switch(eleccion) {
-            case 0:
-                agregarPromocion(promocionControlador);
-                break;
-            case 1:
-                quitarPromocion(promocionControlador);
-                break;
-            case 2:
-                modificarPromocion(promocionControlador);
-                break;
-            default:
-                JOptionPane.showMessageDialog(null, "Operación inválida!");
-                break;
-        }
-    }
-    
-    private void agregarPromocion(PromocionControlador promocionControlador) {
-        String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la promoción:");
-        boolean esDelClub = true;
-        Integer sucursalId = (Integer) null;
-        double descuento = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el porcentaje de descuento:"));
-
-        Promocion nuevaPromocion = new Promocion(0, nombre, esDelClub, sucursalId, descuento);
-        promocionControlador.addPromo(nuevaPromocion);
-
-        JOptionPane.showMessageDialog(null, "Promoción agregada exitosamente!");
-    }
-
-    private void quitarPromocion(PromocionControlador promocionControlador) {
-    	List<Promocion> promociones = new LinkedList<Promocion>();
-    	for (Promocion promo : promocionControlador.getAllPromos()) {
-    		if (promo.isEsDelClub()) {
-    			promociones.add(promo);
-    		}
-    	}
-    	
-        if (promociones.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay promociones para eliminar.");
-            return;
-        }
-        
-        String[] opciones = new String[promociones.size()];
-        for (int i = 0; i < promociones.size(); i++) {
-        	opciones[i] = ("ID: " + promociones.get(i).getPromocionId() + ", Nombre: " + promociones.get(i).getNombre());
-        }
-
-        String seleccion = (String) JOptionPane.showInputDialog(null, "Seleccione la promoción a eliminar:", "Quitar Promoción", JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
-        
-        if (seleccion != null) {
-            int promocionId = Integer.parseInt(seleccion.split(",")[0].split(":")[1].trim());
-            promocionControlador.deletePromo(promocionId);
-            JOptionPane.showMessageDialog(null, "Promoción eliminada exitosamente!");
-        }
-    }
-
-    private void modificarPromocion(PromocionControlador promocionControlador) {
-    	List<Promocion> promociones = new LinkedList<Promocion>();
-    	for (Promocion promo : promocionControlador.getAllPromos()) {
-    		if (promo.isEsDelClub()) {
-    			promociones.add(promo);
-    		}
-    	}
-    	
-        if (promociones.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay promociones para modificar.");
-            return;
-        }
-        
-        String[] opciones = new String[promociones.size()];
-        for (int i = 0; i < promociones.size(); i++) {
-        	opciones[i] = ("ID: " + promociones.get(i).getPromocionId() + ", Nombre: " + promociones.get(i).getNombre());
-        }
-        
-        String seleccion = (String) JOptionPane.showInputDialog(null, "Seleccione la promoción a eliminar:", "Quitar Promoción", JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
-
-        if (seleccion != null) {
-            int promocionId = Integer.parseInt(seleccion.split(",")[0].split(":")[1].trim());
-            Promocion promocion = promocionControlador.getPromoById(promocionId);
-            
-	        String nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre de la promoción:", promocion.getNombre());
-	        double descuento = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo porcentaje de descuento:", promocion.getDescuento()));
-
-	        promocion.setNombre(nombre);
-	        promocion.setDescuento(descuento);
-	        promocionControlador.updatePromo(promocion);
-	        JOptionPane.showMessageDialog(null, "Promoción modificada exitosamente!");
         }
     }
 }

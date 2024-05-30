@@ -5,12 +5,14 @@ public class Venta {
     private Integer ventaId;
     private Integer metodoPagoId;
     private LocalDate fecha;
+    private int sucursalId;
     
-    public Venta(int ventaId, int metodoPagoId, LocalDate fecha) {
+    public Venta(int ventaId, int metodoPagoId, LocalDate fecha, int sucursalId) {
         super();
         this.ventaId = ventaId;
         this.metodoPagoId = metodoPagoId;
         this.fecha = fecha;
+        this.sucursalId = sucursalId;
     }
 
     public int getVentaId() {
@@ -36,4 +38,14 @@ public class Venta {
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
+
+	public int getSucursalId() {
+		return sucursalId;
+	}
+
+	public void setSucursalId(int sucursalId) {
+		this.sucursalId = sucursalId;
+	}
+    
+    
 }

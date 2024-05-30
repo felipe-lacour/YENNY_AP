@@ -41,7 +41,7 @@ public class EjemplarControlador implements EjemplarRepository {
                     resultSet.getString("idioma"),
                     resultSet.getString("caracteristicas_especiales"),
                     resultSet.getDate("fecha_adquisicion").toLocalDate(),
-                    resultSet.getInt("venta_id")
+                    resultSet.getInt("venta_id") == 0 ? null : resultSet.getInt("venta_id")
                 );
                 ejemplares.add(ejemplar);
             }
@@ -159,5 +159,39 @@ public class EjemplarControlador implements EjemplarRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<Ejemplar> getEjemplarByField(String campo, int id) {
+    	List<Ejemplar> ejemplares = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM ejemplares WHERE " + campo + " = ?");
+            statement.setInt(1, id);
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+            while (resultSet.next()) {
+                Ejemplar ejemplar = new Ejemplar(
+                    resultSet.getInt("ejemplar_id"),
+                    resultSet.getInt("libro_id"),
+                    resultSet.getInt("sucursal_id"),
+                    resultSet.getString("isbn"),
+                    resultSet.getDouble("precio"),
+                    resultSet.getString("condicion"),
+                    resultSet.getBoolean("tapa_dura"),
+                    resultSet.getBoolean("edicion_especial"),
+                    resultSet.getDate("fecha_edicion").toLocalDate(),
+                    resultSet.getInt("numero_edicion"),
+                    resultSet.getBoolean("firmado"),
+                    resultSet.getString("idioma"),
+                    resultSet.getString("caracteristicas_especiales"),
+                    resultSet.getDate("fecha_adquisicion").toLocalDate(),
+                    resultSet.getInt("venta_id")
+                );
+                ejemplares.add(ejemplar);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ejemplares;
     }
 }
