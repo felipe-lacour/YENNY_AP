@@ -213,7 +213,7 @@ public class Vendedor extends Usuario implements Menu{
             }
         }
         
-        if(ejemplaresAux.size() > 0) {
+        if(ejemplaresAux.size() > 0 || seleccionEjemplar.size() > 0) {
         	int eleccion = JOptionPane.showOptionDialog(null, "¿El comprador es un cliente registrado?", "Cliente", 0, 0, null, opcionesAux, opcionesAux[0]);
             LocalDate ahora = LocalDate.now();
             int ventaId = -1;

@@ -41,7 +41,7 @@ public class EjemplarControlador implements EjemplarRepository {
                     resultSet.getString("idioma"),
                     resultSet.getString("caracteristicas_especiales"),
                     resultSet.getDate("fecha_adquisicion").toLocalDate(),
-                    resultSet.getInt("venta_id")
+                    resultSet.getInt("venta_id") == 0 ? null : resultSet.getInt("venta_id")
                 );
                 ejemplares.add(ejemplar);
             }
