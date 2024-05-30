@@ -84,11 +84,23 @@ public class GerenteGeneral extends Usuario implements Menu{
     } // hello
     
     private void agregarUsuario(UsuarioControlador usuarioControlador) {
-        String nombre = JOptionPane.showInputDialog("Ingrese el nombre del usuario:");
-        String userName = JOptionPane.showInputDialog("Ingrese el nombre de usuario:");
+    	String nombre, roll;
+    	int sucursalId;
+    	do {
+    		nombre = JOptionPane.showInputDialog("Ingrese el nombre del usuario:");
+    	} while (!verifyStrInput(nombre));
+        String userName = JOptionPane.showInputDialog("Ingrese el username:");
         String pass = JOptionPane.showInputDialog("Ingrese la contraseña:");
-        int rol = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el rol (1 para Vendedor, 2 para Gerente Sucursal):"));
-        int sucursalId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID de la sucursal:"));
+        do {
+        	roll = JOptionPane.showInputDialog("Ingrese el rol (1 para Vendedor, 2 para Gerente Sucursal):");
+        } while (!verifyIntInput(roll) || ((Integer.parseInt(roll)) > 2)  || ((Integer.parseInt(roll)) == 0));
+        int rol = Integer.parseInt(roll);
+        
+        SucuControlador sucuControlador = new SucuControlador();
+        do {
+        	sucursalId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID de la sucursal:"));
+        } while (sucuControlador.getBranchById(sucursalId) == null);
+        
 
         Usuario nuevoUsuario = new Usuario(0, nombre, rol, sucursalId, pass, userName);
         usuarioControlador.addUser(nuevoUsuario);
@@ -96,31 +108,55 @@ public class GerenteGeneral extends Usuario implements Menu{
     }
     
     private void modificarUsuario(UsuarioControlador usuarioControlador) {
-        int usuarioId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del usuario a modificar:"));
+    	String id;
+    	do {
+    		id = JOptionPane.showInputDialog("Ingrese el ID del usuario a modificar:");
+        } while (!verifyIntInput(id));
+        int usuarioId = Integer.parseInt(id);
         Usuario usuario = usuarioControlador.getUserById(usuarioId);
-        
-        if (usuario != null) {
-            String nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre del usuario:", usuario.getNombre());
-            String userName = JOptionPane.showInputDialog("Ingrese el nuevo nombre de usuario:", usuario.getUserName());
-            String pass = JOptionPane.showInputDialog("Ingrese la nueva contraseña:", usuario.getPass());
-            int rol = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo rol (1 para Vendedor, 2 para Gerente Sucursal):", usuario.getRol()));
-            int sucursalId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo ID de la sucursal:", usuario.getSucursalId()));
-
-            usuario.setNombre(nombre);
-            usuario.setUserName(userName);
-            usuario.setPass(pass);
-            usuario.setRol(rol);
-            usuario.setSucursalId(sucursalId);
-
-            usuarioControlador.updateUser(usuario);
-            JOptionPane.showMessageDialog(null, "Usuario modificado exitosamente!");
-        } else {
-            JOptionPane.showMessageDialog(null, "Usuario no encontrado!");
+        if (usuario == null) {
+        	JOptionPane.showMessageDialog(null, "No hay usuario registrado con ese ID");
+        	return;
         }
+        
+    	String nombre, roll;
+    	int sucursalId;
+    	do {
+    		nombre = JOptionPane.showInputDialog("Ingrese el nombre del usuario:");
+    	} while (!verifyStrInput(nombre));
+        String userName = JOptionPane.showInputDialog("Ingrese el username:");
+        String pass = JOptionPane.showInputDialog("Ingrese la contraseña:");
+        do {
+        	roll = JOptionPane.showInputDialog("Ingrese el rol (1 para Vendedor, 2 para Gerente Sucursal):");
+        } while (!verifyIntInput(roll) || ((Integer.parseInt(roll)) > 2)  || ((Integer.parseInt(roll)) == 0));
+        int rol = Integer.parseInt(roll);
+        
+        SucuControlador sucuControlador = new SucuControlador();
+        do {
+        	sucursalId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID de la sucursal:"));
+        } while (sucuControlador.getBranchById(sucursalId) == null);
+
+        usuario.setNombre(nombre);
+        usuario.setUserName(userName);
+        usuario.setPass(pass);
+        usuario.setRol(rol);
+        usuario.setSucursalId(sucursalId);
+
+        usuarioControlador.updateUser(usuario);
+        JOptionPane.showMessageDialog(null, "Usuario modificado exitosamente!");
     }
     
     private void eliminarUsuario(UsuarioControlador usuarioControlador) {
-        int usuarioId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del usuario a eliminar:"));
+    	String id;
+    	do {
+    		id = JOptionPane.showInputDialog("Ingrese el ID del usuario a modificar:");
+        } while (!verifyIntInput(id));
+        int usuarioId = Integer.parseInt(id);
+        Usuario usuario = usuarioControlador.getUserById(usuarioId);
+        if (usuario == null) {
+        	JOptionPane.showMessageDialog(null, "No hay usuario registrado con ese ID");
+        	return;
+        }
         
         usuarioControlador.deleteUser(usuarioId);
         JOptionPane.showMessageDialog(null, "Usuario eliminado exitosamente!");
@@ -157,8 +193,13 @@ public class GerenteGeneral extends Usuario implements Menu{
     }
     
     private void agregarSucursal(SucuControlador sucuControlador) {
-        String ubicacion = JOptionPane.showInputDialog("Ingrese la ubicación de la sucursal:");
-        String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la sucursal:");
+    	String ubicacion, nombre;
+    	do {
+    		ubicacion = JOptionPane.showInputDialog("Ingrese la ubicación de la sucursal:");
+    	} while (!verifyStrInput(ubicacion));
+    	do {
+    		nombre = JOptionPane.showInputDialog("Ingrese el nombre de la sucursal:");
+    	} while (!verifyStrInput(nombre));
 
         Sucursal nuevaSucursal = new Sucursal(0, ubicacion, nombre);
         sucuControlador.addBranch(nuevaSucursal);
@@ -225,10 +266,16 @@ public class GerenteGeneral extends Usuario implements Menu{
     }
     
     private void agregarPromocion(PromocionControlador promocionControlador) {
-        String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la promoción:");
+    	String nombre, desc;
+    	do {
+    		nombre = JOptionPane.showInputDialog("Ingrese el nombre de la promoción:");
+    	} while (!verifyStrInput(nombre));
         boolean esDelClub = true;
         Integer sucursalId = (Integer) null;
-        double descuento = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el porcentaje de descuento:"));
+        do {
+    		desc = JOptionPane.showInputDialog("Ingrese el porcentaje de descuento:");
+    	} while (!verifyDouInput(desc) || ((Double.parseDouble(desc)) > 80));
+        double descuento = Double.parseDouble(desc);
 
         Promocion nuevaPromocion = new Promocion(0, nombre, esDelClub, sucursalId, descuento);
         promocionControlador.addPromo(nuevaPromocion);
