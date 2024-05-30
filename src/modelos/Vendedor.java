@@ -175,7 +175,7 @@ public class Vendedor extends Usuario implements Menu{
         
         for (Libro libro : seleccionLibro) {
             for (Ejemplar ejemplar : allEjemplares) {
-                if(ejemplar.getLibroId() == libro.getLibroId()) {
+                if(ejemplar.getLibroId() == libro.getLibroId() && ejemplar.getVentaId() == null) {
                     ejemplaresAux.add(ejemplar);
                 }
             }
@@ -213,101 +213,106 @@ public class Vendedor extends Usuario implements Menu{
             }
         }
         
-        int eleccion = JOptionPane.showOptionDialog(null, "¿El comprador es un cliente registrado?", "Cliente", 0, 0, null, opcionesAux, opcionesAux[0]);
-        LocalDate ahora = LocalDate.now();
-        int ventaId = -1;
-        
-        if(eleccion == 1) {
-            eleccion = JOptionPane.showOptionDialog(null, "¿El comprador desea registrarse?", "Cliente", 0, 0, null, opcionesAux, opcionesAux[0]);
-            switch(eleccion) {
-                case 0:
-                    int idClienteNuevo = registrarCliente();
-                    String tipo = JOptionPane.showInputDialog("Ingrese el tipo de metodo de pago.");
-                    String detalles = JOptionPane.showInputDialog("Ingrese los detalles del metodo de pago.");
-                    
-                    metodoControlador.addMethod(new MetodoPago(0, idClienteNuevo, tipo, detalles));
-                    
-                    MetodoPago methodAux = null;
-                    allMethods = metodoControlador.getAllMethods();
-                    
-                    for (MetodoPago method : allMethods) {
-                        if(method.getClienteId() == idClienteNuevo) {
-                            methodAux = method;
-                            break;
-                        }
-                    }
-                    
-                    if (methodAux != null) {
-                        Venta currentSale = new Venta(0, methodAux.getMetodoPagoId(), ahora);
-                        ventaId = ventaControlador.addSale(currentSale);
-                        JOptionPane.showMessageDialog(null, "Venta realizada con exito!");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Error al registrar el método de pago.");
-                    }
-                    break;
-                    
-                case 1:
-                	Venta currentSale = new Venta(0, -1, ahora);
-                    ventaId = ventaControlador.addSale(currentSale);
-                    JOptionPane.showMessageDialog(null, "Venta realizada con exito!");
-                    break;
-                    
-                default: 
-                    JOptionPane.showMessageDialog(null, "Operación cancelada.");
-                    break;
-            }
-        } else {
-            try {
-                int clienteId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el Id del cliente"));
-                Cliente clienteAux = clienteControlador.getClienteById(clienteId);
-                
-                if (clienteAux != null) {
-                    List<MetodoPago> metodosCliente = new ArrayList<>();
-                    
-                    for (MetodoPago metodoPago : allMethods) {
-                        if(metodoPago.getClienteId() == clienteAux.getClienteId()) {
-                            metodosCliente.add(metodoPago);
-                        }
-                    }
-                    
-                    if (metodosCliente.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "El cliente no tiene métodos de pago registrados.");
-                    } else {
-                        String seleccionMetodo = "Elija el metodo de pago asociado a su cuenta.\n\n";
-                        seleccionMetodo += stringMethodBuilder(metodosCliente);
+        if(ejemplaresAux.size() > 0 || seleccionEjemplar.size() > 0) {
+        	int eleccion = JOptionPane.showOptionDialog(null, "¿El comprador es un cliente registrado?", "Cliente", 0, 0, null, opcionesAux, opcionesAux[0]);
+            LocalDate ahora = LocalDate.now();
+            int ventaId = -1;
+            
+            if(eleccion == 1) {
+                eleccion = JOptionPane.showOptionDialog(null, "¿El comprador desea registrarse?", "Cliente", 0, 0, null, opcionesAux, opcionesAux[0]);
+                switch(eleccion) {
+                    case 0:
+                        int idClienteNuevo = registrarCliente();
+                        String tipo = JOptionPane.showInputDialog("Ingrese el tipo de metodo de pago.");
+                        String detalles = JOptionPane.showInputDialog("Ingrese los detalles del metodo de pago.");
                         
-                        int metodoSeleccionado = Integer.parseInt(JOptionPane.showInputDialog(seleccionMetodo));
+                        metodoControlador.addMethod(new MetodoPago(0, idClienteNuevo, tipo, detalles));
                         
-                        if (metodoSeleccionado >= 0 && metodoControlador.getMethodById(metodoSeleccionado) != null) {
-                            MetodoPago metodoAux = metodoControlador.getMethodById(metodoSeleccionado);
-                            
-                            Venta currentSale = new Venta(0, metodoAux.getMetodoPagoId(), ahora);
+                        MetodoPago methodAux = null;
+                        allMethods = metodoControlador.getAllMethods();
+                        
+                        for (MetodoPago method : allMethods) {
+                            if(method.getClienteId() == idClienteNuevo) {
+                                methodAux = method;
+                                break;
+                            }
+                        }
+                        
+                        if (methodAux != null) {
+                            Venta currentSale = new Venta(0, methodAux.getMetodoPagoId(), ahora, this.getSucursalId());
                             ventaId = ventaControlador.addSale(currentSale);
                             JOptionPane.showMessageDialog(null, "Venta realizada con exito!");
                         } else {
-                            JOptionPane.showMessageDialog(null, "Selección de método de pago inválida.");
+                            JOptionPane.showMessageDialog(null, "Error al registrar el método de pago.");
                         }
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Cliente no encontrado.");
+                        break;
+                        
+                    case 1:
+                    	Venta currentSale = new Venta(0, -1, ahora, this.getSucursalId());
+                        ventaId = ventaControlador.addSale(currentSale);
+                        JOptionPane.showMessageDialog(null, "Venta realizada con exito!");
+                        break;
+                        
+                    default: 
+                        JOptionPane.showMessageDialog(null, "Operación cancelada.");
+                        break;
                 }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "ID de cliente inválido.");
-            }
-        }
-        
-        if (ventaId != -1) {
-            for (Ejemplar ejemplar : seleccionEjemplar) {
+            } else {
                 try {
-                    ejemplar.setVentaId(ventaId);
-                    ejemplarControlador.updateEjemplar(ejemplar);
-                } catch(Exception e) {
-                    JOptionPane.showMessageDialog(null, "Error al actualizar los ejemplares: " + e.getMessage());
+                    int clienteId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el Id del cliente"));
+                    Cliente clienteAux = clienteControlador.getClienteById(clienteId);
+                    
+                    if (clienteAux != null) {
+                        List<MetodoPago> metodosCliente = new ArrayList<>();
+                        
+                        for (MetodoPago metodoPago : allMethods) {
+                            if(metodoPago.getClienteId() == clienteAux.getClienteId()) {
+                                metodosCliente.add(metodoPago);
+                            }
+                        }
+                        
+                        if (metodosCliente.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "El cliente no tiene métodos de pago registrados.");
+                        } else {
+                            String seleccionMetodo = "Elija el metodo de pago asociado a su cuenta.\n\n";
+                            seleccionMetodo += stringMethodBuilder(metodosCliente);
+                            
+                            int metodoSeleccionado = Integer.parseInt(JOptionPane.showInputDialog(seleccionMetodo));
+                            
+                            if (metodoSeleccionado >= 0 && metodoControlador.getMethodById(metodoSeleccionado) != null) {
+                                MetodoPago metodoAux = metodoControlador.getMethodById(metodoSeleccionado);
+                                
+                                Venta currentSale = new Venta(0, metodoAux.getMetodoPagoId(), ahora, this.getSucursalId());
+                                ventaId = ventaControlador.addSale(currentSale);
+                                JOptionPane.showMessageDialog(null, "Venta realizada con exito!");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Selección de método de pago inválida.");
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cliente no encontrado.");
+                    }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "ID de cliente inválido.");
                 }
+            }
+            
+            if (ventaId != -1) {
+                for (Ejemplar ejemplar : seleccionEjemplar) {
+                    try {
+                        ejemplar.setVentaId(ventaId);
+                        ejemplarControlador.updateEjemplar(ejemplar);
+                    } catch(Exception e) {
+                        JOptionPane.showMessageDialog(null, "Error al actualizar los ejemplares: " + e.getMessage());
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo completar la venta.");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "No se pudo completar la venta.");
+        	JOptionPane.showMessageDialog(null, "Lo sentimos, no hay ejemplares disponibles.\n\nCompra cancelada.");
         }
+        
     }
 
 
