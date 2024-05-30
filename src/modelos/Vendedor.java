@@ -112,11 +112,11 @@ public class Vendedor extends Usuario implements Menu{
     		String eleccion = (String) JOptionPane.showInputDialog(null, "Seleccione el metodo de pago:", "Seleccion de pago", JOptionPane.QUESTION_MESSAGE, null, metodosRegistrados, metodosRegistrados[0]);
     	
     		if (eleccion.equalsIgnoreCase("Agregar metodo de pago")) {
-    			agregarMetodoPago();
+    			agregarMetodoPago(id);
     		}
     	} else {
     		JOptionPane.showMessageDialog(null, "Para registrarse al club del libro \ndebe tener un metodo de pago asociado a su cuenta \nPor favor ingrese uno");
-    		agregarMetodoPago();
+    		agregarMetodoPago(id);
     	}
     	
     	JOptionPane.showMessageDialog(null, "Se ha registrado el usuario al club del libro!");
@@ -124,7 +124,15 @@ public class Vendedor extends Usuario implements Menu{
     	clienteControlador.updateCliente(client);
     }
     
-    private void agregarMetodoPago() {
-    	
+    private void agregarMetodoPago(int id) {
+        MetodoPagoControlador metodoPagoControlador = new MetodoPagoControlador();
+        
+        String tipo = JOptionPane.showInputDialog("Ingrese el tipo de método de pago: \nPor ejemplo: Tarjeta de Crédito, Débito, PayPal");
+        String detalles = JOptionPane.showInputDialog("Ingrese los detalles del método de pago:");
+
+        MetodoPago nuevoMetodo = new MetodoPago(0, id, tipo, detalles);
+        metodoPagoControlador.addMethod(nuevoMetodo);
+
+        JOptionPane.showMessageDialog(null, "Método de pago agregado exitosamente!");
     }
 }
