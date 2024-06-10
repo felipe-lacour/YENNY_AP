@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -16,7 +17,11 @@ import javax.swing.ListSelectionModel;
 
 import controladores.SucuControlador;
 import modelos.Sucursal;
+
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+//import javax.swing.JMenuBar;
 
 public class Tabla_Sucursal extends JFrame {
 
@@ -27,6 +32,10 @@ public class Tabla_Sucursal extends JFrame {
 	private Sucursal seleccionado;
 	private DefaultTableModel model;
 	private JLabel elemento;
+	
+	private JButton btneliminar;
+	private JButton btnEditar;
+	private JButton Editar;
 
 	/**
 	 * Launch the application.
@@ -77,14 +86,44 @@ public class Tabla_Sucursal extends JFrame {
         elemento.setBounds(5, 5, 911, 14);
         contentPane.add(elemento);
         
-        JButton btnEditar = new JButton("Editar");
-        btnEditar.setBounds(252, 227, 89, 23);
-        contentPane.add(btnEditar);
+        //boton eliminar
+        btneliminar = new JButton("Eliminar");
+        btneliminar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		if (seleccionado.getSucursalId()!=0) {
+					
+        			controlador.deteleBranch(seleccionado.getSucursalId());
+        			JOptionPane.showMessageDialog(null, "Sucursal elimnada");
+        			 actualizarTabla();
+				} else {
+					JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
+				}
+        		
+        		
+        		
+        	}
+        });
+        btneliminar.setBounds(265, 227, 89, 23);
+        contentPane.add(btneliminar);
         
-        JButton btnEliminar = new JButton("Eliminar");
-        btnEliminar.setBounds(367, 227, 89, 23);
-        contentPane.add(btnEliminar);
-        
+        //boton editar
+       /* Editar = new JButton("Editar");
+        Editar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		if (seleccionado.getSucursalId()!=0) {
+					
+        			Editar editar = new Editar(seleccionado);
+        			dispose();
+				} else {
+					JOptionPane.showMessageDialog(null, "Seleccione un usuario");
+				}
+        		
+        	}
+        });
+        btnEditar.setBounds(378, 227, 89, 23);
+        contentPane.add(btnEditar);*/
         
 		//configuracion Seleccionar
 		ListSelectionModel selectionModel= table.getSelectionModel();
