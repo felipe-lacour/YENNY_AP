@@ -11,7 +11,9 @@ public class Sucursal {
 		this.ubicacion = ubicacion;
 		this.nombre = nombre;
 	}
-
+	public Sucursal() {
+		
+	}
 	public int getSucursalId() {
 		return sucursalId;
 	}
