@@ -11,8 +11,6 @@ import modelos.Usuario;
 import modelos.Sucursal;
 import modelos.Promocion;
 
-import java.util.List;
-
 public class PruebasGerenteGral {
     
     @Test
