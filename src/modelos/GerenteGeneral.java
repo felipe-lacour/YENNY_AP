@@ -1,6 +1,7 @@
 package modelos;
 
 import interfaces.Menu;
+import vista.AddUser;
 import controladores.UsuarioControlador;
 import controladores.SucuControlador;
 import controladores.VentaControlador;
@@ -84,27 +85,8 @@ public class GerenteGeneral extends Usuario implements Menu{
     } // hello
     
     private void agregarUsuario(UsuarioControlador usuarioControlador) {
-    	String nombre, roll;
-    	int sucursalId;
-    	do {
-    		nombre = JOptionPane.showInputDialog("Ingrese el nombre del usuario:");
-    	} while (!verifyStrInput(nombre));
-        String userName = JOptionPane.showInputDialog("Ingrese el username:");
-        String pass = JOptionPane.showInputDialog("Ingrese la contraseña:");
-        do {
-        	roll = JOptionPane.showInputDialog("Ingrese el rol (1 para Vendedor, 2 para Gerente Sucursal):");
-        } while (!verifyIntInput(roll) || ((Integer.parseInt(roll)) > 2)  || ((Integer.parseInt(roll)) == 0));
-        int rol = Integer.parseInt(roll);
-        
-        SucuControlador sucuControlador = new SucuControlador();
-        do {
-        	sucursalId = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID de la sucursal:"));
-        } while (sucuControlador.getBranchById(sucursalId) == null);
-        
-
-        Usuario nuevoUsuario = new Usuario(0, nombre, rol, sucursalId, pass, userName);
-        usuarioControlador.addUser(nuevoUsuario);
-        JOptionPane.showMessageDialog(null, "Usuario agregado exitosamente!");
+        AddUser dialog = new AddUser(null);
+        dialog.setVisible(true);
     }
     
     private void modificarUsuario(UsuarioControlador usuarioControlador) {
