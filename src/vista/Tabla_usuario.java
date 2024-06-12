@@ -94,21 +94,6 @@ public class Tabla_usuario extends JFrame {
         });
         btnEliminar.setBounds(53, 280, 187, 58);
         contentPane.add(btnEliminar);
-        /*
-        Editar = new JButton("Editar");
-        Editar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (seleccionado.getUsuarioId() != 0) {
-                    EditarUsuario editar = new EditarUsuario(seleccionado);
-                    editar.setVisible(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Seleccione un usuario");
-                }
-            }
-        });
-        Editar.setBounds(367, 280, 166, 58);
-        contentPane.add(Editar);
-        */
         
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBounds(15, 220, 101, 22);
