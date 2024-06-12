@@ -64,10 +64,16 @@ public class Usuario implements Menu{
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
+	
+	public void setUsuarioId(int id) {
+	    this.usuarioId = id;
+	}
 	@Override
 	public void Menu() {
 		JOptionPane.showMessageDialog(null, "Si estas viendo esto algo salio muy mal...");
 		
 	}
+
+	
+
 }
