@@ -3,6 +3,7 @@ package modelos;
 import interfaces.Menu;
 import vista.AddUser;
 import vista.ViewBooks;
+import vista.ViewUsers;
 import controladores.UsuarioControlador;
 import controladores.SucuControlador;
 import controladores.VentaControlador;
@@ -82,7 +83,8 @@ public class GerenteGeneral extends Usuario implements Menu{
                 modificarUsuario(usuarioControlador);
                 break;
             case 2:
-                eliminarUsuario(usuarioControlador);
+            	ViewUsers frame = new ViewUsers(null);
+                frame.setVisible(true);
                 break;
             default:
                 JOptionPane.showMessageDialog(null, "Operación inválida!");
