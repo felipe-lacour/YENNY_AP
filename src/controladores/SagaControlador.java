@@ -18,7 +18,7 @@ public class SagaControlador implements SagaRepository {
     }
 
     @Override
-    public List<Saga> getAllUsers() {
+    public List<Saga> getAllSagas() {
         List<Saga> sagas = new ArrayList<>();
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM Sagas");
@@ -40,7 +40,7 @@ public class SagaControlador implements SagaRepository {
     }
 
     @Override
-    public Saga getUserById(int id) {
+    public Saga getSagaById(int id) {
         Saga saga = null;
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM Sagas WHERE saga_id = ?");
@@ -62,7 +62,7 @@ public class SagaControlador implements SagaRepository {
     }
 
     @Override
-    public void addUser(Saga saga) {
+    public void addSaga(Saga saga) {
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Sagas (nombre, numero_libros, numero_saga) VALUES (?, ?, ?)");
             statement.setString(1, saga.getNombre());
@@ -79,7 +79,7 @@ public class SagaControlador implements SagaRepository {
     }
 
     @Override
-    public void updateUser(Saga saga) {
+    public void updateSaga(Saga saga) {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE Sagas SET nombre = ?, numero_libros = ?, numero_saga = ? WHERE saga_id = ?");
             statement.setString(1, saga.getNombre());
@@ -97,7 +97,7 @@ public class SagaControlador implements SagaRepository {
     }
 
     @Override
-    public void deteleUser(int id) {
+    public void deteleSaga(int id) {
         try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM Sagas WHERE saga_id = ?");
             statement.setInt(1, id);

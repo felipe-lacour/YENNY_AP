@@ -2,6 +2,7 @@ package modelos;
 
 import interfaces.Menu;
 import vista.AddUser;
+import vista.ViewBooks;
 import controladores.UsuarioControlador;
 import controladores.SucuControlador;
 import controladores.VentaControlador;
@@ -22,7 +23,7 @@ public class GerenteGeneral extends Usuario implements Menu{
 	public void Menu() {
 		int eleccion = 0;
 		String[] opciones = {"Ver Ventas", "Administrar usuarios", "Administrar sucursales", 
-							 "Administrar beneficios", "Pedir Exportacion de Libros", "Salir"};
+							 "Administrar beneficios", "Pedir Exportacion de Libros", "Ver libros", "Salir"};
 		do {
 			eleccion = JOptionPane.showOptionDialog(null, "¿Que operacion desea realizar?", "Elija por favor", 0, 0, null, opciones, opciones);
 			
@@ -43,13 +44,17 @@ public class GerenteGeneral extends Usuario implements Menu{
 				exportarLibros();
 				break;
 			case 5:
+				ViewBooks frame = new ViewBooks(null);
+				frame.setVisible(true);
+				break;
+			case 6:
 				JOptionPane.showMessageDialog(null, "Nos re vimos!");
 				return;
 			default:
 				JOptionPane.showMessageDialog(null, "Re ilegal!");
 				break;
 			}
-		} while(eleccion != 5);
+		} while(eleccion != 6);
 	}
 	
     private void verVentas() {
@@ -70,7 +75,8 @@ public class GerenteGeneral extends Usuario implements Menu{
 
         switch (eleccion) {
             case 0:
-                agregarUsuario(usuarioControlador);
+            	AddUser dialog = new AddUser(null);
+                dialog.setVisible(true);
                 break;
             case 1:
                 modificarUsuario(usuarioControlador);
@@ -82,11 +88,6 @@ public class GerenteGeneral extends Usuario implements Menu{
                 JOptionPane.showMessageDialog(null, "Operación inválida!");
                 break;
         }
-    } // hello
-    
-    private void agregarUsuario(UsuarioControlador usuarioControlador) {
-        AddUser dialog = new AddUser(null);
-        dialog.setVisible(true);
     }
     
     private void modificarUsuario(UsuarioControlador usuarioControlador) {
