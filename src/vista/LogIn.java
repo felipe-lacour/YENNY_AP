@@ -60,13 +60,13 @@ public class LogIn extends JFrame implements Menu {
 		
 		JLabel lblNewLabel_2 = new JLabel("La contraseña ingresada es incorrecta");
 		lblNewLabel_2.setForeground(new Color(204, 37, 13));
-		lblNewLabel_2.setBounds(304, 163, 213, 14);
+		lblNewLabel_2.setBounds(304, 163, 239, 14);
 		contentPane.add(lblNewLabel_2);
 		lblNewLabel_2.setVisible(false);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("El ususario ingresado no esta registrado");
 		lblNewLabel_2_1.setForeground(new Color(204, 37, 13));
-		lblNewLabel_2_1.setBounds(304, 78, 213, 14);
+		lblNewLabel_2_1.setBounds(304, 78, 239, 14);
 		contentPane.add(lblNewLabel_2_1);
 		lblNewLabel_2_1.setVisible(false);
 		

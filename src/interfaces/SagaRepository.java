@@ -4,13 +4,13 @@ import java.util.List;
 import modelos.Saga;
 
 public interface SagaRepository {
-List <Saga> getAllUsers();
+	List <Saga> getAllSagas();
 	
-Saga getUserById(int id);
+	Saga getSagaById(int id);
+		
+	void addSaga(Saga user);
 	
-	void addUser(Saga user);
+	void updateSaga(Saga user);
 	
-	void updateUser(Saga user);
-	
-	void deteleUser(int id);
+	void deteleSaga(int id);
 }

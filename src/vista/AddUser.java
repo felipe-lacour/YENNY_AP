@@ -176,7 +176,17 @@ public class AddUser extends JDialog implements Auxiliaries{
 		        }
 			}
 		});
-		btnNewButton.setBounds(31, 361, 121, 23);
+		btnNewButton.setBounds(31, 361, 96, 23);
 		contentPane.add(btnNewButton);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		dispose();
+        		return;
+        	}
+        });
+		btnCancelar.setBounds(158, 361, 96, 23);
+		contentPane.add(btnCancelar);
 	}
 }
