@@ -25,7 +25,7 @@ public class EditorialControlador implements EditorialRepository {
 	            ResultSet resultSet = statement.executeQuery();
 	       
 	            while (resultSet.next()) {
-	            	Editorial Editorial = new Editorial(resultSet.getInt("editorial_id"), resultSet.getString("name"));
+	            	Editorial Editorial = new Editorial(resultSet.getInt("editorial_id"), resultSet.getString("nombre"));
 	                Editorials.add(Editorial);
 	            }
 	        } catch (SQLException e) {
@@ -44,7 +44,7 @@ public class EditorialControlador implements EditorialRepository {
 	            ResultSet resultSet = statement.executeQuery();
 	            
 	            if (resultSet.next()) {
-	                Editorial = new Editorial(resultSet.getInt("id"), resultSet.getString("name"));
+	                Editorial = new Editorial(resultSet.getInt("id"), resultSet.getString("nombre"));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -55,7 +55,7 @@ public class EditorialControlador implements EditorialRepository {
 		@Override
 	    public void addEditorial(Editorial Editorial) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("INSERT INTO editoriales (name) VALUES (?, ?)");
+	            PreparedStatement statement = connection.prepareStatement("INSERT INTO editoriales (nombre) VALUES (?)");
 	            statement.setString(1, Editorial.getNombre());
 	            
 	            int rowsInserted = statement.executeUpdate();
@@ -70,7 +70,7 @@ public class EditorialControlador implements EditorialRepository {
 		@Override
 	    public void updateEditorial(Editorial Editorial) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("UPDATE editoriales SET name = ?, email = ? WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("UPDATE editoriales SET nombre = ? WHERE id = ?");
 	            statement.setString(1, Editorial.getNombre());
 	            statement.setInt(2, Editorial.getEditorialId());
 	            

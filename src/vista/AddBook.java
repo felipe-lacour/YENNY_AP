@@ -17,17 +17,11 @@ import modelos.Libro;
 import modelos.Saga;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JRadioButton;
-import javax.swing.JPasswordField;
-import javax.swing.JSpinner;
 import java.awt.Color;
 import java.awt.EventQueue;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JComboBox;
 
 public class AddBook extends JFrame implements Auxiliaries{
@@ -43,7 +37,7 @@ public class AddBook extends JFrame implements Auxiliaries{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddBook frame = new AddBook();
+					AddBook frame = new AddBook(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,16 +46,15 @@ public class AddBook extends JFrame implements Auxiliaries{
 		});
 	}
 
-	public AddBook() {
+	public AddBook(Libro book) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 569, 353);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		controlador = new LibroControlador();
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
 		
 		JLabel lblNewLabel = new JLabel("Titulo:");
 		lblNewLabel.setBounds(51, 22, 217, 14);
@@ -81,8 +74,9 @@ public class AddBook extends JFrame implements Auxiliaries{
 		contentPane.add(comboBox);
 		
 		AutorControlador controlaAutor = new AutorControlador();
+		comboBox.addItem("...");
 		for (Autor autor : controlaAutor.getAllAutors()) {
-			comboBox.addItem(autor);
+			comboBox.addItem(autor.getNombre());
         }
 		
 		JLabel lblSaga = new JLabel("Saga:");
@@ -94,8 +88,9 @@ public class AddBook extends JFrame implements Auxiliaries{
 		contentPane.add(comboBox_2);
 		
 		SagaControlador controlaSaga = new SagaControlador();
+		comboBox_2.addItem("...");
 		for (Saga saga : controlaSaga.getAllSagas()) {
-			comboBox_2.addItem(saga);
+			comboBox_2.addItem(saga.getNombre());
         }
 		
 		JLabel lblEditorial = new JLabel("Editorial:");
@@ -107,9 +102,28 @@ public class AddBook extends JFrame implements Auxiliaries{
 		contentPane.add(comboBox_3);
 
 		EditorialControlador controlaEdit = new EditorialControlador();
+		comboBox_3.addItem("...");
 		for (Editorial edit : controlaEdit.getAllEditorials()) {
-			comboBox_3.addItem(edit);
+			comboBox_3.addItem(edit.getNombre());
         }
+		
+		book = controlador.getBookById(6);
+		if (book != null) {
+			textField.setText(book.getTitulo());
+			comboBox.setSelectedItem(controlaAutor.getAutorById(book.getAutorId()).getNombre());
+			if (book.getSagaId() != null) {
+				comboBox_2.setSelectedItem(controlaSaga.getSagaById(book.getSagaId()).getNombre());
+			}
+			if (book.getEditorialId() != 0) {
+				comboBox_3.setSelectedItem(controlaEdit.getEditorialById(book.getEditorialId()).getNombre());
+			}
+		}
+		
+		JLabel booklet = new JLabel("El libro ingresado ya esta registrado");
+		booklet.setForeground(new Color(204, 37, 13));
+		booklet.setBounds(279, 269, 237, 14);
+		contentPane.add(booklet);
+		booklet.setVisible(false);
 		
 		JLabel formato = new JLabel("El formato ingresado es invalido");
 		formato.setForeground(new Color(204, 37, 13));
@@ -117,17 +131,22 @@ public class AddBook extends JFrame implements Auxiliaries{
 		contentPane.add(formato);
 		formato.setVisible(false);
 		
-		JLabel usu = new JLabel("El usuario ingresado ya esta registrado");
-		usu.setForeground(new Color(204, 37, 13));
-		usu.setBounds(279, 104, 237, 14);
-		contentPane.add(usu);
-		usu.setVisible(false);
-		
 		JButton btnNewButton = new JButton("Añadir");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-
+				formato.setVisible(false);
+				booklet.setVisible(false);
+				boolean valid = true; 
+					
+				if (!verifyStrInput(textField.getText())){
+					formato.setVisible(true);
+					valid = false;
+				}
+		        
+		        if (valid) {
+		        	
+		        	return;
+		        }
 			}
 		});
 		btnNewButton.setBounds(31, 265, 97, 23);
