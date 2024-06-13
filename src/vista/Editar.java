@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -21,9 +22,10 @@ public class Editar extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField inpUbicacion;
-	private JTextField inpNombre;
 	private SucuControlador controlador;
 	private Sucursal seleccionado;
+	private JTextField inpNombre;
+	
 
 	/**
 	 * Launch the application.
@@ -65,13 +67,6 @@ public class Editar extends JFrame {
 		contentPane.add(lblNombre);
 		
 		
-		inpNombre = new JTextField();
-		inpNombre.setBounds(10, 112, 86, 20);
-		contentPane.add(inpNombre);
-		inpNombre.setColumns(10);
-		inpNombre.setText(Sucursal.getNombre());
-		
-		
 		//btn editar
 		
 		JButton btnEditar = new JButton("Editar");
@@ -83,24 +78,21 @@ public class Editar extends JFrame {
 				} else {
 					Sucursal.setUbicacion(inpUbicacion.getText());
 					Sucursal.setNombre(inpNombre.getText());
-					
-					
 					if (controlador.updateBranch(Sucursal)) {
-						JOptionPane.showMessageDialog(null, "Pudo editar");
-						
+						JOptionPane.showMessageDialog(null, "Se pudo editar");
 						dispose();
-					} else {
-						JOptionPane.showMessageDialog(null, "No poudo editar");
-
 					}
-					
-				}
-				
+					} 
 			}
 		});
 		
 		btnEditar.setBounds(122, 195, 89, 23);
 		contentPane.add(btnEditar);
+		
+		inpNombre = new JTextField();
+		inpNombre.setBounds(10, 113, 86, 20);
+		contentPane.add(inpNombre);
+		inpNombre.setColumns(10);
 		
 	}
 

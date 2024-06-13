@@ -36,6 +36,7 @@ public class Tabla_Sucursal extends JFrame {
 	private JButton btneliminar;
 	private JButton btnEditar;
 	private JButton Editar;
+	private JButton btnEdit;
 
 	/**
 	 * Launch the application.
@@ -69,7 +70,7 @@ public class Tabla_Sucursal extends JFrame {
 		Sucursal seleccionado = new Sucursal();
 		
 		//tabla y modelo
-		String[] columnNames = {"Sucursal_id", "Direccion", "Nombre"};
+		String[] columnNames = {"Id sucursal", "Direccion", "Nombre"};
         model = new DefaultTableModel(columnNames, 0);
         table = new JTable(model);
         actualizarTabla();
@@ -104,11 +105,38 @@ public class Tabla_Sucursal extends JFrame {
         		
         	}
         });
-        btneliminar.setBounds(265, 227, 89, 23);
+        btneliminar.setBounds(256, 227, 89, 23);
         contentPane.add(btneliminar);
         
+        JButton btnAgregar = new JButton("Agregar");
+        btnAgregar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		AgregarSucu Agregar = new AgregarSucu();
+        		dispose();
+        	}
+        });
+        btnAgregar.setBounds(454, 227, 89, 23);
+        contentPane.add(btnAgregar);
+        
+        Editar = new JButton("Editar");
+        Editar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		if (seleccionado.getSucursalId()!=0) {
+					
+        			Editar editar = new Editar(seleccionado);
+        			dispose();
+				} else {
+					JOptionPane.showMessageDialog(null, "Seleccione un usuario");
+				}
+        		
+        	}
+        });
+        Editar.setBounds(355, 227, 89, 23);
+        contentPane.add(Editar);
+        
         //boton editar
-       /* Editar = new JButton("Editar");
+       /*Editar = new JButton("Editar");
         Editar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
@@ -138,7 +166,7 @@ public class Tabla_Sucursal extends JFrame {
 	                        int id = (int) table.getValueAt(selectedRow, 0);
 	                        String ubicacion = (String) table.getValueAt(selectedRow, 1);
 	                        String direccion = (String) table.getValueAt(selectedRow, 2);
-	                        elemento.setText("Seleccionado: ID=" + id + ", ubicacion=" + ubicacion + ", direccion=" + direccion );
+	                        elemento.setText("Seleccionado: ID=" + id + ", Direccion=" + ubicacion + ", Nombre=" + direccion );
 	                        seleccionado.setSucursalId(id);;
 	                        seleccionado.setUbicacion(ubicacion);
 	                        seleccionado.setNombre(direccion);;

@@ -10,7 +10,7 @@ public interface SucuRepository {
 	
 	void addBranch(Sucursal user);
 	
-	void updateBranch(Sucursal user);
+	boolean updateBranch(Sucursal user);
 	
 	void deteleBranch(int id);
 }

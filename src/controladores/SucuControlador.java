@@ -76,7 +76,7 @@ public class SucuControlador implements SucuRepository {
     }
 
     @Override
-    public void updateBranch(Sucursal sucursal) {
+    public boolean updateBranch(Sucursal sucursal) {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE sucursales SET ubicacion = ?, nombre = ? WHERE sucursal_id = ?");
             statement.setString(1, sucursal.getUbicacion());
@@ -86,9 +86,12 @@ public class SucuControlador implements SucuRepository {
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
                 System.out.println("Sucursal actualizada exitosamente");
+                return true;
             }
+            return false;    
         } catch (SQLException e) {
             e.printStackTrace();
+            return false; 
         }
     }
 
