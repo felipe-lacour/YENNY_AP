@@ -56,8 +56,17 @@ public class LibroControlador implements LibroRepositorio {
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO libros (titulo, saga_id, editorial_id, autor_id) VALUES (?, ?, ?, ?)");
             statement.setString(1, libro.getTitulo());
-            statement.setInt(2, libro.getSagaId());
-            statement.setInt(3, libro.getEditorialId());
+            if (libro.getSagaId() == 0) {
+            	statement.setNull(2, 0);
+            } else {
+            	statement.setInt(2, libro.getSagaId());
+            }
+            if (libro.getEditorialId() == 0) {
+            	 statement.setNull(3, 0);
+            } else {
+            	statement.setInt(3, libro.getEditorialId());
+            }
+            
             statement.setInt(4, libro.getAutorId());
 
             int rowsInserted = statement.executeUpdate();
@@ -74,8 +83,17 @@ public class LibroControlador implements LibroRepositorio {
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE libros SET titulo = ?, saga_id = ?, editorial_id = ?, autor_id = ? WHERE libro_id = ?");
             statement.setString(1, libro.getTitulo());
-            statement.setInt(2, libro.getSagaId());
-            statement.setInt(3, libro.getEditorialId());
+            if (libro.getSagaId() == 0) {
+            	statement.setNull(2, 0);
+            } else {
+            	statement.setInt(2, libro.getSagaId());
+            }
+            if (libro.getEditorialId() == 0) {
+            	 statement.setNull(3, 0);
+            } else {
+            	statement.setInt(3, libro.getEditorialId());
+            }
+            
             statement.setInt(4, libro.getAutorId());
             statement.setInt(5, libro.getLibroId());
 

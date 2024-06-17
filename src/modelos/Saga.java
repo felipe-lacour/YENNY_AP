@@ -46,4 +46,8 @@ public class Saga {
 		this.numeroSaga = numeroSaga;
 	}
 	
+    @Override
+    public String toString() {
+        return nombre; // Return the display name
+    }
 }

@@ -37,13 +37,13 @@ public class AutorControlador implements AutorRepository {
 	    public Autor getAutorById(int id) {
 	    	Autor Autor = null;
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM autores WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM autores WHERE autor_id = ?");
 	            statement.setInt(1, id);
 	            
 	            ResultSet resultSet = statement.executeQuery();
 	            
 	            if (resultSet.next()) {
-	                Autor = new Autor(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("nacionalidad"));
+	                Autor = new Autor(resultSet.getInt("autor_id"), resultSet.getString("nombre"), resultSet.getString("nacionalidad"));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();

@@ -38,13 +38,13 @@ public class EditorialControlador implements EditorialRepository {
 	    public Editorial getEditorialById(int id) {
 	    	Editorial Editorial = null;
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM editoriales WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("SELECT * FROM editoriales WHERE editorial_id = ?");
 	            statement.setInt(1, id);
 	            
 	            ResultSet resultSet = statement.executeQuery();
 	            
 	            if (resultSet.next()) {
-	                Editorial = new Editorial(resultSet.getInt("id"), resultSet.getString("nombre"));
+	                Editorial = new Editorial(resultSet.getInt("editorial_id"), resultSet.getString("nombre"));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -70,7 +70,7 @@ public class EditorialControlador implements EditorialRepository {
 		@Override
 	    public void updateEditorial(Editorial Editorial) {
 	        try {
-	            PreparedStatement statement = connection.prepareStatement("UPDATE editoriales SET nombre = ? WHERE id = ?");
+	            PreparedStatement statement = connection.prepareStatement("UPDATE editoriales SET nombre = ? WHERE editorial_id = ?");
 	            statement.setString(1, Editorial.getNombre());
 	            statement.setInt(2, Editorial.getEditorialId());
 	            

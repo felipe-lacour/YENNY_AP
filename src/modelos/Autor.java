@@ -32,7 +32,8 @@ public class Autor {
 		this.nacionalidad = nacionalidad;
 	}
 	
-	
-	
-	
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }
