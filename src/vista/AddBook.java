@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -23,7 +24,7 @@ import modelos.Editorial;
 import modelos.Libro;
 import modelos.Saga;
 
-public class AddBook extends JFrame implements Auxiliaries{
+public class AddBook extends JDialog implements Auxiliaries{
 	private static final long serialVersionUID = 1L;
 	private LibroControlador controlador;
 	private JPanel contentPane;
@@ -31,12 +32,17 @@ public class AddBook extends JFrame implements Auxiliaries{
 	private Libro libruli;
 	
 	public AddBook(Libro book) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		super((JFrame)null, "View Books", true);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		String action = "Añadir";
+		if (book != null) {
+			action = "Actualizar";
+		}
+		setTitle(action + " Libros");
 		setBounds(100, 100, 569, 353);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		controlador = new LibroControlador();
-		book = controlador.getBookById(6); // Para probar
 		libruli = book;
 
 		setContentPane(contentPane);
@@ -124,10 +130,7 @@ public class AddBook extends JFrame implements Auxiliaries{
 		contentPane.add(autorObl);
 		autorObl.setVisible(false);
 		
-		String action = "Añadir";
-		if (book != null) {
-			action = "Actualizar";
-		}
+
 		JButton btnNewButton = new JButton(action);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
