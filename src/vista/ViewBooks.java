@@ -56,16 +56,28 @@ public class ViewBooks extends JDialog {
         elemento.setVerticalAlignment(SwingConstants.TOP);
         elemento.setBounds(20, 293, 533, 53);
         contentPane.add(elemento);
-
-        JButton Eliminar = new JButton("Eliminar");
-        Eliminar.setBounds(274, 361, 126, 35);
-        Eliminar.addActionListener(new ActionListener() {
+        
+        JButton Agregar = new JButton("Agregar");
+        Agregar.setBounds(10, 361, 126, 35);
+        Agregar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controlador.deleteBook(seleccionado.getLibroId());
+                AddBook frame = new AddBook(null);
+				frame.setVisible(true);
                 actualizarTabla();
             }
         });
-        contentPane.add(Eliminar);
+        contentPane.add(Agregar);
+        
+        JButton Cambiar = new JButton("Cambiar");
+        Cambiar.setBounds(145, 361, 126, 35);
+        Cambiar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                AddBook frame = new AddBook(seleccionado);
+				frame.setVisible(true);
+                actualizarTabla();
+            }
+        });
+        contentPane.add(Cambiar);
         
         lblNewLabel = new JLabel("Libros:");
         lblNewLabel.setBounds(21, 18, 46, 14);
@@ -80,6 +92,16 @@ public class ViewBooks extends JDialog {
         });
         btnVolver.setBounds(417, 361, 126, 35);
         contentPane.add(btnVolver);
+        
+                JButton Eliminar = new JButton("Eliminar");
+                Eliminar.setBounds(281, 361, 126, 35);
+                Eliminar.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        controlador.deleteBook(seleccionado.getLibroId());
+                        actualizarTabla();
+                    }
+                });
+                contentPane.add(Eliminar);
 
         ListSelectionModel selectionModel = table.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

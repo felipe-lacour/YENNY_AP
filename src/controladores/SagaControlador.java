@@ -21,7 +21,7 @@ public class SagaControlador implements SagaRepository {
     public List<Saga> getAllSagas() {
         List<Saga> sagas = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Sagas");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM sagas");
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -43,7 +43,7 @@ public class SagaControlador implements SagaRepository {
     public Saga getSagaById(int id) {
         Saga saga = null;
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Sagas WHERE saga_id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM sagas WHERE saga_id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
@@ -64,7 +64,7 @@ public class SagaControlador implements SagaRepository {
     @Override
     public void addSaga(Saga saga) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Sagas (nombre, numero_libros, numero_saga) VALUES (?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO sagas (nombre, numero_libros, numero_saga) VALUES (?, ?, ?)");
             statement.setString(1, saga.getNombre());
             statement.setInt(2, saga.getNumeroLibros());
             statement.setInt(3, saga.getNumeroSaga());
@@ -81,7 +81,7 @@ public class SagaControlador implements SagaRepository {
     @Override
     public void updateSaga(Saga saga) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE Sagas SET nombre = ?, numero_libros = ?, numero_saga = ? WHERE saga_id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE sagas SET nombre = ?, numero_libros = ?, numero_saga = ? WHERE saga_id = ?");
             statement.setString(1, saga.getNombre());
             statement.setInt(2, saga.getNumeroLibros());
             statement.setInt(3, saga.getNumeroSaga());
