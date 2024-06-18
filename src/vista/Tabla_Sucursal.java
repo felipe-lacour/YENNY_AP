@@ -21,6 +21,7 @@ import modelos.Sucursal;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 //import javax.swing.JMenuBar;
 
 public class Tabla_Sucursal extends JFrame {
@@ -37,6 +38,8 @@ public class Tabla_Sucursal extends JFrame {
 	private JButton btnEditar;
 	private JButton Editar;
 	private JButton btnEdit;
+	private JTextField inpBuscar;
+	private JButton btnBuscar;
 
 	/**
 	 * Launch the application.
@@ -135,6 +138,24 @@ public class Tabla_Sucursal extends JFrame {
         Editar.setBounds(355, 227, 89, 23);
         contentPane.add(Editar);
         
+        //buscar
+        inpBuscar = new JTextField();
+        inpBuscar.setText("Buscar por nombre");
+        inpBuscar.setBounds(5, 228, 127, 20);
+        contentPane.add(inpBuscar);
+        inpBuscar.setColumns(10);
+        
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		actualizarBusqueda(inpBuscar.getText());
+        	}
+
+			
+        });
+        btnBuscar.setBounds(142, 227, 83, 23);
+        contentPane.add(btnBuscar);
+        
         //boton editar
        /*Editar = new JButton("Editar");
         Editar.addActionListener(new ActionListener() {
@@ -194,6 +215,21 @@ public class Tabla_Sucursal extends JFrame {
 					sucursal.getUbicacion(),
 					sucursal.getNombre()
 			});
+		}
+	}
+	private void actualizarBusqueda(String text) {
+		model.setRowCount(0);
+		
+		List<Sucursal> sucursales = controlador.getAllBranches();
+		
+		for(Sucursal sucursal : sucursales) {
+			if(sucursal.getNombre().startsWith(text)) {
+				model.addRow(new Object[] { 
+						sucursal.getSucursalId(),
+						sucursal.getUbicacion(),
+						sucursal.getNombre()
+				});
+				}
 		}
 	}
 }
