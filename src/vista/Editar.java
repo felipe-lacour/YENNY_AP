@@ -21,21 +21,33 @@ public class Editar extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField inpUbicacion;
 	private SucuControlador controlador;
 	private Sucursal seleccionado;
 	private JTextField inpNombre;
+	private JTextField inpUbicacion;
 	
 
 	/**
 	 * Launch the application.
 	 */
-	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Editar frame = new Editar();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 
 	/**
 	 * Create the frame.
 	 */
-	public Editar(Sucursal Sucursal) {
+	public Editar() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -58,19 +70,21 @@ public class Editar extends JFrame {
 		inpUbicacion.setBounds(10, 53, 86, 20);
 		contentPane.add(inpUbicacion);
 		inpUbicacion.setColumns(10);
-		inpUbicacion.setText(Sucursal.getUbicacion());
-		
 		
 		//nombre
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setBounds(10, 84, 46, 14);
 		contentPane.add(lblNombre);
 		
+		inpNombre = new JTextField();
+		inpNombre.setBounds(10, 113, 86, 20);
+		contentPane.add(inpNombre);
+		inpNombre.setColumns(10);
 		
 		//btn editar
 		
 		JButton btnEditar = new JButton("Editar");
-		btnEditar.addActionListener(new ActionListener() {
+		/*btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (Sucursal.getNombre().equals(inpNombre.getText())) {
@@ -84,17 +98,14 @@ public class Editar extends JFrame {
 					}
 					} 
 			}
-		});
+		});*/
 		
 		btnEditar.setBounds(122, 195, 89, 23);
 		contentPane.add(btnEditar);
 		
-		inpNombre = new JTextField();
-		inpNombre.setBounds(10, 113, 86, 20);
-		contentPane.add(inpNombre);
-		inpNombre.setColumns(10);
+		
+		
+		
 		
 	}
-
-	
 }

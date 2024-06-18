@@ -22,7 +22,7 @@ public class Sucursal {
 		return ubicacion;
 	}
 
-	public String getNombre() {
+	public  String getNombre() {
 		return nombre;
 	}
 

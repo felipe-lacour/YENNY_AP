@@ -124,7 +124,7 @@ public class Tabla_Sucursal extends JFrame {
         		
         		if (seleccionado.getSucursalId()!=0) {
 					
-        			Editar editar = new Editar(seleccionado);
+        			EditarSucursal editar = new EditarSucursal(seleccionado);
         			dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "Seleccione un usuario");
