@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -50,16 +51,24 @@ public class AddSpecimen extends JDialog implements Auxiliaries{
     private JTextField searchField;
     private TableRowSorter<DefaultTableModel> sorter;
     private JTextField textField;
+    private Ejemplar ejemplitazo;
+	private JTextField textField1;
+	private JLabel precioObl;
 
-	public AddSpecimen(Usuario tipazo) {
+	public AddSpecimen(Ejemplar ejemplazo, Usuario tipazo) {
 		super((JFrame)null, "Add Specimen", true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle("Pedir Ejemplares");
+		String action = "Pedir";
+		if (ejemplazo != null) {
+			action = "Modificar";
+		}
+		setTitle(action + " Ejemplares");
         setBounds(100, 100, 569, 519);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         controlador = new LibroControlador();
+        ejemplitazo = ejemplazo;
 
         String[] columnNames = {"ID", "Titulo", "Autor", "Editorial", "Saga"};
         model = new DefaultTableModel(columnNames, 0);
@@ -132,9 +141,10 @@ public class AddSpecimen extends JDialog implements Auxiliaries{
                     int selectedRow = table.getSelectedRow();
                     if (selectedRow != -1) {
                         int id = (int) table.getValueAt(selectedRow, 0);
+                        AutorControlador controlaAutor = new AutorControlador();
 
                         seleccionado = controlador.getBookById(id);
-                        elemento.setText("Libro:  " + seleccionado.getTitulo() + "  -  " + seleccionado.getAutorId());
+                        elemento.setText("Libro:  " + seleccionado.getTitulo() + "  -  " + controlaAutor.getAutorById(seleccionado.getAutorId()));
                     }
                 }
             }
@@ -144,13 +154,25 @@ public class AddSpecimen extends JDialog implements Auxiliaries{
 		chckbxNewCheckBox.setBounds(31, 205, 113, 23);
 		contentPane.add(chckbxNewCheckBox);
 		
+		if (ejemplazo != null) {
+			chckbxNewCheckBox.setSelected(ejemplazo.isTapaDura());
+		}
+		
 		JCheckBox chckbxEdicionEspecial = new JCheckBox("Edicion Especial");
 		chckbxEdicionEspecial.setBounds(31, 231, 123, 23);
 		contentPane.add(chckbxEdicionEspecial);
 		
+		if (ejemplazo != null) {
+			chckbxEdicionEspecial.setSelected(ejemplazo.isEdicionEspecial());
+		}
+		
 		JCheckBox chckbxFirmado = new JCheckBox("Firmado");
 		chckbxFirmado.setBounds(31, 257, 113, 23);
 		contentPane.add(chckbxFirmado);
+		
+		if (ejemplazo != null) {
+			chckbxFirmado.setSelected(ejemplazo.isFirmado());
+		}
 		
 		textField = new JTextField();
 		textField.setBounds(31, 326, 223, 20);
@@ -182,13 +204,14 @@ public class AddSpecimen extends JDialog implements Auxiliaries{
 		autorObl.setBounds(279, 393, 237, 14);
 		contentPane.add(autorObl);
 		autorObl.setVisible(false);
-		
-		JButton btnNewButton = new JButton("Pedir");
+
+		JButton btnNewButton = new JButton(action);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				formato.setVisible(false);
 				libroObl.setVisible(false);
 				autorObl.setVisible(false);
+				precioObl.setVisible(false);
 				boolean valid = true; 
 
 				if (!verifyStrInput(textField.getText())){
@@ -205,21 +228,37 @@ public class AddSpecimen extends JDialog implements Auxiliaries{
 					libroObl.setVisible(true);
 					valid = false;
 				}
+				
+				if ((ejemplazo != null) && (!verifyDouInput(textField1.getText()))){
+					precioObl.setVisible(true);
+					valid = false;
+				}
 		        
-		        if (valid) {  // Datos temporales para probar
-		        	double precio = 22.5;
-		        	String isbn = "0-5388-8724-9";
-		        	int editoriali = 25;
+		        if (valid) {
 		        	conTrola = new EjemplarControlador();
 		        	
-		        	for (int i = 0; i < (int)spinner.getValue(); i++) {
-				        Ejemplar nuevoEjemplo = new Ejemplar(0, seleccionado.getLibroId(), tipazo.getSucursalId(), isbn, precio, chckbxNewCheckBox.isSelected(), 
-								 chckbxEdicionEspecial.isSelected(),  LocalDate.now().minusMonths(2), editoriali, chckbxFirmado.isSelected(), 
-								 textField.getText(), LocalDate.now(), 0);
-						conTrola.addEjemplar(nuevoEjemplo);
+		        	if (ejemplitazo != null) {
+		        		Ejemplar nuevoEjemplo = new Ejemplar(ejemplitazo.getEjemplarId(), seleccionado.getLibroId(), tipazo.getSucursalId(), ejemplitazo.getIsbn(), Double.parseDouble(textField1.getText()), chckbxNewCheckBox.isSelected(), 
+								 chckbxEdicionEspecial.isSelected(),  ejemplitazo.getFechaEdicion(), ejemplitazo.getNumeroEdicion(), chckbxFirmado.isSelected(), 
+								 ejemplitazo.getIdioma(), ejemplitazo.getFechaAdquisicion(), 0);
+						conTrola.updateEjemplar(nuevoEjemplo);
+						
+						JOptionPane.showMessageDialog(null, "Libro actualizado exitosamente!");
+		        	} else {
+			        	double precio = generateRandomDouble(200, 5000);
+			        	Random random = new Random();
+			        	int editoriali = random.nextInt(100) + 1;
+			        	
+			        	
+			        	for (int i = 0; i < (int)spinner.getValue(); i++) {
+					        Ejemplar nuevoEjemplo = new Ejemplar(0, seleccionado.getLibroId(), tipazo.getSucursalId(), generateISBN(), precio, chckbxNewCheckBox.isSelected(), 
+									 chckbxEdicionEspecial.isSelected(),  LocalDate.now().minusMonths(2), editoriali, chckbxFirmado.isSelected(), 
+									 textField.getText(), LocalDate.now(), 0);
+							conTrola.addEjemplar(nuevoEjemplo);
+			        	}
+			        	
+			        	JOptionPane.showMessageDialog(null, "Libros encargados exitosamente!");
 		        	}
-		        	
-		        	JOptionPane.showMessageDialog(null, "Libros encargados exitosamente!");
 		        	dispose();
 		        	return;
 		        }
@@ -237,5 +276,68 @@ public class AddSpecimen extends JDialog implements Auxiliaries{
 		});
 		btnNewButton_1.setBounds(157, 434, 97, 23);
 		contentPane.add(btnNewButton_1);
+		
+		
+		if (ejemplazo != null) {
+			scrollPane.setVisible(false);
+			lblNewLabel.setVisible(false);
+			elemento.setBounds(51, 22, 492, 36);
+			chckbxNewCheckBox.setBounds(31, 54, 113, 23);
+			chckbxEdicionEspecial.setBounds(31, 80, 123, 23);
+			chckbxFirmado.setBounds(31, 106, 113, 23);
+			lblIdDeLa.setBounds(51, 150, 217, 14);
+			textField.setBounds(31, 175, 223, 20);
+			lblCantidad.setVisible(false);
+			spinner.setVisible(false);
+			spinner.setValue(1);
+			btnNewButton_1.setBounds(157, 282, 97, 23);
+			btnNewButton.setBounds(31, 282, 97, 23);
+			seleccionado = controlador.getBookById(ejemplazo.getLibroId());
+            elemento.setText("Libro:  " + seleccionado.getTitulo() + "  -  " + seleccionado.getAutorId());
+            textField.setText(ejemplazo.getIdioma());
+            lblIdDeLa.setEnabled(false);
+            textField.setEnabled(false);
+            searchField.setVisible(false);
+            setBounds(100, 100, 569, 374);
+            
+            JLabel lblIdDeLab = new JLabel("Precio:");
+    		lblIdDeLab.setBounds(51, 213, 217, 14);
+    		contentPane.add(lblIdDeLab);
+            
+            textField1 = new JTextField();
+    		textField1.setBounds(31, 238, 223, 20);
+    		contentPane.add(textField1);
+    		textField1.setColumns(10);
+    		textField1.setText(Double.toString(ejemplazo.getPrecio()));
+    		
+    		precioObl = new JLabel("El precio ingresado es invalido");
+    		precioObl.setForeground(new Color(204, 37, 13));
+    		precioObl.setBounds(279, 241, 237, 14);
+    		contentPane.add(precioObl);
+    		precioObl.setVisible(false);
+		}
 	}
+	
+    public static String generateISBN() {
+        Random random = new Random();
+        StringBuilder isbn = new StringBuilder();
+
+        for (int i = 0; i < 9; i++) {
+            isbn.append(random.nextInt(10));
+        }
+
+        if (random.nextBoolean()) {
+            isbn.append(random.nextInt(10));
+        } else {
+            isbn.append('X');
+        }
+
+        return isbn.toString();
+    }
+    
+    public static double generateRandomDouble(double min, double max) {
+        Random random = new Random();
+        double randomDouble = min + (max - min) * random.nextDouble();
+        return Math.round(randomDouble * 100.0) / 100.0;
+    }
 }

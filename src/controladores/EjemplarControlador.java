@@ -130,12 +130,12 @@ public class EjemplarControlador implements EjemplarRepository {
             statement.setBoolean(9, ejemplar.isFirmado());
             statement.setString(10, ejemplar.getIdioma());
             statement.setDate(11, Date.valueOf(ejemplar.getFechaAdquisicion()));
-            statement.setInt(12, ejemplar.getVentaId());
             if (ejemplar.getVentaId() == 0) {
             	statement.setNull(12, 0);
             } else {
             	statement.setInt(12, ejemplar.getVentaId());
             }
+            statement.setInt(13, ejemplar.getEjemplarId());
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {

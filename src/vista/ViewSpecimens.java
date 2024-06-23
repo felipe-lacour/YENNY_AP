@@ -91,7 +91,7 @@ public class ViewSpecimens extends JDialog {
         Agregar.setBounds(10, 361, 126, 35);
         Agregar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AddSpecimen frame = new AddSpecimen(tipazo);
+                AddSpecimen frame = new AddSpecimen(null, tipazo);
                 frame.setVisible(true);
                 actualizarTabla();
             }
@@ -101,10 +101,10 @@ public class ViewSpecimens extends JDialog {
         JButton Cambiar = new JButton("Cambiar");
         Cambiar.setBounds(145, 361, 126, 35);
         Cambiar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {/*
-            	AddSpecimen frame = new AddSpecimen(seleccionado);
+            public void actionPerformed(ActionEvent e) {
+            	AddSpecimen frame = new AddSpecimen(seleccionado, tipazo);
                 frame.setVisible(true);
-                actualizarTabla();*/
+                actualizarTabla();
             }
         });
         contentPane.add(Cambiar);
