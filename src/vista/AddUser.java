@@ -1,26 +1,28 @@
 package vista;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import controladores.SucuControlador;
-import controladores.UsuarioControlador;
-import interfaces.Auxiliaries;
-import modelos.Usuario;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JPasswordField;
-import javax.swing.JSpinner;
-import java.awt.Color;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+
+import controladores.SucuControlador;
+import controladores.UsuarioControlador;
+import interfaces.Auxiliaries;
+import modelos.Sucursal;
+import modelos.Usuario;
+
 
 public class AddUser extends JDialog implements Auxiliaries{
 	private static final long serialVersionUID = 1L;
@@ -28,14 +30,21 @@ public class AddUser extends JDialog implements Auxiliaries{
 	private JTextField textField;
 	private JTextField textField_1;
 	private JPasswordField passwordField;
+	private Usuario usuarito;
 
-	public AddUser(JFrame parent) {
-		super(parent, "Add User", true);
-		UsuarioControlador controlador = new UsuarioControlador();
+	public AddUser(Usuario paseUsuario, int rol) {
+		super((JFrame)null, "Add User", true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		String action = "Añadir";
+		if (paseUsuario != null) {
+			action = "Actualizar";
+		}
+		setTitle(action + " Usuarios");
 		setBounds(100, 100, 569, 446);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		UsuarioControlador controlador = new UsuarioControlador();
+		usuarito = paseUsuario;
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -61,7 +70,11 @@ public class AddUser extends JDialog implements Auxiliaries{
 		ButtonGroup group = new ButtonGroup();
         group.add(rdbtnNewRadioButton);
         group.add(rdbtnNewRadioButton_1);
-		
+        
+		if (((usuarito != null) && (usuarito.getRol() == 1)) || rol == 2) {
+			rdbtnNewRadioButton_1.setSelected(true);
+		}
+	
 		JLabel lblSeleccioneElRol = new JLabel("Rol del usuario:");
 		lblSeleccioneElRol.setBounds(51, 204, 217, 14);
 		contentPane.add(lblSeleccioneElRol);
@@ -83,11 +96,28 @@ public class AddUser extends JDialog implements Auxiliaries{
 		passwordField.setBounds(31, 162, 223, 20);
 		contentPane.add(passwordField);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setBounds(31, 318, 223, 20);
-		contentPane.add(spinner);
+		if (usuarito != null) {
+			textField.setText(usuarito.getNombre());
+			textField_1.setText(usuarito.getUserName());
+			passwordField.setText(usuarito.getPass());
+			lblPassword.setEnabled(false);
+			passwordField.setEnabled(false);
+		}
 		
-		JLabel lblIdDeLa = new JLabel("ID de la sucursal del usuario:");
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(31, 313, 223, 22);
+		contentPane.add(comboBox);
+		
+		SucuControlador sucuControlador = new SucuControlador();
+		comboBox.addItem("...");
+		for (Sucursal sucursal : sucuControlador.getAllBranches()) {
+			comboBox.addItem(sucursal);
+			if (usuarito != null && usuarito.getSucursalId() == sucursal.getSucursalId()) { 
+				comboBox.setSelectedItem(sucursal);
+			}
+        }
+		
+		JLabel lblIdDeLa = new JLabel("Sucursal del usuario:");
 		lblIdDeLa.setBounds(51, 292, 217, 14);
 		contentPane.add(lblIdDeLa);
 		
@@ -115,13 +145,13 @@ public class AddUser extends JDialog implements Auxiliaries{
 		contentPane.add(usu);
 		usu.setVisible(false);
 		
-		JLabel sucursa = new JLabel("El ID ingresado es invalido");
+		JLabel sucursa = new JLabel("Este campo debe ser seleccionado");
 		sucursa.setForeground(new Color(204, 37, 13));
 		sucursa.setBounds(279, 321, 237, 14);
 		contentPane.add(sucursa);
 		sucursa.setVisible(false);
 		
-		JButton btnNewButton = new JButton("Añadir");
+		JButton btnNewButton = new JButton(action);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				formato.setVisible(false);
@@ -154,24 +184,31 @@ public class AddUser extends JDialog implements Auxiliaries{
 					valid = false;
 				}
 		        
-		        SucuControlador sucuControlador = new SucuControlador();
-		        if (sucuControlador.getBranchById((Integer)spinner.getValue()) == null) {
+		        if (comboBox.getSelectedItem().equals("...")) {
 		        	sucursa.setVisible(true);
 		        	valid = false;
 		        }
 		        
 		        if (valid) {
-		        	int rol;
+		        	int rol, suculi;
 		        	if (rdbtnNewRadioButton.isSelected()) {
 		        		rol = 2;
 		        	} else {
 		        		rol = 1;
 		        	}
+					suculi = ((Sucursal)comboBox.getSelectedItem()).getSucursalId();
 
-		        	Usuario nuevoUsuario = new Usuario(0, textField.getText(), rol, (Integer)spinner.getValue(), new String(passwordField.getPassword()), textField_1.getText());
-		        	controlador.addUser(nuevoUsuario);
+
+		        	Usuario nuevoUsuario = new Usuario(0, textField.getText(), rol, suculi, new String(passwordField.getPassword()), textField_1.getText());
+		        	if (usuarito != null) {
+		        		nuevoUsuario.setUsuarioId(usuarito.getUsuarioId());
+			        	controlador.updateUser(nuevoUsuario);
+			        	JOptionPane.showMessageDialog(null, "Usuario actualizado exitosamente!");
+			        } else {
+			        	controlador.addUser(nuevoUsuario);
+			        	JOptionPane.showMessageDialog(null, "Usuario agregado exitosamente!");
+			        }
 		        	dispose();
-		        	JOptionPane.showMessageDialog(null, "Usuario agregado exitosamente!");
 		        	return;
 		        }
 			}
@@ -188,5 +225,17 @@ public class AddUser extends JDialog implements Auxiliaries{
         });
 		btnCancelar.setBounds(158, 361, 96, 23);
 		contentPane.add(btnCancelar);
+		
+		if (rol == 2) {
+			rdbtnNewRadioButton.setVisible(false);
+			rdbtnNewRadioButton_1.setVisible(false);
+			lblSeleccioneElRol.setVisible(false);
+			lblIdDeLa.setBounds(51, 204, 217, 14);
+			comboBox.setBounds(31, 225, 223, 22);
+			sucursa.setBounds(279, 233, 237, 14);
+			btnNewButton.setBounds(31, 273, 96, 23);
+			btnCancelar.setBounds(158, 273, 96, 23);
+			setBounds(100, 100, 569, 358);
+		}
 	}
 }
