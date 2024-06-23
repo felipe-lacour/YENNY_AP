@@ -32,14 +32,12 @@ public class EjemplarControlador implements EjemplarRepository {
                     resultSet.getInt("sucursal_id"),
                     resultSet.getString("isbn"),
                     resultSet.getDouble("precio"),
-                    resultSet.getString("condicion"),
                     resultSet.getBoolean("tapa_dura"),
                     resultSet.getBoolean("edicion_especial"),
                     resultSet.getDate("fecha_edicion").toLocalDate(),
                     resultSet.getInt("numero_edicion"),
                     resultSet.getBoolean("firmado"),
                     resultSet.getString("idioma"),
-                    resultSet.getString("caracteristicas_especiales"),
                     resultSet.getDate("fecha_adquisicion").toLocalDate(),
                     resultSet.getInt("venta_id") == 0 ? null : resultSet.getInt("venta_id")
                 );
@@ -67,14 +65,12 @@ public class EjemplarControlador implements EjemplarRepository {
                     resultSet.getInt("sucursal_id"),
                     resultSet.getString("isbn"),
                     resultSet.getDouble("precio"),
-                    resultSet.getString("condicion"),
                     resultSet.getBoolean("tapa_dura"),
                     resultSet.getBoolean("edicion_especial"),
                     resultSet.getDate("fecha_edicion").toLocalDate(),
                     resultSet.getInt("numero_edicion"),
                     resultSet.getBoolean("firmado"),
                     resultSet.getString("idioma"),
-                    resultSet.getString("caracteristicas_especiales"),
                     resultSet.getDate("fecha_adquisicion").toLocalDate(),
                     resultSet.getInt("venta_id")
                 );
@@ -89,22 +85,24 @@ public class EjemplarControlador implements EjemplarRepository {
     public void addEjemplar(Ejemplar ejemplar) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO ejemplares (libro_id, sucursal_id, isbn, precio, condicion, tapa_dura, edicion_especial, fecha_edicion, numero_edicion, firmado, idioma, caracteristicas_especiales, fecha_adquisicion, venta_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                "INSERT INTO ejemplares (libro_id, sucursal_id, isbn, precio, tapa_dura, edicion_especial, fecha_edicion, numero_edicion, firmado, idioma, fecha_adquisicion, venta_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
             statement.setInt(1, ejemplar.getLibroId());
             statement.setInt(2, ejemplar.getSucursalId());
             statement.setString(3, ejemplar.getIsbn());
             statement.setDouble(4, ejemplar.getPrecio());
-            statement.setString(5, ejemplar.getCondicion());
-            statement.setBoolean(6, ejemplar.isTapaDura());
-            statement.setBoolean(7, ejemplar.isEdicionEspecial());
-            statement.setDate(8, Date.valueOf(ejemplar.getFechaEdicion()));
-            statement.setInt(9, ejemplar.getNumeroEdicion());
-            statement.setBoolean(10, ejemplar.isFirmado());
-            statement.setString(11, ejemplar.getIdioma());
-            statement.setString(12, ejemplar.getCaracteristicasEspeciales());
-            statement.setDate(13, Date.valueOf(ejemplar.getFechaAdquisicion()));
-            statement.setInt(14, ejemplar.getVentaId());
+            statement.setBoolean(5, ejemplar.isTapaDura());
+            statement.setBoolean(6, ejemplar.isEdicionEspecial());
+            statement.setDate(7, Date.valueOf(ejemplar.getFechaEdicion()));
+            statement.setInt(8, ejemplar.getNumeroEdicion());
+            statement.setBoolean(9, ejemplar.isFirmado());
+            statement.setString(10, ejemplar.getIdioma());
+            statement.setDate(11, Date.valueOf(ejemplar.getFechaAdquisicion()));
+            if (ejemplar.getVentaId() == 0) {
+            	statement.setNull(12, 0);
+            } else {
+            	statement.setInt(12, ejemplar.getVentaId());
+            }
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
@@ -119,23 +117,25 @@ public class EjemplarControlador implements EjemplarRepository {
     public void updateEjemplar(Ejemplar ejemplar) {
         try {
             PreparedStatement statement = connection.prepareStatement(
-                "UPDATE ejemplares SET libro_id = ?, sucursal_id = ?, isbn = ?, precio = ?, condicion = ?, tapa_dura = ?, edicion_especial = ?, fecha_edicion = ?, numero_edicion = ?, firmado = ?, idioma = ?, caracteristicas_especiales = ?, fecha_adquisicion = ?, venta_id = ? WHERE ejemplar_id = ?"
+                "UPDATE ejemplares SET libro_id = ?, sucursal_id = ?, isbn = ?, precio = ?, tapa_dura = ?, edicion_especial = ?, fecha_edicion = ?, numero_edicion = ?, firmado = ?, idioma = ?, fecha_adquisicion = ?, venta_id = ? WHERE ejemplar_id = ?"
             );
             statement.setInt(1, ejemplar.getLibroId());
             statement.setInt(2, ejemplar.getSucursalId());
             statement.setString(3, ejemplar.getIsbn());
             statement.setDouble(4, ejemplar.getPrecio());
-            statement.setString(5, ejemplar.getCondicion());
-            statement.setBoolean(6, ejemplar.isTapaDura());
-            statement.setBoolean(7, ejemplar.isEdicionEspecial());
-            statement.setDate(8, Date.valueOf(ejemplar.getFechaEdicion()));
-            statement.setInt(9, ejemplar.getNumeroEdicion());
-            statement.setBoolean(10, ejemplar.isFirmado());
-            statement.setString(11, ejemplar.getIdioma());
-            statement.setString(12, ejemplar.getCaracteristicasEspeciales());
-            statement.setDate(13, Date.valueOf(ejemplar.getFechaAdquisicion()));
-            statement.setInt(14, ejemplar.getVentaId());
-            statement.setInt(15, ejemplar.getEjemplarId());
+            statement.setBoolean(5, ejemplar.isTapaDura());
+            statement.setBoolean(6, ejemplar.isEdicionEspecial());
+            statement.setDate(7, Date.valueOf(ejemplar.getFechaEdicion()));
+            statement.setInt(8, ejemplar.getNumeroEdicion());
+            statement.setBoolean(9, ejemplar.isFirmado());
+            statement.setString(10, ejemplar.getIdioma());
+            statement.setDate(11, Date.valueOf(ejemplar.getFechaAdquisicion()));
+            statement.setInt(12, ejemplar.getVentaId());
+            if (ejemplar.getVentaId() == 0) {
+            	statement.setNull(12, 0);
+            } else {
+            	statement.setInt(12, ejemplar.getVentaId());
+            }
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
@@ -176,14 +176,12 @@ public class EjemplarControlador implements EjemplarRepository {
                     resultSet.getInt("sucursal_id"),
                     resultSet.getString("isbn"),
                     resultSet.getDouble("precio"),
-                    resultSet.getString("condicion"),
                     resultSet.getBoolean("tapa_dura"),
                     resultSet.getBoolean("edicion_especial"),
                     resultSet.getDate("fecha_edicion").toLocalDate(),
                     resultSet.getInt("numero_edicion"),
                     resultSet.getBoolean("firmado"),
                     resultSet.getString("idioma"),
-                    resultSet.getString("caracteristicas_especiales"),
                     resultSet.getDate("fecha_adquisicion").toLocalDate(),
                     resultSet.getInt("venta_id")
                 );

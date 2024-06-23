@@ -32,7 +32,7 @@ public class AddBook extends JDialog implements Auxiliaries{
 	private Libro libruli;
 	
 	public AddBook(Libro book) {
-		super((JFrame)null, "View Books", true);
+		super((JFrame)null, "Add Book", true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		String action = "Añadir";
 		if (book != null) {
@@ -99,7 +99,7 @@ public class AddBook extends JDialog implements Auxiliaries{
 		lblEditorial.setBounds(51, 204, 217, 14);
 		contentPane.add(lblEditorial);
 		
-		JComboBox comboBox_3 = new JComboBox();
+		JComboBox comboBox_3 = new JComboBox<>();
 		comboBox_3.setBounds(31, 222, 223, 22);
 		contentPane.add(comboBox_3);
 

@@ -45,6 +45,10 @@ public class Usuario implements Menu{
 		return userName;
 	}
 
+	public void setUsuarioId(int usuarioId) {
+		this.usuarioId = usuarioId;
+	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
