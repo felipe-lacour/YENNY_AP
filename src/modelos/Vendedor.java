@@ -15,6 +15,7 @@ import controladores.MetodoPagoControlador;
 import controladores.PromocionControlador;
 import controladores.VentaControlador;
 import interfaces.Menu;
+import vista.ViewClients;
 
 public class Vendedor extends Usuario implements Menu{
 
@@ -35,7 +36,8 @@ public class Vendedor extends Usuario implements Menu{
 					verEjemplares();
 					break;
 				case 1:
-					registrarCliente();
+                    ViewClients frame = new ViewClients(this);
+                    frame.setVisible(true);
 					break;
 				case 2:
 					registrarClubLibro();
