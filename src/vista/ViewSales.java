@@ -134,7 +134,13 @@ public class ViewSales extends JDialog {
         									  ventita.getFecha(), (sucuControlador.getBranchById(ventita.getSucursalId())).getNombre()});
         		}
         	} else {
-        		model.addRow(new Object[]{ventita.getVentaId(), pagoControlador.getMethodById(ventita.getMetodoPagoId()).getTipo(), 
+        		String string;
+        		if(pagoControlador.getMethodById(ventita.getMetodoPagoId()) == null) {
+        			string = "0";
+        		} else {
+        			string = pagoControlador.getMethodById(ventita.getMetodoPagoId()).getTipo();
+        		}
+        		model.addRow(new Object[]{ventita.getVentaId(), string, 
         								  ventita.getFecha(), (sucuControlador.getBranchById(ventita.getSucursalId())).getNombre()});
         	}
         }
