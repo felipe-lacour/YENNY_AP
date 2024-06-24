@@ -13,5 +13,5 @@ public interface PromocionRepository {
 		
 		void deletePromo(int id);
 
-
+		int lastPromo();
 }

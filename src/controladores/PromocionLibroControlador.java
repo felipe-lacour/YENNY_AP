@@ -18,10 +18,10 @@ public class PromocionLibroControlador implements PromoLibroRepository {
     }
 
     @Override
-    public List<PromocionLibro> getAllUsers() {
+    public List<PromocionLibro> getAllPromoLibros() {
         List<PromocionLibro> promocionesLibros = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM PromocionesLibros");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM promociones_libros");
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -38,10 +38,10 @@ public class PromocionLibroControlador implements PromoLibroRepository {
     }
 
     @Override
-    public PromocionLibro getUserById(int id) {
+    public PromocionLibro getPromoLibroById(int id) {
         PromocionLibro promocionLibro = null;
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM PromocionesLibros WHERE promocion_libro_id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM promociones_libros WHERE libro_id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
@@ -58,9 +58,9 @@ public class PromocionLibroControlador implements PromoLibroRepository {
     }
 
     @Override
-    public void addUser(PromocionLibro promocionLibro) {
+    public void addPromoLibro(PromocionLibro promocionLibro) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO PromocionesLibros (promocion_id, libro_id) VALUES (?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO promociones_libros (promocion_id, libro_id) VALUES (?, ?)");
             statement.setInt(1, promocionLibro.getPromocionId());
             statement.setInt(2, promocionLibro.getLibroId());
 
@@ -74,9 +74,9 @@ public class PromocionLibroControlador implements PromoLibroRepository {
     }
 
     @Override
-    public void updateUser(PromocionLibro promocionLibro) {
+    public void updatePromoLibro(PromocionLibro promocionLibro) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE PromocionesLibros SET promocion_id = ?, libro_id = ? WHERE promocion_libro_id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE promociones_libros SET promocion_id = ?, libro_id = ? WHERE libro_id = ?");
             statement.setInt(1, promocionLibro.getPromocionId());
             statement.setInt(2, promocionLibro.getLibroId());
 
@@ -90,9 +90,9 @@ public class PromocionLibroControlador implements PromoLibroRepository {
     }
 
     @Override
-    public void deteleUser(int id) {
+    public void detelePromoLibro(int id) {
         try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM PromocionesLibros WHERE promocion_libro_id = ?");
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM promociones_libros WHERE libro_id = ?");
             statement.setInt(1, id);
 
             int rowsDeleted = statement.executeUpdate();

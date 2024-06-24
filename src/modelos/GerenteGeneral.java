@@ -1,16 +1,13 @@
 package modelos;
 
 import interfaces.Menu;
-import vista.AddUser;
 import vista.ViewBooks;
+import vista.ViewPromos;
 import vista.ViewUsers;
-import controladores.UsuarioControlador;
 import controladores.SucuControlador;
 import controladores.VentaControlador;
 import controladores.LibroControlador;
-import controladores.PromocionControlador;
 
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -40,7 +37,8 @@ public class GerenteGeneral extends Usuario implements Menu{
 				administrarSucursales();
 				break;
 			case 3:
-				administrarPromociones();
+				ViewPromos frame2 = new ViewPromos(this);
+				frame2.setVisible(true);
 				break;
 			case 4:
 				exportarLibros();
@@ -148,107 +146,6 @@ public class GerenteGeneral extends Usuario implements Menu{
             JOptionPane.showMessageDialog(null, "Se ha solicitado la exportación de " + cantidad + " ejemplares del libro \"" + libroSeleccionado.getTitulo() + "\" a " + pais);
         } else {
             JOptionPane.showMessageDialog(null, "Libro no encontrado!");
-        }
-    }
-    
-    private void administrarPromociones() {
-        PromocionControlador promocionControlador = new PromocionControlador();
-
-        String[] opciones = {"Agregar Promoción", "Quitar Promoción", "Modificar Promoción"};
-        int eleccion = JOptionPane.showOptionDialog(null, "¿Qué operación desea realizar?", "Administrar Promociones", 0, 0, null, opciones, opciones[0]);
-
-        switch(eleccion) {
-            case 0:
-                agregarPromocion(promocionControlador);
-                break;
-            case 1:
-                quitarPromocion(promocionControlador);
-                break;
-            case 2:
-                modificarPromocion(promocionControlador);
-                break;
-            default:
-                JOptionPane.showMessageDialog(null, "Operación inválida!");
-                break;
-        }
-    }
-    
-    private void agregarPromocion(PromocionControlador promocionControlador) {
-    	String nombre, desc;
-    	do {
-    		nombre = JOptionPane.showInputDialog("Ingrese el nombre de la promoción:");
-    	} while (!verifyStrInput(nombre));
-        boolean esDelClub = true;
-        Integer sucursalId = (Integer) null;
-        do {
-    		desc = JOptionPane.showInputDialog("Ingrese el porcentaje de descuento:");
-    	} while (!verifyDouInput(desc) || ((Double.parseDouble(desc)) > 80));
-        double descuento = Double.parseDouble(desc);
-
-        Promocion nuevaPromocion = new Promocion(0, nombre, esDelClub, sucursalId, descuento);
-        promocionControlador.addPromo(nuevaPromocion);
-
-        JOptionPane.showMessageDialog(null, "Promoción agregada exitosamente!");
-    }
-
-    private void quitarPromocion(PromocionControlador promocionControlador) {
-    	List<Promocion> promociones = new LinkedList<Promocion>();
-    	for (Promocion promo : promocionControlador.getAllPromos()) {
-    		if (promo.isEsDelClub()) {
-    			promociones.add(promo);
-    		}
-    	}
-    	
-        if (promociones.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay promociones para eliminar.");
-            return;
-        }
-        
-        String[] opciones = new String[promociones.size()];
-        for (int i = 0; i < promociones.size(); i++) {
-        	opciones[i] = ("ID: " + promociones.get(i).getPromocionId() + ", Nombre: " + promociones.get(i).getNombre());
-        }
-
-        String seleccion = (String) JOptionPane.showInputDialog(null, "Seleccione la promoción a eliminar:", "Quitar Promoción", JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
-        
-        if (seleccion != null) {
-            int promocionId = Integer.parseInt(seleccion.split(",")[0].split(":")[1].trim());
-            promocionControlador.deletePromo(promocionId);
-            JOptionPane.showMessageDialog(null, "Promoción eliminada exitosamente!");
-        }
-    }
-
-    private void modificarPromocion(PromocionControlador promocionControlador) {
-    	List<Promocion> promociones = new LinkedList<Promocion>();
-    	for (Promocion promo : promocionControlador.getAllPromos()) {
-    		if (promo.isEsDelClub()) {
-    			promociones.add(promo);
-    		}
-    	}
-    	
-        if (promociones.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No hay promociones para modificar.");
-            return;
-        }
-        
-        String[] opciones = new String[promociones.size()];
-        for (int i = 0; i < promociones.size(); i++) {
-        	opciones[i] = ("ID: " + promociones.get(i).getPromocionId() + ", Nombre: " + promociones.get(i).getNombre());
-        }
-        
-        String seleccion = (String) JOptionPane.showInputDialog(null, "Seleccione la promoción a eliminar:", "Quitar Promoción", JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
-
-        if (seleccion != null) {
-            int promocionId = Integer.parseInt(seleccion.split(",")[0].split(":")[1].trim());
-            Promocion promocion = promocionControlador.getPromoById(promocionId);
-            
-	        String nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre de la promoción:", promocion.getNombre());
-	        double descuento = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo porcentaje de descuento:", promocion.getDescuento()));
-
-	        promocion.setNombre(nombre);
-	        promocion.setDescuento(descuento);
-	        promocionControlador.updatePromo(promocion);
-	        JOptionPane.showMessageDialog(null, "Promoción modificada exitosamente!");
         }
     }
 }
