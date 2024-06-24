@@ -284,23 +284,24 @@ public class AddPromo extends JDialog implements Auxiliaries{
 				}
 		        
 		        if (valid) {
-		        	boolean delClub = false;
-		        	int sucur = 0;
-		        	if (userio == null) {
-		        		delClub = true;
-		        	}
-		        	
-		        	if (userio != null) {
-		        		sucur = userio.getSucursalId();
-		        	}
-					
 		        	PromocionControlador nuevoControl = new PromocionControlador();
-			        Promocion nuevaPromo = new Promocion(0, textField.getText(), delClub, sucur, Double.parseDouble(textField1.getText()));
+			        Promocion nuevaPromo;
 			        if (promosota != null) {
-			        	nuevaPromo.setPromocionId(promosota.getPromocionId());
+			        	nuevaPromo = new Promocion(promosota.getPromocionId(), textField.getText(), promosota.isEsDelClub(), promosota.getSucursalId(), Double.parseDouble(textField1.getText()));
 			        	nuevoControl.updatePromo(nuevaPromo);
 			        	JOptionPane.showMessageDialog(null, "Promocion actualizada exitosamente!");
 			        } else {
+			        	boolean delClub = false;
+			        	int sucur = 0;
+			        	if (userio == null) {
+			        		delClub = true;
+			        	}
+			        	
+			        	if (userio != null) {
+			        		sucur = userio.getSucursalId();
+			        	}
+			        	
+			        	nuevaPromo =  new Promocion(0, textField.getText(), delClub, sucur, Double.parseDouble(textField1.getText()));
 			        	nuevoControl.addPromo(nuevaPromo);
 			        	JOptionPane.showMessageDialog(null, "Promocion agregada exitosamente!");
 			        	promosota = nuevoControl.getPromoById(nuevoControl.lastPromo());

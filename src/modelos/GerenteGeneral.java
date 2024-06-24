@@ -2,6 +2,7 @@ package modelos;
 
 import interfaces.Menu;
 import vista.ViewBooks;
+import vista.ViewBranches;
 import vista.ViewPromos;
 import vista.ViewUsers;
 import controladores.SucuControlador;
@@ -34,10 +35,11 @@ public class GerenteGeneral extends Usuario implements Menu{
 				frame1.setVisible(true);
 				break;
 			case 2:
-				administrarSucursales();
+				ViewBranches frame3 = new ViewBranches(null);
+				frame3.setVisible(true);
 				break;
 			case 3:
-				ViewPromos frame2 = new ViewPromos(this);
+				ViewPromos frame2 = new ViewPromos(null);
 				frame2.setVisible(true);
 				break;
 			case 4:
@@ -68,69 +70,6 @@ public class GerenteGeneral extends Usuario implements Menu{
         JOptionPane.showMessageDialog(null, mensaje.toString());
     }
 
-    private void administrarSucursales() {
-    	SucuControlador sucuControlador = new SucuControlador();
-        String[] opciones = {"Ver Sucursales", "Agregar Sucursal", "Eliminar Sucursal"};
-        int eleccion = JOptionPane.showOptionDialog(null, "¿Qué operación desea realizar?", "Administrar Sucursales", 0, 0, null, opciones, opciones[0]);
-
-        switch (eleccion) {
-            case 0:
-                verSucursales(sucuControlador);
-                break;
-            case 1:
-                agregarSucursal(sucuControlador);
-                break;
-            case 2:
-                eliminarSucursal(sucuControlador);
-                break;
-            default:
-                JOptionPane.showMessageDialog(null, "Operación inválida!");
-                break;
-        }
-    }
-    
-    private void verSucursales(SucuControlador sucuControlador) {
-        StringBuilder mensaje = new StringBuilder("Sucursales Registradas:\n");
-        for (Sucursal sucursal : sucuControlador.getAllBranches()) {
-            mensaje.append("ID: ").append(sucursal.getSucursalId()).append(", Ubicación: ").append(sucursal.getUbicacion()).append(", Nombre: ").append(sucursal.getNombre()).append("\n");
-        }
-        
-        JOptionPane.showMessageDialog(null, mensaje.toString());
-    }
-    
-    private void agregarSucursal(SucuControlador sucuControlador) {
-    	String ubicacion, nombre;
-    	do {
-    		ubicacion = JOptionPane.showInputDialog("Ingrese la ubicación de la sucursal:");
-    	} while (!verifyStrInput(ubicacion));
-    	do {
-    		nombre = JOptionPane.showInputDialog("Ingrese el nombre de la sucursal:");
-    	} while (!verifyStrInput(nombre));
-
-        Sucursal nuevaSucursal = new Sucursal(0, ubicacion, nombre);
-        sucuControlador.addBranch(nuevaSucursal);
-        JOptionPane.showMessageDialog(null, "Sucursal agregada exitosamente!");
-    }
-    
-    private void eliminarSucursal(SucuControlador sucuControlador) {
-    	List<Sucursal> sucus = sucuControlador.getAllBranches();
-    	String[] sucursales = new String[sucus.size()];
-    	int i = 0;
-    	for (Sucursal sucu : sucus) {
-    		sucursales[i] = sucu.getNombre() + ", en " + sucu.getUbicacion();
-    		i++;
-        }
-    	
-    	String sucursal = (String) JOptionPane.showInputDialog(null, "Seleccione la sucursal a eliminar:", "Quitar sucursal", JOptionPane.QUESTION_MESSAGE, null, sucursales, sucursales[0]);
-    	for (Sucursal sucu : sucus) {
-    		if (sucursal.contains(sucu.getNombre()) && sucursal.contains(sucu.getUbicacion())) {
-    			sucuControlador.deteleBranch(sucu.getSucursalId());
-    	        JOptionPane.showMessageDialog(null, "Sucursal eliminada exitosamente!");
-    	        return;
-    		}
-        }
-    }
-    
     private void exportarLibros() {
     	LibroControlador libroControlador = new LibroControlador();
         List<Libro> libros = libroControlador.getAllBooks();
