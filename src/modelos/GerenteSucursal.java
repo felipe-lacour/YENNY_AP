@@ -8,6 +8,7 @@ import controladores.LibroControlador;
 import controladores.VentaControlador;
 import interfaces.Menu;
 import vista.ViewPromos;
+import vista.ViewSales;
 import vista.ViewSpecimens;
 import vista.ViewUsers;
 
@@ -39,7 +40,8 @@ public class GerenteSucursal extends Usuario implements Menu{
 					frame1.setVisible(true);
 					break;
 				case 3:
-					verInformeVenta();
+					ViewSales frame = new ViewSales(this);
+					frame.setVisible(true);
 					break;
 				case 4:
 					JOptionPane.showMessageDialog(null, "Nos re vimos!");

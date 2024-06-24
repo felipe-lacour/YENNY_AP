@@ -4,6 +4,7 @@ import interfaces.Menu;
 import vista.ViewBooks;
 import vista.ViewBranches;
 import vista.ViewPromos;
+import vista.ViewSales;
 import vista.ViewUsers;
 import controladores.SucuControlador;
 import controladores.VentaControlador;
@@ -28,7 +29,8 @@ public class GerenteGeneral extends Usuario implements Menu{
 			
 			switch(eleccion) {
 			case 0:
-				verVentas();
+				ViewSales frame4 = new ViewSales(null);
+				frame4.setVisible(true);
 				break;
 			case 1:
 				ViewUsers frame1 = new ViewUsers(null);

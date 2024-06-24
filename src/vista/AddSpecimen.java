@@ -187,6 +187,11 @@ public class AddSpecimen extends JDialog implements Auxiliaries{
 		spinner.setBounds(31, 390, 223, 20);
 		contentPane.add(spinner);
 		
+		if ((tipazo != null) && (tipazo.getRol() == 1)) {
+			spinner.setValue(1);
+			spinner.setEnabled(false);
+		}
+		
 		JLabel formato = new JLabel("El formato ingresado es invalido");
 		formato.setForeground(new Color(204, 37, 13));
 		formato.setBounds(279, 329, 195, 14);
