@@ -1,81 +1,8 @@
 package modelos;
 
-import interfaces.Menu;
-import vista.ViewBooks;
-import vista.ViewBranches;
-import vista.ViewExports;
-import vista.ViewPromos;
-import vista.ViewSales;
-import vista.ViewUsers;
-import controladores.LibroControlador;
-
-import java.util.List;
-import javax.swing.JOptionPane;
-
-public class GerenteGeneral extends Usuario implements Menu{
+public class GerenteGeneral extends Usuario{
 
 	public GerenteGeneral(int usuarioId, String nombre, int rol, int sucursalId, String pass, String userName) {
 		super(usuarioId, nombre, rol, sucursalId, pass, userName);
 	}
-
-	@Override
-	public void Menu() {
-		int eleccion = 0;
-		String[] opciones = {"Ver Ventas", "Administrar usuarios", "Administrar sucursales", 
-							 "Administrar beneficios", "Pedir Exportacion de Libros", "Ver libros", "Salir"};
-		do {
-			eleccion = JOptionPane.showOptionDialog(null, "¿Que operacion desea realizar?", "Elija por favor", 0, 0, null, opciones, opciones);
-			
-			switch(eleccion) {
-			case 0:
-				ViewSales frame4 = new ViewSales(null);
-				frame4.setVisible(true);
-				break;
-			case 1:
-				ViewUsers frame1 = new ViewUsers(null);
-				frame1.setVisible(true);
-				break;
-			case 2:
-				ViewBranches frame3 = new ViewBranches(null);
-				frame3.setVisible(true);
-				break;
-			case 3:
-				ViewPromos frame2 = new ViewPromos(null);
-				frame2.setVisible(true);
-				break;
-			case 4:
-				ViewExports frame5 = new ViewExports(null);
-				frame5.setVisible(true);
-				break;
-			case 5:
-				ViewBooks frame = new ViewBooks(null);
-				frame.setVisible(true);
-				break;
-			case 6:
-				JOptionPane.showMessageDialog(null, "Nos re vimos!");
-				return;
-			default:
-				JOptionPane.showMessageDialog(null, "Re ilegal!");
-				break;
-			}
-		} while(eleccion != 6);
-	}
-
-    private void exportarLibros() {
-    	LibroControlador libroControlador = new LibroControlador();
-        List<Libro> libros = libroControlador.getAllBooks();
-        String[] titulos = libros.stream().map(Libro::getTitulo).toArray(String[]::new);
-
-        String titulo = (String) JOptionPane.showInputDialog(null, "Seleccione el libro a exportar:", "Exportación de Libros", JOptionPane.QUESTION_MESSAGE, null, titulos, titulos[0]);
-        Libro libroSeleccionado = libros.stream().filter(libro -> libro.getTitulo().equals(titulo)).findFirst().orElse(null);
-
-        if (libroSeleccionado != null) {
-            int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad a exportar:"));
-            String pais = JOptionPane.showInputDialog("Ingrese el país de destino:");
-
-            JOptionPane.showMessageDialog(null, "Se ha solicitado la exportación de " + cantidad + " ejemplares del libro \"" + libroSeleccionado.getTitulo() + "\" a " + pais);
-        } else {
-            JOptionPane.showMessageDialog(null, "Libro no encontrado!");
-        }
-    }
 }
