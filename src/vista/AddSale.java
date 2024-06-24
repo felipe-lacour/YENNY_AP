@@ -1,7 +1,5 @@
 package vista;
 
-import java.awt.EventQueue;
-import java.awt.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -10,7 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,7 +31,6 @@ import controladores.EjemplarControlador;
 import controladores.LibroControlador;
 import controladores.MetodoPagoControlador;
 import controladores.SagaControlador;
-import controladores.UsuarioControlador;
 import controladores.VentaControlador;
 import modelos.Cliente;
 import modelos.Ejemplar;
@@ -42,7 +39,7 @@ import modelos.MetodoPago;
 import modelos.Usuario;
 import modelos.Venta;
 
-public class AddSale extends JFrame {
+public class AddSale extends JDialog {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
@@ -59,38 +56,16 @@ public class AddSale extends JFrame {
     private Usuario userPasado;
     private JTextField searchFieldC, searchFieldS, searchFieldM;
     private TableRowSorter<DefaultTableModel> sorterC, sorterS, sorterM;
-    private Usuario tipazado;
     private EjemplarControlador controladorEjemplares;
     private LibroControlador libroControlador;
     private VentaControlador ventaControlador;
-    private JButton btnFinalizarVenta_1;
-    private JButton btnFinalizarVenta_2;
     private JButton btnAgregar;
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    AddSale frame = new AddSale(new Usuario(0, "dkjfhskfh", 1, 1, "kfjakjfha", "kjfajkfha"));
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Create the frame.
-     */
     public AddSale(Usuario paseUsuario) {
-        super();
+    	super((JFrame)null, "Add Book", true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Administrar Clientes");
-        setBounds(100, 100, 569, 889);
+        setBounds(100, 100, 569, 696);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         controladorClientes = new ClienteControlador();
@@ -116,16 +91,16 @@ public class AddSale extends JFrame {
         
         
         JScrollPane scrollPaneClientes = new JScrollPane(tableC);
-        scrollPaneClientes.setBounds(10, 44, 533, 140);
+        scrollPaneClientes.setBounds(10, 44, 533, 82);
         contentPane.add(scrollPaneClientes);
         
         elementoC = new JLabel("Seleccionado:");
         elementoC.setVerticalAlignment(SwingConstants.TOP);
-        elementoC.setBounds(10, 196, 406, 53);
+        elementoC.setBounds(10, 134, 406, 53);
         contentPane.add(elementoC);
         
         searchFieldC = new JTextField();
-        searchFieldC.setBounds(327, 15, 216, 25);
+        searchFieldC.setBounds(417, 21, 126, 19);
         contentPane.add(searchFieldC);
         
         searchFieldC.addKeyListener(new KeyAdapter() {
@@ -141,7 +116,7 @@ public class AddSale extends JFrame {
         });
         
         JButton AgregarC = new JButton("Agregar");
-        AgregarC.setBounds(417, 195, 126, 35);
+        AgregarC.setBounds(417, 133, 126, 25);
         AgregarC.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 AddClient dialog;
@@ -191,20 +166,20 @@ public class AddSale extends JFrame {
         actualizarTablaEjemplares();
 
         JScrollPane scrollPaneEjemplares = new JScrollPane(tableS);
-        scrollPaneEjemplares.setBounds(10, 297, 533, 140);
+        scrollPaneEjemplares.setBounds(10, 200, 533, 82);
         contentPane.add(scrollPaneEjemplares);
 
         elementoS = new JLabel("Seleccionado:");
         elementoS.setVerticalAlignment(SwingConstants.TOP);
-        elementoS.setBounds(10, 447, 533, 100);  // Aumenta la altura del JLabel para mostrar más contenido
+        elementoS.setBounds(10, 300, 533, 100);  // Aumenta la altura del JLabel para mostrar más contenido
 
         JScrollPane scrollPaneSeleccionados = new JScrollPane(elementoS);
-        scrollPaneSeleccionados.setBounds(10, 447, 533, 100);  // Asegúrate de que las dimensiones coincidan con las de JLabel
+        scrollPaneSeleccionados.setBounds(10, 293, 533, 100);  // Asegúrate de que las dimensiones coincidan con las de JLabel
         scrollPaneSeleccionados.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         contentPane.add(scrollPaneSeleccionados);
 
         searchFieldS = new JTextField();
-        searchFieldS.setBounds(327, 260, 216, 25);
+        searchFieldS.setBounds(417, 169, 126, 19);
         contentPane.add(searchFieldS);
 
         searchFieldS.addKeyListener(new KeyAdapter() {
@@ -220,7 +195,7 @@ public class AddSale extends JFrame {
         });
 
         JLabel ejemplaresLabel = new JLabel("Ejemplares:");
-        ejemplaresLabel.setBounds(10, 266, 104, 14);
+        ejemplaresLabel.setBounds(10, 175, 104, 14);
         contentPane.add(ejemplaresLabel);
 
         ListSelectionModel selectionModelS = tableS.getSelectionModel();
@@ -270,7 +245,7 @@ public class AddSale extends JFrame {
 
         
         JLabel metodosLabel = new JLabel("Metodos de Pago:");
-        metodosLabel.setBounds(10, 564, 260, 14);
+        metodosLabel.setBounds(10, 420, 260, 14);
         contentPane.add(metodosLabel);
         
         String[] columnNamesMethods = {"ID", "Cliente ID", "Tipo", "Detalles"};
@@ -282,20 +257,20 @@ public class AddSale extends JFrame {
         actualizarTablaMetodos();
         
         JScrollPane scrollPaneMetodos = new JScrollPane(tableM);
-        scrollPaneMetodos.setBounds(10, 590, 533, 140);
+        scrollPaneMetodos.setBounds(10, 446, 533, 89);
         contentPane.add(scrollPaneMetodos);
         
         elementoM = new JLabel("Seleccionado:");
         elementoM.setVerticalAlignment(SwingConstants.TOP);
-        elementoM.setBounds(10, 747, 406, 53);
+        elementoM.setBounds(10, 546, 406, 53);
         contentPane.add(elementoM);
         
         searchFieldM = new JTextField();
-        searchFieldM.setBounds(327, 559, 216, 25);
+        searchFieldM.setBounds(417, 420, 126, 20);
         contentPane.add(searchFieldM);
         
         JButton btnFinalizarVenta = new JButton("Finalizar Venta");
-        btnFinalizarVenta.setBounds(417, 812, 126, 35);
+        btnFinalizarVenta.setBounds(417, 604, 126, 35);
         
         btnFinalizarVenta.addActionListener(new ActionListener() {
             @SuppressWarnings("null")
@@ -347,11 +322,11 @@ public class AddSale extends JFrame {
         		return;
         	}
         });
-        btnVolver.setBounds(279, 815, 126, 35);
+        btnVolver.setBounds(277, 604, 126, 35);
         contentPane.add(btnVolver);
         
         btnAgregar = new JButton("Agregar");
-        btnAgregar.setBounds(417, 742, 126, 35);
+        btnAgregar.setBounds(417, 546, 126, 25);
         contentPane.add(btnAgregar);
         btnAgregar.setVisible(false);
         
