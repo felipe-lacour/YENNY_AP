@@ -211,7 +211,9 @@ public class AddSpecimen extends JDialog implements Auxiliaries{
 				formato.setVisible(false);
 				libroObl.setVisible(false);
 				autorObl.setVisible(false);
-				precioObl.setVisible(false);
+				if (ejemplazo != null) {
+					precioObl.setVisible(false);
+				}
 				boolean valid = true; 
 
 				if (!verifyStrInput(textField.getText())){

@@ -22,37 +22,33 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import controladores.PromocionControlador;
 import controladores.SucuControlador;
-import modelos.Promocion;
-import modelos.Usuario;
+import modelos.Sucursal;
 
-public class ViewPromos extends JDialog {
+public class ViewBranches extends JDialog {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTable table;
     private DefaultTableModel model;
-    private PromocionControlador controlador;
+    private SucuControlador controlador;
     private JLabel elemento;
-    private Promocion seleccionado;
+    private Sucursal seleccionado;
     private JLabel lblNewLabel;
     private JButton btnVolver;
     private JTextField searchField;
     private TableRowSorter<DefaultTableModel> sorter;
-    private Usuario user;
 
-	public ViewPromos(Usuario userPasado) {
-		super((JFrame)null, "View Promos", true);
-		setTitle("Administrar Promos");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	public ViewBranches(JFrame parent) {
+		super(parent, "View Branches", true);
+        setTitle("Administrar Sucursales");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 569, 446);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
-        controlador = new PromocionControlador();
-        user = userPasado;
-        
-        String[] columnNames = {"ID", "Nombre", "Tipo", "Sucursal", "Descuento"};
+        controlador = new SucuControlador();
+
+        String[] columnNames = {"ID", "Nombre", "Ubicacion"};
         model = new DefaultTableModel(columnNames, 0);
         table = new JTable(model);
         sorter = new TableRowSorter<>(model);
@@ -84,12 +80,12 @@ public class ViewPromos extends JDialog {
                 }
             }
         });
-        
+
         JButton Agregar = new JButton("Agregar");
         Agregar.setBounds(10, 361, 126, 35);
         Agregar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AddPromo frame = new AddPromo(null, user);
+                AddBranch frame = new AddBranch(null);
 				frame.setVisible(true);
                 actualizarTabla();
             }
@@ -100,15 +96,15 @@ public class ViewPromos extends JDialog {
         Cambiar.setBounds(145, 361, 126, 35);
         Cambiar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AddPromo frame = new AddPromo(seleccionado, user);
+                AddBranch frame = new AddBranch(seleccionado);
 				frame.setVisible(true);
                 actualizarTabla();
             }
         });
         contentPane.add(Cambiar);
         
-        lblNewLabel = new JLabel("Promociones:");
-        lblNewLabel.setBounds(21, 18, 126, 14);
+        lblNewLabel = new JLabel("Sucursales:");
+        lblNewLabel.setBounds(21, 18, 120, 14);
         contentPane.add(lblNewLabel);
         
         btnVolver = new JButton("Volver");
@@ -125,12 +121,12 @@ public class ViewPromos extends JDialog {
         Eliminar.setBounds(281, 361, 126, 35);
         Eliminar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controlador.deletePromo(seleccionado.getPromocionId());
+                controlador.deteleBranch(seleccionado.getSucursalId());
                 actualizarTabla();
             }
         });
         contentPane.add(Eliminar);
-        
+
         ListSelectionModel selectionModel = table.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -142,42 +138,19 @@ public class ViewPromos extends JDialog {
                     if (selectedRow != -1) {
                         int id = (int) table.getValueAt(selectedRow, 0);
 
-                        seleccionado = controlador.getPromoById(id);
-                        elemento.setText("Seleccionado: ID: " + seleccionado.getPromocionId() + ", Nombre: " + seleccionado.getNombre() + 
-                                         ", Tipo: " + seleccionado.isEsDelClub() + ", Sucursal: " + seleccionado.getSucursalId() +
-                                         ", Descuento: " + seleccionado.getDescuento());
-                        if ((user != null) && (seleccionado.isEsDelClub())) {
-                        	Eliminar.setEnabled(false);
-                        	Cambiar.setEnabled(false);
-                        } else {
-                        	Eliminar.setEnabled(true);
-                        	Cambiar.setEnabled(true);
-                        }
+                        seleccionado = controlador.getBranchById(id);
+                        elemento.setText("Seleccionado: ID: " + seleccionado.getSucursalId() + ", Nombre: " + seleccionado.getNombre() + ", Ubicacion: " + seleccionado.getUbicacion());
                     }
                 }
             }
         });
-	}
+    }
 
     private void actualizarTabla() {
         model.setRowCount(0);
-        SucuControlador suculento = new SucuControlador();
 
-        for (Promocion promo : controlador.getAllPromos()) {
-            String sucu, tipo;
-            if (promo.getSucursalId() == 0) {
-            	sucu = "0";
-            } else {
-            	sucu = suculento.getBranchById(promo.getSucursalId()).getNombre();
-            }
-            
-            if (promo.isEsDelClub()) {
-            	tipo = "Club";
-            } else {
-            	tipo = "Gral.";
-            }
-
-            model.addRow(new Object[] { promo.getPromocionId(), promo.getNombre(), tipo, sucu, promo.getDescuento()});
+        for (Sucursal sucu : controlador.getAllBranches()) {
+            model.addRow(new Object[] { sucu.getSucursalId(), sucu.getNombre(), sucu.getUbicacion()});
         }
     }
 }
