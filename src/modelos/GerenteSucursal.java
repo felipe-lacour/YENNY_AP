@@ -1,7 +1,6 @@
 package modelos;
 
 import java.util.List;
-
 import javax.swing.JOptionPane;
 
 import controladores.EjemplarControlador;
