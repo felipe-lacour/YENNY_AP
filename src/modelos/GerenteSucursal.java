@@ -1,11 +1,7 @@
 package modelos;
 
-import java.util.List;
 import javax.swing.JOptionPane;
 
-import controladores.EjemplarControlador;
-import controladores.LibroControlador;
-import controladores.VentaControlador;
 import interfaces.Menu;
 import vista.ViewPromos;
 import vista.ViewSales;
@@ -53,38 +49,4 @@ public class GerenteSucursal extends Usuario implements Menu{
 			
 		} while(eleccion != 4);
 	}
-
-    private void verInformeVenta() {
-    	VentaControlador ventaControlador = new VentaControlador();
-    	EjemplarControlador ejemplarControlador = new EjemplarControlador();
-    	LibroControlador libroControlador = new LibroControlador();
-    	
-    	List<Venta> ventasSucursal = ventaControlador.getSomeSales("sucursal_id", this.getSucursalId());
-    	
-    	if(ventasSucursal.size() > 0) {
-        	StringBuilder stringBuilder = new StringBuilder();
-        	stringBuilder.append("Cantidad de ventas en la sucursal: " + ventasSucursal.size() + "\n\n");
-        	
-        	for (Venta venta : ventasSucursal) {
-    			stringBuilder.append(venta.getVentaId() + ": ")
-    							.append(venta.getFecha() + "\n")
-    							.append("Libros:\n");
-    			
-    			List<Ejemplar> ejemplares = ejemplarControlador.getEjemplarByField("venta_id", venta.getVentaId());
-    			for (Ejemplar ejemplar : ejemplares) {
-    				int ejemplarIdAux = ejemplar.getEjemplarId();
-    				
-					stringBuilder.append("    ID: " + ejemplarIdAux)
-									.append(" Titulo: " + libroControlador.getBookById(ejemplarIdAux).getTitulo() + "\n");
-				}
-    			
-    			stringBuilder.append("\n\n");
-    		}
-        	
-        	JOptionPane.showMessageDialog(null, stringBuilder.toString());
-        	
-    	} else {
-    		JOptionPane.showMessageDialog(null, "No hay ventas registradas para esta sucursal.");
-    	}
-    }
 }
