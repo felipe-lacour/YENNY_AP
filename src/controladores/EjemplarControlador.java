@@ -120,7 +120,12 @@ public class EjemplarControlador implements EjemplarRepository {
                 "UPDATE ejemplares SET libro_id = ?, sucursal_id = ?, isbn = ?, precio = ?, tapa_dura = ?, edicion_especial = ?, fecha_edicion = ?, numero_edicion = ?, firmado = ?, idioma = ?, fecha_adquisicion = ?, venta_id = ? WHERE ejemplar_id = ?"
             );
             statement.setInt(1, ejemplar.getLibroId());
-            statement.setInt(2, ejemplar.getSucursalId());
+            
+            if(ejemplar.getSucursalId() == 0) {
+            	statement.setNull(2, 0);
+            } else {
+                statement.setInt(2, ejemplar.getSucursalId());
+            }
             statement.setString(3, ejemplar.getIsbn());
             statement.setDouble(4, ejemplar.getPrecio());
             statement.setBoolean(5, ejemplar.isTapaDura());

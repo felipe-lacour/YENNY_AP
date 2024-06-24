@@ -17,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
-import controladores.SucuControlador;
 import controladores.UsuarioControlador;
 import controladores.ClienteControlador;
 import modelos.Usuario;
@@ -26,7 +25,6 @@ import modelos.Cliente;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 
 public class ViewClients extends JDialog {

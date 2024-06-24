@@ -15,16 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import controladores.AutorControlador;
 import controladores.ClienteControlador;
-import controladores.EditorialControlador;
-import controladores.LibroControlador;
-import controladores.SagaControlador;
+import controladores.MetodoPagoControlador;
 import interfaces.Auxiliaries;
-import modelos.Autor;
-import modelos.Editorial;
 import modelos.Cliente;
-import modelos.Saga;
+import modelos.MetodoPago;
 import modelos.Usuario;
 
 import javax.swing.JRadioButton;
@@ -37,6 +32,7 @@ public class AddClient extends JDialog implements Auxiliaries{
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private Cliente clientuli;
+	
 	
 	public AddClient(Cliente client, Usuario user) {
 		super((JFrame)null, "Add Client", true);
@@ -73,20 +69,16 @@ public class AddClient extends JDialog implements Auxiliaries{
 		textField_1.setBounds(31, 103, 223, 20);
 		contentPane.add(textField_1);
 		
-		if (client != null) {
-			textField.setText(client.getNombre());
-			textField_1.setText(client.getApellido());
-		}
+
 		
 		JLabel lblGenero = new JLabel("Genero:");
 		lblGenero.setBounds(51, 143, 217, 14);
 		contentPane.add(lblGenero);
 		
-		JComboBox comboBox_2 = new JComboBox();
+		JComboBox<String> comboBox_2 = new JComboBox<String>();
 		comboBox_2.setBounds(31, 161, 223, 22);
 		contentPane.add(comboBox_2);
 		
-		SagaControlador controlaSaga = new SagaControlador();
 		comboBox_2.addItem("...");
 		
 		String[] generos = {"Hombre", "Mujer", "Otro"};
@@ -108,6 +100,12 @@ public class AddClient extends JDialog implements Auxiliaries{
 		textField_2.setColumns(10);
 		textField_2.setBounds(31, 224, 223, 20);
 		contentPane.add(textField_2);
+		
+		if (client != null) {
+			textField.setText(client.getNombre());
+			textField_1.setText(client.getApellido());
+			textField_2.setText("" + client.getEdad());
+		}
 		
 		
 		JLabel booklet = new JLabel("El cliente ingresado ya esta registrado");
@@ -197,6 +195,8 @@ public class AddClient extends JDialog implements Auxiliaries{
 				}
 		        
 		        if (valid) {
+		        	MetodoPagoControlador mpControlador = new MetodoPagoControlador();
+		        	
 		        	boolean cL = false;
 		        	
 		        	if(trueRadio.isSelected()) {
@@ -207,12 +207,35 @@ public class AddClient extends JDialog implements Auxiliaries{
 			        		textField_1.getText(), (String) comboBox_2.getSelectedItem(), 
 			        		Integer.parseInt(textField_2.getText()), user.getSucursalId(), cL);
 			        if (clientuli != null) {
+			        	boolean mpExist = false;
 			        	nuevoCliente.setClienteId(clientuli.getClienteId());
+			        	
+			        	if(cL) {
+				        	for (MetodoPago mp : mpControlador.getAllMethods()) {
+								if(mp.getClienteId() == nuevoCliente.getClienteId()) {
+									mpExist = true;
+								}
+							}
+				        	
+				        	if(mpExist) {
+			                    AddMetodoPago frame = new AddMetodoPago(nuevoCliente);
+			                    frame.setVisible(true);
+				        	}
+			        	}
+			        	
 			        	controlador.updateCliente(nuevoCliente);
-			        	JOptionPane.showMessageDialog(null, "Libro actualizado exitosamente!");
+			        	JOptionPane.showMessageDialog(null, "Cliente actualizado exitosamente!");
 			        } else {
-			        	controlador.addCliente(nuevoCliente);
-			        	JOptionPane.showMessageDialog(null, "Libro agregado exitosamente!");
+
+			        	
+			        	int nuevoClienteId = controlador.addCliente(nuevoCliente);
+			        	
+			        	if(cL) {
+		                    AddMetodoPago frame = new AddMetodoPago(controlador.getClienteById(nuevoClienteId));
+		                    frame.setVisible(true);
+			        	}
+			        	
+			        	JOptionPane.showMessageDialog(null, "Cliente agregado exitosamente!");
 			        }
 		        	dispose();
 		        	return;
