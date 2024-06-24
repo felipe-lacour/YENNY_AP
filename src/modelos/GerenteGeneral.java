@@ -60,17 +60,6 @@ public class GerenteGeneral extends Usuario implements Menu{
 			}
 		} while(eleccion != 6);
 	}
-	
-    private void verVentas() {
-    	VentaControlador ventaControlador = new VentaControlador();
-    	
-        StringBuilder mensaje = new StringBuilder("Ventas Realizadas:\n");
-        for (Venta venta : ventaControlador.getAllSales()) {
-            mensaje.append("ID: ").append(venta.getVentaId()).append(", Metodo Pago: ").append(venta.getMetodoPagoId()).append(", Fecha: ").append(venta.getFecha()).append("\n");
-        }
-        
-        JOptionPane.showMessageDialog(null, mensaje.toString());
-    }
 
     private void exportarLibros() {
     	LibroControlador libroControlador = new LibroControlador();
