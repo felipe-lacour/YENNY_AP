@@ -1,19 +1,17 @@
 package modelos;
 
 import java.util.List;
-
 import javax.swing.JOptionPane;
 
 import controladores.EjemplarControlador;
 import controladores.LibroControlador;
 import controladores.VentaControlador;
-import interfaces.Auxiliaries;
 import interfaces.Menu;
 import vista.ViewPromos;
 import vista.ViewSpecimens;
 import vista.ViewUsers;
 
-public class GerenteSucursal extends Usuario implements Menu, Auxiliaries{
+public class GerenteSucursal extends Usuario implements Menu{
 
 	public GerenteSucursal(int usuarioId, String nombre, int rol, int sucursalId, String pass, String userName) {
 		super(usuarioId, nombre, rol, sucursalId, pass, userName);
@@ -56,10 +54,35 @@ public class GerenteSucursal extends Usuario implements Menu, Auxiliaries{
 
     private void verInformeVenta() {
     	VentaControlador ventaControlador = new VentaControlador();
-    	for (Venta venta : ventaControlador.getAllSales()) {
-    		if (venta.() == this.getSucursalId()) {
-    			promociones.add(promo);
+    	EjemplarControlador ejemplarControlador = new EjemplarControlador();
+    	LibroControlador libroControlador = new LibroControlador();
+    	
+    	List<Venta> ventasSucursal = ventaControlador.getSomeSales("sucursal_id", this.getSucursalId());
+    	
+    	if(ventasSucursal.size() > 0) {
+        	StringBuilder stringBuilder = new StringBuilder();
+        	stringBuilder.append("Cantidad de ventas en la sucursal: " + ventasSucursal.size() + "\n\n");
+        	
+        	for (Venta venta : ventasSucursal) {
+    			stringBuilder.append(venta.getVentaId() + ": ")
+    							.append(venta.getFecha() + "\n")
+    							.append("Libros:\n");
+    			
+    			List<Ejemplar> ejemplares = ejemplarControlador.getEjemplarByField("venta_id", venta.getVentaId());
+    			for (Ejemplar ejemplar : ejemplares) {
+    				int ejemplarIdAux = ejemplar.getEjemplarId();
+    				
+					stringBuilder.append("    ID: " + ejemplarIdAux)
+									.append(" Titulo: " + libroControlador.getBookById(ejemplarIdAux).getTitulo() + "\n");
+				}
+    			
+    			stringBuilder.append("\n\n");
     		}
-    	}*/
+        	
+        	JOptionPane.showMessageDialog(null, stringBuilder.toString());
+        	
+    	} else {
+    		JOptionPane.showMessageDialog(null, "No hay ventas registradas para esta sucursal.");
+    	}
     }
 }
