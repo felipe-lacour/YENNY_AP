@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,10 +69,10 @@ public class PromocionControlador implements PromocionRepository {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Promociones (nombre, es_del_club, sucursal_id, descuento) VALUES (?, ?, ?, ?)");
             statement.setString(1, promocion.getNombre());
             statement.setBoolean(2, promocion.isEsDelClub());
-            if (promocion.getSucursalId() != null) {
-                statement.setInt(3, promocion.getSucursalId());
+            if (promocion.getSucursalId() == 0) {
+            	statement.setNull(3, 0);
             } else {
-                statement.setNull(3, Types.INTEGER);
+            	statement.setInt(3, promocion.getSucursalId());
             }
             statement.setDouble(4, promocion.getDescuento());
 
@@ -94,13 +93,11 @@ public class PromocionControlador implements PromocionRepository {
             );
             statement.setString(1, promocion.getNombre());
             statement.setBoolean(2, promocion.isEsDelClub());
-            
-            if (promocion.getSucursalId() != null) {
-                statement.setInt(3, promocion.getSucursalId());
+            if (promocion.getSucursalId() == 0) {
+            	statement.setNull(3, 0);
             } else {
-                statement.setNull(3, Types.INTEGER);
+            	statement.setInt(3, promocion.getSucursalId());
             }
-            
             statement.setDouble(4, promocion.getDescuento());
             statement.setInt(5, promocion.getPromocionId());
 
@@ -126,6 +123,22 @@ public class PromocionControlador implements PromocionRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+	}
+	
+	@Override
+	public int lastPromo() {
+	    try {
+	        PreparedStatement statement = connection.prepareStatement("SELECT promocion_id FROM Promociones ORDER BY promocion_id DESC LIMIT 1");
+	        ResultSet resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            return resultSet.getInt("promocion_id");
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return 0;
 	}
 }
 

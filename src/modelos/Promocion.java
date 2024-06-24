@@ -55,6 +55,4 @@ public class Promocion {
 	public void setDescuento(double descuento) {
 		this.descuento = descuento;
 	}
-	
-	
 }

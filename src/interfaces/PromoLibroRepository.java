@@ -5,15 +5,15 @@ import java.util.List;
 import modelos.PromocionLibro;
 
 public interface PromoLibroRepository {
-List <PromocionLibro> getAllUsers();
+List <PromocionLibro> getAllPromoLibros();
 	
-PromocionLibro getUserById(int id);
+PromocionLibro getPromoLibroById(int id);
 	
-	void addUser(PromocionLibro user);
+	void addPromoLibro(PromocionLibro user);
 	
-	void updateUser(PromocionLibro user);
+	void updatePromoLibro(PromocionLibro user);
 	
-	void deteleUser(int id);
+	void detelePromoLibro(int id);
  
 
 }
