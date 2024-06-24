@@ -3,6 +3,7 @@ package modelos;
 import interfaces.Menu;
 import vista.ViewBooks;
 import vista.ViewBranches;
+import vista.ViewExports;
 import vista.ViewPromos;
 import vista.ViewSales;
 import vista.ViewUsers;
@@ -43,7 +44,8 @@ public class GerenteGeneral extends Usuario implements Menu{
 				frame2.setVisible(true);
 				break;
 			case 4:
-				exportarLibros();
+				ViewExports frame5 = new ViewExports(null);
+				frame5.setVisible(true);
 				break;
 			case 5:
 				ViewBooks frame = new ViewBooks(null);
