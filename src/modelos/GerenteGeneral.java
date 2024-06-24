@@ -6,8 +6,6 @@ import vista.ViewBranches;
 import vista.ViewPromos;
 import vista.ViewSales;
 import vista.ViewUsers;
-import controladores.SucuControlador;
-import controladores.VentaControlador;
 import controladores.LibroControlador;
 
 import java.util.List;
