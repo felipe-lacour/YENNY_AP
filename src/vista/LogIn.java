@@ -6,8 +6,6 @@ import javax.swing.border.EmptyBorder;
 
 import controladores.UsuarioControlador;
 import interfaces.Menu;
-import modelos.GerenteGeneral;
-import modelos.GerenteSucursal;
 import modelos.Usuario;
 import modelos.Vendedor;
 
@@ -85,9 +83,11 @@ public class LogIn extends JFrame implements Menu {
 		                    if (user.getRol() == 1) {
 		                        new Vendedor(user.getUsuarioId(), user.getNombre(), user.getRol(), user.getSucursalId(), user.getPass(), user.getUserName()).Menu();
 		                    } else if (user.getRol() == 2) {
-		                        new GerenteSucursal(user.getUsuarioId(), user.getNombre(), user.getRol(), user.getSucursalId(), user.getPass(), user.getUserName()).Menu();
+		                    	MenuManager frame = new MenuManager(user);
+		    					frame.setVisible(true);
 		                    } else {
-		                        new GerenteGeneral(user.getUsuarioId(), user.getNombre(), user.getRol(), user.getSucursalId(), user.getPass(), user.getUserName()).Menu();
+		                    	MenuGeneral frame = new MenuGeneral(user);
+		    					frame.setVisible(true);
 		                    }
 		                    
 		                    return;

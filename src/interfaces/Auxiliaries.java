@@ -1,5 +1,4 @@
 package interfaces;
-import javax.swing.JOptionPane;
 
 public interface Auxiliaries {
 

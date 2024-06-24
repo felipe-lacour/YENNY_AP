@@ -138,6 +138,5 @@ public class AddBranch extends JDialog implements Auxiliaries{
         });
 		btnCancelar.setBounds(158, 144, 96, 23);
 		contentPane.add(btnCancelar);
-
 	}
 }
