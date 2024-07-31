@@ -1,10 +1,13 @@
 package vista;
 
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -17,6 +20,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -43,11 +47,12 @@ public class ViewSpecimens extends JDialog {
     private Ejemplar seleccionado;
 	private TableRowSorter<DefaultTableModel> sorter;
 	private Usuario tipazado;
+	private JLabel imagenLabel;
 	
 	public ViewSpecimens(Usuario tipazo) {
 		super((JFrame)null, "View Specimens", true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 569, 446);
+		setBounds(100, 100, 735, 446);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -71,8 +76,18 @@ public class ViewSpecimens extends JDialog {
         elemento.setBounds(20, 293, 533, 53);
         contentPane.add(elemento);
         
+        imagenLabel = new JLabel("");
+		imagenLabel.setBackground(new Color(255, 255, 255));
+		imagenLabel.setBounds(553, 86, 156, 196);
+		imagenLabel.setBorder(new LineBorder(Color.GRAY, 1));
+		contentPane.add(imagenLabel);
+        
+		JLabel lblBuscar = new JLabel("Buscar:");
+        lblBuscar.setBounds(564, 20, 84, 14);
+        contentPane.add(lblBuscar);
+		
         searchField = new JTextField();
-        searchField.setBounds(327, 10, 216, 25);
+        searchField.setBounds(553, 45, 156, 25);
         contentPane.add(searchField);
         
         searchField.addKeyListener(new KeyAdapter() {
@@ -110,7 +125,7 @@ public class ViewSpecimens extends JDialog {
         contentPane.add(Cambiar);
         
         lblNewLabel = new JLabel("Ejemplares:");
-        lblNewLabel.setBounds(21, 18, 46, 14);
+        lblNewLabel.setBounds(21, 18, 93, 14);
         contentPane.add(lblNewLabel);
         
         btnVolver = new JButton("Volver");
@@ -148,10 +163,24 @@ public class ViewSpecimens extends JDialog {
                         elemento.setText("Seleccionado: ID: " + seleccionado.getEjemplarId() + ", Libro: " + seleccionado.getLibroId() + 
                                          ", Precio: " + seleccionado.getPrecio() + ", Idioma: " + seleccionado.getIdioma() + 
                                          ", Edicion: " + seleccionado.getNumeroEdicion() + ", ISBN: " + seleccionado.getIsbn());
+                        mostrarImagen(seleccionado.getLibroId());
                     }
                 }
             }
         });
+    }
+	
+    private void mostrarImagen(int libroId) {
+    	LibroControlador controlaLibro = new LibroControlador();
+    	byte[] imagen = (controlaLibro.getBookById(libroId)).getImg();
+	    if (imagen != null) {
+	    	ImageIcon icon = new ImageIcon (imagen);
+	    	Image img = icon.getImage();
+	    	Image scaledImg = img.getScaledInstance(imagenLabel.getWidth(), imagenLabel.getHeight(), Image.SCALE_SMOOTH);
+	    	imagenLabel.setIcon(new ImageIcon(scaledImg));
+	    }else {
+	    	imagenLabel.setIcon(null);
+	    }
     }
 	
     private void actualizarTabla() {

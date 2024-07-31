@@ -143,7 +143,7 @@ public class ViewBooks extends JDialog {
         contentPane.add(Eliminar);
         
         JLabel lblBuscar = new JLabel("Buscar:");
-        lblBuscar.setBounds(553, 18, 84, 14);
+        lblBuscar.setBounds(564, 20, 84, 14);
         contentPane.add(lblBuscar);
 
         ListSelectionModel selectionModel = table.getSelectionModel();
