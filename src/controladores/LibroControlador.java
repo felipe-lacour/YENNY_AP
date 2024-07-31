@@ -24,7 +24,7 @@ public class LibroControlador implements LibroRepositorio {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                Libro book = new Libro(resultSet.getInt("libro_id"), resultSet.getString("titulo"), resultSet.getInt("saga_id"), resultSet.getInt("editorial_id"), resultSet.getInt("autor_id"));
+                Libro book = new Libro(resultSet.getInt("libro_id"), resultSet.getString("titulo"), resultSet.getInt("saga_id"), resultSet.getInt("editorial_id"), resultSet.getInt("autor_id"), resultSet.getBytes("img"));
                 books.add(book);
             }
         } catch (SQLException e) {
@@ -43,7 +43,7 @@ public class LibroControlador implements LibroRepositorio {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                book = new Libro(resultSet.getInt("libro_id"), resultSet.getString("titulo"), resultSet.getInt("saga_id"), resultSet.getInt("editorial_id"), resultSet.getInt("autor_id"));
+                book = new Libro(resultSet.getInt("libro_id"), resultSet.getString("titulo"), resultSet.getInt("saga_id"), resultSet.getInt("editorial_id"), resultSet.getInt("autor_id"), resultSet.getBytes("img"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,7 +54,7 @@ public class LibroControlador implements LibroRepositorio {
 	@Override
     public void addBook(Libro libro) {
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO libros (titulo, saga_id, editorial_id, autor_id) VALUES (?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO libros (titulo, saga_id, editorial_id, autor_id, img) VALUES (?, ?, ?, ?, ?)");
             statement.setString(1, libro.getTitulo());
             if (libro.getSagaId() == 0) {
             	statement.setNull(2, 0);
@@ -68,6 +68,7 @@ public class LibroControlador implements LibroRepositorio {
             }
             
             statement.setInt(4, libro.getAutorId());
+            statement.setBytes(5, libro.getImg());
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
@@ -81,7 +82,7 @@ public class LibroControlador implements LibroRepositorio {
 	@Override
     public void updateBook(Libro libro) {
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE libros SET titulo = ?, saga_id = ?, editorial_id = ?, autor_id = ? WHERE libro_id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE libros SET titulo = ?, saga_id = ?, editorial_id = ?, autor_id = ?, img = ? WHERE libro_id = ?");
             statement.setString(1, libro.getTitulo());
             if (libro.getSagaId() == 0) {
             	statement.setNull(2, 0);
@@ -95,7 +96,9 @@ public class LibroControlador implements LibroRepositorio {
             }
             
             statement.setInt(4, libro.getAutorId());
-            statement.setInt(5, libro.getLibroId());
+            statement.setBytes(5, libro.getImg());
+            statement.setInt(6, libro.getLibroId());
+            
 
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {

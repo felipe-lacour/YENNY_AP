@@ -6,13 +6,15 @@ public class Libro {
 	private Integer sagaId;
 	private Integer editorialId;
 	private Integer autorId;
+	private byte[] img;
 	
-	public Libro(int libroId, String titulo, Integer sagaId, int editorialId, int autorId) {
+	public Libro(int libroId, String titulo, Integer sagaId, int editorialId, int autorId, byte[] img) {
 		this.libroId = libroId;
 		this.titulo = titulo;
 		this.sagaId = sagaId;
 		this.editorialId = editorialId;
 		this.autorId = autorId;
+		this.img = img;
 	}
 
 	public int getLibroId() {
@@ -54,7 +56,13 @@ public class Libro {
 	public void setAutorId(int autorId) {
 		this.autorId = autorId;
 	}
-	
-	
+
+	public byte[] getImg() {
+		return img;
+	}
+
+	public void setImg(byte[] img) {
+		this.img = img;
+	}
 }
 

@@ -2,6 +2,9 @@ package vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.awt.Color;
 
 import javax.swing.JFrame;
@@ -10,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -30,6 +34,8 @@ public class AddBook extends JDialog implements Auxiliaries{
 	private JPanel contentPane;
 	private JTextField textField;
 	private Libro libruli;
+	private JLabel imagenLabel;
+	private byte[] imagenData;	
 	
 	public AddBook(Libro book) {
 		super((JFrame)null, "Add Book", true);
@@ -39,7 +45,7 @@ public class AddBook extends JDialog implements Auxiliaries{
 			action = "Actualizar";
 		}
 		setTitle(action + " Libros");
-		setBounds(100, 100, 569, 353);
+		setBounds(100, 100, 569, 411);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		controlador = new LibroControlador();
@@ -60,10 +66,6 @@ public class AddBook extends JDialog implements Auxiliaries{
 		if (book != null) {
 			textField.setText(book.getTitulo());
 		}
-		
-		JLabel lblAutor = new JLabel("Autor:");
-		lblAutor.setBounds(51, 82, 217, 14);
-		contentPane.add(lblAutor);
 
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(31, 100, 223, 22);
@@ -114,7 +116,7 @@ public class AddBook extends JDialog implements Auxiliaries{
 		
 		JLabel booklet = new JLabel("El libro ingresado ya esta registrado");
 		booklet.setForeground(new Color(204, 37, 13));
-		booklet.setBounds(279, 269, 237, 14);
+		booklet.setBounds(279, 326, 237, 14);
 		contentPane.add(booklet);
 		booklet.setVisible(false);
 		
@@ -130,6 +132,20 @@ public class AddBook extends JDialog implements Auxiliaries{
 		contentPane.add(autorObl);
 		autorObl.setVisible(false);
 		
+		imagenLabel = new JLabel("");
+		imagenLabel.setBounds(279, 276, 250, 14);
+		contentPane.add(imagenLabel);
+		
+		JButton seleccionarImagenBtn = new JButton("Seleccionar Imagen");
+		seleccionarImagenBtn.setBounds(31, 272, 223, 22);
+		seleccionarImagenBtn.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			seleccionarImagen();
+			imagenLabel.setBounds(279, 276, 250, 14);
+			contentPane.add(imagenLabel);
+			}
+		});
+		contentPane.add(seleccionarImagenBtn);
 
 		JButton btnNewButton = new JButton(action);
 		btnNewButton.addActionListener(new ActionListener() {
@@ -149,16 +165,18 @@ public class AddBook extends JDialog implements Auxiliaries{
 					valid = false;
 				}
 				
-				for (Libro librito : controlador.getAllBooks()) {
-		            if (librito.getTitulo().equalsIgnoreCase(textField.getText()) && 
-		            	librito.getAutorId() == ((Autor)comboBox.getSelectedItem()).getAutorId() && 
-		            	librito.getEditorialId() == ((Editorial)comboBox_3.getSelectedItem()).getEditorialId()) {
-						booklet.setVisible(true);
-		        		valid = false;
-		                break;
-		            }
-		        }
-				
+				if (libruli == null) {
+					for (Libro librito : controlador.getAllBooks()) {
+			            if (librito.getTitulo().equalsIgnoreCase(textField.getText()) && 
+			            	librito.getAutorId() == ((Autor)comboBox.getSelectedItem()).getAutorId() && 
+			            	librito.getEditorialId() == ((Editorial)comboBox_3.getSelectedItem()).getEditorialId()) {
+							booklet.setVisible(true);
+			        		valid = false;
+			                break;
+			            }
+			        }
+				}
+
 				if (comboBox.getSelectedItem().equals("...")){
 					autorObl.setVisible(true);
 					valid = false;
@@ -178,7 +196,7 @@ public class AddBook extends JDialog implements Auxiliaries{
 						editoriali = ((Editorial)comboBox_3.getSelectedItem()).getEditorialId();
 					}
 					
-			        Libro nuevoLibro = new Libro(0, textField.getText(), saguli, editoriali, ((Autor)comboBox.getSelectedItem()).getAutorId());
+			        Libro nuevoLibro = new Libro(0, textField.getText(), saguli, editoriali, ((Autor)comboBox.getSelectedItem()).getAutorId(), imagenData);
 			        if (libruli != null) {
 			        	nuevoLibro.setLibroId(libruli.getLibroId());
 			        	controlador.updateBook(nuevoLibro);
@@ -192,7 +210,7 @@ public class AddBook extends JDialog implements Auxiliaries{
 		        }
 			}
 		});
-		btnNewButton.setBounds(31, 265, 97, 23);
+		btnNewButton.setBounds(31, 322, 97, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Cancelar");
@@ -202,7 +220,31 @@ public class AddBook extends JDialog implements Auxiliaries{
 		        return;
 			}
 		});
-		btnNewButton_1.setBounds(157, 265, 97, 23);
+		btnNewButton_1.setBounds(157, 322, 97, 23);
 		contentPane.add(btnNewButton_1);
+		
+		JLabel lblAutor = new JLabel("Autor:");
+		lblAutor.setBounds(51, 82, 217, 14);
+		contentPane.add(lblAutor);
 	}
+	
+    private void seleccionarImagen() {
+    	JFileChooser fileChooser = new JFileChooser();
+    	int result = fileChooser.showOpenDialog(this);
+    	if (result == JFileChooser.APPROVE_OPTION) {
+    		File file = fileChooser.getSelectedFile();
+    		imagenLabel.setText(file.getName());
+    		imagenData = leerImagen(file);
+    	}
+    }
+    
+    private byte[] leerImagen(File file) {
+    	byte[] bFile = new byte[(int) file.length()];
+    	try (FileInputStream fileInputStream = new FileInputStream(file)) {
+    		fileInputStream.read(bFile);
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    	return bFile;
+    }
 }
