@@ -17,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
-import controladores.UsuarioControlador;
 import controladores.ClienteControlador;
 import modelos.Usuario;
 import modelos.Cliente;
@@ -32,7 +31,6 @@ public class ViewClients extends JDialog {
     private JPanel contentPane;
     private JTable table;
     private DefaultTableModel model;
-    private UsuarioControlador controladorUsers;
     private ClienteControlador controlador;
     private JLabel elemento;
     private JLabel lblNewLabel;

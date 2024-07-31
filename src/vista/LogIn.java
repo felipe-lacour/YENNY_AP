@@ -7,7 +7,6 @@ import javax.swing.border.EmptyBorder;
 import controladores.UsuarioControlador;
 import interfaces.Menu;
 import modelos.Usuario;
-import modelos.Vendedor;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -81,7 +80,8 @@ public class LogIn extends JFrame implements Menu {
 		                    dispose();
 		                    
 		                    if (user.getRol() == 1) {
-		                        new Vendedor(user.getUsuarioId(), user.getNombre(), user.getRol(), user.getSucursalId(), user.getPass(), user.getUserName()).Menu();
+		                    	MenuVendedor frame = new MenuVendedor(user);
+		    					frame.setVisible(true);
 		                    } else if (user.getRol() == 2) {
 		                    	MenuManager frame = new MenuManager(user);
 		    					frame.setVisible(true);
